@@ -1,0 +1,90 @@
+<div class="container">
+
+    <div class="jumbotron">
+
+        <div class="row">
+
+            <div class="col-lg-6">
+
+
+                <h2>Sign Up</h2>
+                <br/>
+
+                <form name="registerForm" ng-controller="BusinessRegisterCtrl"
+                      ng-submit="register(registerData, registerForm)" novalidate>
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/email-40.png"/></span>
+                        <input type="email" class="form-control" name="email" placeholder="Type in your Email"
+                               ng-model="registerData.email" required>
+                    </div>
+                    <div class="help-block" ng-show="registerForm.email.$dirty && registerForm.email.$invalid">
+                        <span ng-show="registerForm.email.$error.required">Empty field.</span>
+                        <span ng-show="registerForm.email.$error.email">Not a valid email address.</span>
+                    </div>
+
+                    <br/>
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/key-40.png"/></span>
+                        <input type="password" class="form-control" name="password" placeholder="Type in a password"
+                               ng-model="registerData.password" minlength="8" maxlength="50" required>
+                    </div>
+                    <div class="help-block"
+                         ng-show="registerForm.password.$dirty && registerForm.password.$invalid">
+                        <span ng-show="registerForm.password.$error.required">Empty field.</span>
+                        <span ng-show="registerForm.password.$error.minlength">Password must have at least 8 characters</span>
+                        <span ng-show="registerForm.password.$error.maxlength">Password must have at maximum 50 characters</span>
+                    </div>
+
+                    <br/>
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/key-40.png"/></span>
+                        <input type="password" class="form-control" name="passwordRepeat"
+                               placeholder="Type in password again" ng-model="registerData.passwordRepeat"
+                               match="registerData.password" minlength="8"
+                               maxlength="50"
+                               required>
+                    </div>
+                    <div class="help-block"
+                         ng-show="form.passwordRepeat.$dirty && registerForm.passwordRepeat.$invalid">
+                        <span ng-show="registerForm.passwordRepeat.$error.required">Empty field.</span>
+                        <span ng-show="registerForm.passwordRepeat.$error.match">Passwords are not equal.</span>
+                        <span ng-show="registerForm.passwordRepeat.$error.minlength">Password must have at least 8 characters</span>
+                        <span ng-show="registerForm.passwordRepeat.$error.maxlength">Password must have at maximum 50 characters</span>
+                    </div>
+
+                    <br/>
+
+                    <div class="help-block" ng-show="load">
+                        <div class="label label-info">Processing...</div>
+                    </div>
+                    <div class="help-block" ng-show="error">
+                        <div class="label label-danger" ng-show="error.serverError">A server error occurred. Please try again later.</div>
+                        <div class="label label-danger" ng-show="error.requestError">Invalid request. Please try again later.</div>
+                        <div class="label label-danger" ng-show="error.emailFound">Email is already used.</div>
+                        <div class="label label-danger" ng-show="error.otherError">An error occurred. Please try again later.</div>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-primary btn-lg"
+                                ng-disabled="registerForm.$invalid || isUnchanged(registerData)">Sign up
+                        </button>
+                    </div>
+
+
+                </form>
+
+                <br/>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,115 @@
+<div class="container">
+
+    <div class="help-block" ng-show="error" style="text-align: center">
+        <div class="label label-danger" ng-show="error.serverError">A server error occurred. Some data could not be loaded.</div>
+        <div class="label label-danger" ng-show="error.requestError">Invalid request. Some data could not be loaded.</div>
+        <div class="label label-danger" ng-show="error.otherError">An error occurred. Some data could not be loaded.</div>
+    </div>
+
+
+    <div class="jumbotron">
+
+        <div class="row">
+
+            <div class="col-lg-6">
+
+                <h2>{{ store.name }}</h2>
+
+                <p><a href="#/changeStoreName">Change store name</a></p>
+
+                <h3>Address</h3>
+
+                <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/streetAddress-40.png"/></span>
+
+                    <div class="well form-control">{{ store.streetAddress }}</div>
+                </div>
+
+                <br/>
+
+                <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/addressLocality-40.png"/></span>
+
+                    <div class="well form-control">{{ store.postalCode }} {{ store.addressLocality }}</div>
+                </div>
+
+                <br/>
+
+                <p><a href="#/changeStoreAddress">Change address</a></p>
+
+                <h3>Contact</h3>
+
+                <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/telephone-40.png"/></span>
+
+                    <div class="well form-control">{{ store.telephone }}</div>
+                </div>
+
+                <br/>
+
+                <p><a href="#/changeStorePhone">Change telephone</a></p>
+
+                <h3>Type and Categories</h3>
+
+                <p><img src="static/images/icons/restaurant-64.png"/>Restaurant</p>
+
+                <p><img src="static/images/icons/snack-64.png"/>Burger</p>
+
+                <p><a href="#/changeStoreType">Change type and category</a></p>
+
+            </div>
+
+            <div class="col-lg-6">
+
+                <h3>Pictures</h3>
+
+                <div class="imageUpload">
+
+                    <div class="imageUploadContainer">
+
+                        <div class="row">
+
+                            <div class="col-lg-3">
+
+                                <img ng-src="static/images/icons/store-128.png"/>
+
+                            </div>
+
+                        </div>
+
+                        <br/>
+
+                        <div class="imageUploadControl">
+                            <p>Drag a picture in or <a class="btn btn-primary">Upload a picture</a>
+                            </p></div>
+
+                    </div>
+
+                </div>
+
+                <p>Remove a picture by dragging it out.</p>
+
+                <h3>Store Code</h3>
+
+                <img ng-src="static/images/icons/qr.png" />
+
+                <p><a href="#/changeStoreType">Print store code</a></p>
+
+                <p><a href="#/changeStoreType">Order store code cards</a></p>
+
+            </div>
+
+
+            <div class="col-lg-12">
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

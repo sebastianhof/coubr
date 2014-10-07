@@ -1,0 +1,1 @@
+var coubrAppFilters = angular.module('coubrAppFilters', []);

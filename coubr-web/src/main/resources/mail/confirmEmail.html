@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body style="font-family: sans-serif">
+<div class="container" style="
+        background-color: #EBEDFF
+        width: 100%;
+        padding: 2em;
+        margin-bottom: 5em;">
+
+    <h1>Please confirm your coubr account</h1>
+
+    <p>Hi there,</p>
+
+    <p>You recently registered on coubr.
+        Please confirm your registration by following the link below:</p>
+
+    <div class="link" style="padding: 1em;">
+        <div><a th:href="@{${link}}" th:text="${link}" style="color: #428bca;">Link</a></div>
+
+        <br/>
+
+        <div>You're confirmation code: <span class="code" th:text="${code}" style="font-weight: bold">Code</span></div>
+    </div>
+
+    <p>You have 30 days to confirm your registration.</p>
+
+    <p>Thanks,</p>
+
+    <p>coubr Team</p>
+
+</div>
+<div class="footer" style="background-color: #66CDFF;
+        text-align: center;
+        padding: 1em;
+        color: white;">
+
+    <p>coubr &copy; 2014 &middot; All rights reserved &middot; <a style="color: #152A34">Imprint</a> &middot; <a style="color: #152A34">Privacy</a> &middot;
+        <a style="color: #152A34">Terms</a></p>
+
+</div>
+
+
+</body>
+</html>

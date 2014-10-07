@@ -1,0 +1,184 @@
+html, body {
+    height: 100%;
+}
+
+p {
+    text-align: justify;
+    max-width: 50em;
+}
+
+.header {
+    padding-top: 1em;
+    background-color: #F2784B;
+
+}
+
+.header a {
+    color: #333333;
+}
+
+.body {
+    min-height: 100%;
+    background-color: #F2F1EF;
+    padding-top: 2em;
+    padding-bottom: 5em;
+}
+
+.footer {
+    padding: 2em;
+    background-color: #F2784B;
+    color: #333333;
+    min-height: 5em;
+}
+
+.footer a {
+    color: #F2F1EF;
+}
+
+.footer p {
+    text-align: center;
+    max-width: 100%;
+}
+
+.jumbotron {
+    background-color: transparent;
+}
+
+.fullscreen {
+    min-height: 100%;
+}
+
+.input-group-img {
+    height: 95%;
+}
+
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
+
+/*
+ * Business Owner
+ */
+
+.dashboard {
+}
+
+.numbers {
+
+}
+
+.numbers p {
+    text-align: center;
+}
+
+.number-large {
+    color: #66CDFF;
+    font-size: 5em;
+    text-align: center;
+}
+
+.number-small {
+    color: #66CDFF;
+    font-size: 3em;
+    text-align: center;
+}
+
+.stores {
+    padding: 1em;
+}
+
+.stores p {
+    text-align: center;
+    font-size: 1em;
+}
+
+.storesWithDetails {
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+.stores img {
+
+}
+
+.store {
+
+}
+
+.coupons {
+    padding: 1em;
+}
+
+.coupons p {
+    text-align: center;
+    font-size: 1em;
+}
+
+.couponsWithDetails {
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+.coupon {
+
+}
+
+.categories {
+    padding: 1em;
+}
+
+.categories img {
+    margin-right: 1em;
+}
+
+.categories p {
+    margin-left: 1em;
+    display: inline;
+}
+
+.imageUpload {
+    width: 100%;
+    min-height: 400px;
+    position: relative;
+    padding: 1em;
+    border: 2px dashed #66CDFF;
+}
+
+.imageUpload p {
+    text-align: center;
+}
+
+.imageUploadControl {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    bottom: 50%;
+
+}
+
+.textarea {
+    display: table-cell;
+    resize: none;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 6px;
+}
+
+.placeholder-1 {
+    margin-top: 1em;
+}
+
+.placeholder-2 {
+    margin-top: 2em;
+}
+
+.placeholder-5 {
+    margin-top: 5em;
+}
+
+.placeholder-10 {
+    margin-top: 10em;
+}

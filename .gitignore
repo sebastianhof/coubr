@@ -1,0 +1,10 @@
+# IntelliJ IDEA
+/*.iml
+.idea/
+
+# Gradle Files
+.gradle/
+build/
+
+# Node.js
+node_modules/

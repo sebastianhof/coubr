@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" ng-app="coubrBusiness">
+<head>
+    <!--stylesheets-->
+    <link rel="stylesheet" type="text/css" href="static/css/bootstrap.min.css" th:href="@{/static/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" href="static/css/coubr.css" th:href="@{/static/css/coubr.css}"/>
+    <!--scripts-->
+    <script src="static/js/angular.min.js" th:src="@{/static/js/angular.min.js}"></script>
+    <script src="static/js/angular-route.min.js" th:src="@{/static/js/angular-route.min.js}"></script>
+    <script src="static/js/business/business.js" th:src="@{/static/js/business/business.js}"></script>
+    <script src="static/js/business/controllers.js" th:src="@{/static/js/business/controllers.js}"></script>
+    <script src="static/js/business/filters.js" th:src="@{/static/js/business/filters.js}"></script>
+    <script src="static/js/business/services.js" th:src="@{/static/js/business/services.js}"></script>
+    <script src="static/js/jquery-1.11.1.min.js" th:src="@{/static/js/jquery-1.11.1.min.js}"></script>
+    <script src="static/js/bootstrap.min.js" th:src="@{/static/js/bootstrap.min.js}"></script>
+</head>
+<body>
+
+<div class="header">
+    <div class="container">
+
+        <div class="navbar" role="navigation">
+
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">coubr for Business</a>
+            </div>
+
+            <div class="pull-right">
+
+                <ul class="nav nav-pills">
+                    <li><a ng-href="#/login">Sign in</a></li>
+                    <li><a ng-href="#/about">About</a></li>
+                    <li><a ng-href="#/blog">Blog</a></li>
+                    <li><a ng-href="#/contact">Contact</a></li>
+                    <li><a href="app" th:href="@{/app}">coubr for User</a></li>
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="body" ng-view=""></div>
+
+<div class="footer">
+
+    <div>
+
+        <p>coubr &copy; 2014 &middot; All rights reserved &middot; <a ng-href="#/imprint">Imprint</a> &middot; <a
+                ng-href="#/privacy">Privacy</a> &middot; <a ng-href="#/terms">Terms</a></p>
+
+    </div>
+
+
+</div>
+
+</body>
+</html>

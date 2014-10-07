@@ -1,0 +1,74 @@
+<div class="container">
+
+    <div class="help-block" ng-show="error" style="text-align: center">
+        <div class="label label-danger" ng-show="error.serverError">A server error occurred. Some data could not be loaded.</div>
+        <div class="label label-danger" ng-show="error.requestError">Invalid request. Some data could not be loaded.</div>
+        <div class="label label-danger" ng-show="error.otherError">An error occurred. Some data could not be loaded.</div>
+    </div>
+
+
+    <div class="jumbotron">
+
+        <div class="row">
+
+            <div class="col-lg-6">
+
+                <h2>{{ coupon.title }}</h2>
+
+                <p>{{ coupon.description }}</p>
+
+                <p><a href="#/changeCouponName">Change title and description</a></p>
+
+                <h3>Date</h3>
+
+                <div>from</div>
+                <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/date-40.png"/></span>
+                    <div class="well form-control">{{ coupon.from }}</div>
+                </div>
+
+                <br />
+
+                <div>to</div>
+                <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/date-40.png"/></span>
+                    <div class="well form-control">{{ coupon.to }}</div>
+                </div>
+
+                <br />
+
+                <p><a href="#/changeCouponDates">Change dates</a></p>
+
+                <h3>Amount</h3>
+
+                <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/date-40.png"/></span>
+                    <div class="well form-control">{{ coupon.amount }}</div>
+                </div>
+
+                <br />
+
+                <p><a href="#/changeCouponAmount">Change amount</a></p>
+
+            </div>
+
+            <div class="col-lg-6">
+
+                <div class="placeholder-1" />
+
+                <div class="thumbnail"><img ng-src="static/images/icons/coupon-128.png"/></div>
+
+                <p><a href="#/changeCouponDesign">Change coupon design</a></p>
+
+            </div>
+
+            <p></p>
+
+        </div>
+
+    </div>
+
+</div>

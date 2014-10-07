@@ -1,0 +1,1 @@
+var coubrAppServices = angular.module('coubrAppServices', []);

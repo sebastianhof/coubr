@@ -1,0 +1,43 @@
+<div class="container">
+
+    <div class="jumbotron">
+
+        <div class="row">
+
+            <div class="col-lg-12"><h2>Add a Store</h2></div>
+
+
+            <div class="col-lg-12">
+
+                <h3>Map</h3>
+
+                <br />
+
+                <iframe
+                        width = "100%"
+                        height = "400px"
+                        frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCtXyICtACo_Y5vxCT134scRSpBz7H6RIY&q=Space+Needle,Weisendorf">
+                </iframe>
+
+                <p>Provide the exact location of your store by setting a pin on the map.</p>
+
+                <br />
+
+                <div class="pull-left">
+                    <button type="button" class="btn btn-primary btn-lg">Back
+                    </button>
+                </div>
+
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary btn-lg"
+                            ng-disabled="addStoreForm.$invalid || isUnchanged(addStoreData)">Next
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

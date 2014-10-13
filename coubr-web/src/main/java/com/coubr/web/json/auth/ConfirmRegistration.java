@@ -1,5 +1,6 @@
 package com.coubr.web.json.auth;
 
+import com.coubr.data.GlobalDataLengthConstants;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
@@ -12,9 +13,10 @@ public class ConfirmRegistration {
 
     @Email
     @NotNull
+    @Size(max = GlobalDataLengthConstants.EMAIL_LENGTH)
     private String email;
 
-    @Size(min = 16, max = 32)
+    @Size(max = GlobalDataLengthConstants.CODE_LENGTH)
     @NotNull
     private String code;
 

@@ -1,0 +1,63 @@
+<div class="container">
+
+    <cbrerror class="label label-danger error">Error!</cbrerror>
+
+    <div class="jumbotron">
+
+        <div class="row">
+
+            <div class="col-lg-6">
+
+
+                <h2>Change Contact</h2>
+                <br/>
+
+                <cbrform postTo="b/store/:storeId/contact"
+                         thenGoTo="#store/:storeId/settings"
+                         initFrom="b/store/:storeId/contact">
+
+                    <!-- Phone -->
+
+                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon"><img class="input-group-img"
+                                                                             ng-src="static/images/icons/telephone-40.png"/></span>
+                        <input type="text" class="form-control" name="phone"
+                               placeholder="Type in a telephone number (optional)"
+                               ng-model="data.phone">
+                    </div>
+
+                    <br/>
+
+                    <!-- Email -->
+
+                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon"><img class="input-group-img"
+                                                                             ng-src="static/images/icons/email-40.png"/></span>
+                        <input type="email" class="form-control" name="email"
+                               placeholder="Type in a email (optional)"
+                               ng-model="data.email">
+                    </div>
+                    <cbrinputerror class="help-block" cbrname="email">Error.</cbrinputerror>
+
+                    <br/>
+
+                    <div>
+                        <cbrprocess class="label process-submit">Processing...</cbrprocess>
+                        <cbrerror class="label error-submit">Error!</cbrerror>
+                        <cbrsubmit class="btn btn-coubr btn-lg">Change</cbrsubmit>
+                        <span>or <a ng-href="#store/{{ route.storeId }}/settings">Go back</a></span>
+                    </div>
+
+
+                </cbrform>
+
+                <br/>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

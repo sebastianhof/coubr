@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by sebastian on 28.09.14.
  */
-@Repository("storeRepository")
+@Repository("localBusinessRepository")
 public interface LocalBusinessRepository extends CrudRepository<LocalBusinessEntity, Long>, LocalBusinessQuery {
 
     List<LocalBusinessEntity> findByBusinessOwner(BusinessOwnerEntity businessOwner);

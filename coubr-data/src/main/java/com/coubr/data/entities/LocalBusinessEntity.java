@@ -1,8 +1,9 @@
 package com.coubr.data.entities;
 
-import com.coubr.data.types.LocalBusinessSpecificType;
+import com.coubr.data.GlobalDataLengthConstants;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,66 +17,88 @@ public class LocalBusinessEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long localBusinessId;
-
     @Column(nullable = false)
     private String name;
 
-
+    @Column(nullable = true, length = GlobalDataLengthConstants.DESCRIPTION_LENGTH)
     private String description;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private LocalBusinessSpecificType type;
+    @Column(nullable = false, length = GlobalDataLengthConstants.ID_LENGTH)
+    private String type;
 
+    @Column(nullable = true, length = GlobalDataLengthConstants.ID_LENGTH)
+    private String category;
 
-    private String labels;
+    @Column(nullable = true, length = GlobalDataLengthConstants.ID_LENGTH)
+    private String subcategory;
 
     /*
      * Contact point
      */
 
-    @Column(nullable = false)
+    @Column(nullable = true, length = GlobalDataLengthConstants.TELEPHONE_LENGTH)
     private String telephone;
 
-    @Column(nullable = false)
+    @Column(nullable = true, length = GlobalDataLengthConstants.EMAIL_LENGTH)
     private String email;
-
-    //private Set<LocalBusinessOpeningHour> openingHours;
 
     /*
      * Postal Address
      */
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = GlobalDataLengthConstants.ISO_3166_2_LENGTH)
     private String addressCountry;
 
-    @Column(nullable = false)
-    private String addressLocality;
-
+    @Column(nullable = false, length = GlobalDataLengthConstants.ISO_3166_2_LENGTH)
     private String addressRegion;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = GlobalDataLengthConstants.NAME_LENGTH)
+    private String addressLocality;
+
+    @Column(nullable = false, length = GlobalDataLengthConstants.POSTAL_CODE_LENGTH)
     private String postalCode;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = GlobalDataLengthConstants.NAME_LENGTH)
     private String streetAddress;
 
-    /*
+     /*
      * Geo Location
      */
 
+
+    @Column(nullable = false)
     private double geoLongitude;
 
+    @Column(nullable = false)
     private double geoLatitude;
 
+    @Column(nullable = false, unique = true, length = GlobalDataLengthConstants.QR_CODE_LENGTH)
+    private String storeCode;
+
     // Owner
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "businessOwnerId")
     private BusinessOwnerEntity businessOwner;
 
-    // Coupon
-    @OneToMany(mappedBy = "store")
-    private List<CouponEntity> coupons;
+    // Coupons
+    @ManyToMany(mappedBy="localBusinesses", fetch = FetchType.EAGER)
+    private List<OfferEntity> offers;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getSubcategory() {
+        return subcategory;
+    }
+
+    public void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
+    }
 
     /*
      Getter and Setter
@@ -101,25 +124,16 @@ public class LocalBusinessEntity {
         return description;
     }
 
-
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public LocalBusinessSpecificType getType() {
-        return type;
+    public String getCategory() {
+        return category;
     }
 
-    public void setType(LocalBusinessSpecificType type) {
-        this.type = type;
-    }
-
-    public String getLabels() {
-        return labels;
-    }
-
-    public void setLabels(String labels) {
-        this.labels = labels;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getEmail() {
@@ -129,14 +143,6 @@ public class LocalBusinessEntity {
     public void setEmail(String email) {
         this.email = email;
     }
-
-//    public Set<LocalBusinessOpeningHour> getOpeningHours() {
-//        return openingHours;
-//    }
-//
-//    public void setOpeningHours(Set<LocalBusinessOpeningHour> openingHours) {
-//        this.openingHours = openingHours;
-//    }
 
     public String getTelephone() {
         return telephone;
@@ -202,6 +208,14 @@ public class LocalBusinessEntity {
         this.geoLatitude = geoLatitude;
     }
 
+    public String getStoreCode() {
+        return storeCode;
+    }
+
+    public void setStoreCode(String storeCode) {
+        this.storeCode = storeCode;
+    }
+
     public BusinessOwnerEntity getBusinessOwner() {
         return businessOwner;
     }
@@ -210,12 +224,49 @@ public class LocalBusinessEntity {
         this.businessOwner = businessOwner;
     }
 
-    public List<CouponEntity> getCoupons() {
-        return coupons;
+    public List<OfferEntity> getOffers() {
+        return offers;
     }
 
-    public void setCoupons(List<CouponEntity> coupons) {
-        this.coupons = coupons;
+    public void setOffers(List<OfferEntity> offers) {
+        this.offers = offers;
+    }
+
+    public boolean containsOffer(OfferEntity offerEntity) {
+        return offers.contains(offerEntity);
+    }
+
+    public void addOffer(OfferEntity offerEntity) {
+        if (!offers.contains(offerEntity)) {
+            offers.add(offerEntity);
+        }
+    }
+
+    public void removeOffer(OfferEntity offerEntity) {
+        if (offers.contains(offerEntity)) {
+            offers.remove(offerEntity);
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj instanceof LocalBusinessEntity) {
+
+            LocalBusinessEntity localBusinessEntity = (LocalBusinessEntity) obj;
+
+            if (localBusinessEntity.getLocalBusinessId() == localBusinessId) {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return new Long(localBusinessId).hashCode();
     }
 
 }

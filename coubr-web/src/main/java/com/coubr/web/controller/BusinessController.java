@@ -1,39 +1,30 @@
 package com.coubr.web.controller;
 
-import com.coubr.web.json.CoubrWebError;
+import com.coubr.web.exceptions.*;
+import com.coubr.web.json.Feedback;
 import com.coubr.web.json.account.Account;
-import com.coubr.web.json.account.ChangeEmail;
-import com.coubr.web.json.account.ChangeName;
-import com.coubr.web.json.account.ChangePassword;
+import com.coubr.web.json.account.AccountChangeEmail;
+import com.coubr.web.json.account.AccountChangePassword;
+import com.coubr.web.json.account.AccountName;
 import com.coubr.web.json.auth.*;
-import com.coubr.web.json.coupon.Coupon;
-import com.coubr.web.json.coupon.CouponDetails;
-import com.coubr.web.json.localbusiness.LocalBusiness;
-import com.coubr.web.json.localbusiness.LocalBusinessDetails;
-import com.coubr.web.services.AccountService;
-import com.coubr.web.services.AuthenticationService;
-import com.coubr.web.services.CouponService;
-import com.coubr.web.services.LocalBusinessService;
-import com.coubr.web.services.exception.*;
+import com.coubr.web.json.coupon.*;
+import com.coubr.web.json.store.*;
+import com.coubr.web.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * Created by sebastian on 28.09.14.
@@ -51,10 +42,13 @@ public class BusinessController {
     private AccountService accountService;
 
     @Autowired
-    private LocalBusinessService localBusinessService;
+    private StoreService storeService;
 
     @Autowired
     private CouponService couponService;
+
+    @Autowired
+    private FeedbackService feedbackService;
 
     /*
      * Single-page HTML
@@ -82,7 +76,7 @@ public class BusinessController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/business/login.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/business/login", method = RequestMethod.POST)
     public
     @ResponseBody
     String login(@RequestBody @Valid Login data, HttpServletRequest request, HttpServletResponse response) throws EmailNotFoundException, NotConfirmedException, PasswordNotFoundException {
@@ -113,19 +107,14 @@ public class BusinessController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/b/logout.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/b/logout", method = RequestMethod.POST)
     public
     @ResponseBody
     String logout(HttpServletRequest request, HttpServletResponse response) throws UserNotLoggedInException {
 
-        UserDetails user = getUserFromSecurityContext(response);
-
-        if (user != null) {
-            new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
-            return "business";
-        } else {
-            throw new UserNotLoggedInException();
-        }
+        getEmailOfLoggedinUser(response);
+        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+        return "business";
 
     }
 
@@ -137,15 +126,15 @@ public class BusinessController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/business/resetPassword.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/business/resetPassword", method = RequestMethod.POST)
     public
     @ResponseBody
     String resetPassword(@RequestBody @Valid ResetPassword data, HttpServletRequest request, HttpServletResponse
-            response) throws EmailNotFoundException, MessagingException {
+            response) throws EmailNotFoundException, SendMessageException {
 
         authenticationService.resetPassword(data, request, response);
-
         return "success";
+
     }
 
     /**
@@ -155,14 +144,14 @@ public class BusinessController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/business/resetPasswordConfirm.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/business/resetPasswordConfirm", method = RequestMethod.POST)
     public
     @ResponseBody
     String resetPasswordConfirm(@RequestBody @Valid ResetPasswordConfirm data, HttpServletResponse response) throws CodeNotFoundException, ExpirationException, EmailNotFoundException {
 
         authenticationService.resetPasswordConfirm(data);
-
         return "success";
+
     }
 
     /**
@@ -171,14 +160,14 @@ public class BusinessController {
      * @param data
      * @return
      */
-    @RequestMapping(value = "/business/register.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/business/register", method = RequestMethod.POST)
     public
     @ResponseBody
-    String register(@RequestBody @Valid Register data, HttpServletRequest request, HttpServletResponse response) throws MessagingException, EmailFoundException {
+    String register(@RequestBody @Valid Register data, HttpServletRequest request, HttpServletResponse response) throws SendMessageException, EmailFoundException {
 
         authenticationService.register(data, request, response);
-
         return "success";
+
     }
 
     /**
@@ -187,14 +176,14 @@ public class BusinessController {
      * @param data
      * @return
      */
-    @RequestMapping(value = "/business/confirmRegistration.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/business/confirmRegistration", method = RequestMethod.POST)
     public
     @ResponseBody
     String confirmRegistration(@RequestBody @Valid ConfirmRegistration data) throws CodeNotFoundException, ExpirationException, EmailNotFoundException, ConfirmedException {
 
         authenticationService.confirmRegistration(data);
-
         return "success";
+
     }
 
     /**
@@ -204,15 +193,15 @@ public class BusinessController {
      * @return
      */
 
-    @RequestMapping(value = "/business/resendConfirmation.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/business/resendConfirmation", method = RequestMethod.POST)
     public
     @ResponseBody
     String resendConfirmation(@RequestBody @Valid ResendConfirmation data, HttpServletRequest
-            request, HttpServletResponse response) throws MessagingException, EmailNotFoundException, ConfirmedException {
+            request, HttpServletResponse response) throws SendMessageException, EmailNotFoundException, ConfirmedException {
 
         authenticationService.resendConfirmation(data, request, response);
-
         return "success";
+
     }
 
     /**
@@ -228,70 +217,55 @@ public class BusinessController {
     @ResponseBody
     Account account(HttpServletRequest request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException {
 
-        UserDetails user = getUserFromSecurityContext(response);
-
-        if (user != null) {
-            return accountService.getAccount(user.getUsername());
-        } else {
-            throw new UserNotLoggedInException();
-        }
+        return accountService.getAccount(getEmailOfLoggedinUser(response));
 
     }
 
 
-    @RequestMapping(value = "b/account/changePassword.do", method = RequestMethod.POST)
+    @RequestMapping(value = "b/account/password", method = RequestMethod.POST)
     public
     @ResponseBody
-    String changePassword(@RequestBody @Valid ChangePassword data, HttpServletResponse response) throws UserNotLoggedInException, PasswordNotFoundException, EmailNotFoundException {
+    String accountChangePassword(@RequestBody @Valid AccountChangePassword data, HttpServletResponse response) throws UserNotLoggedInException, PasswordNotFoundException, EmailNotFoundException {
 
-        UserDetails user = getUserFromSecurityContext(response);
-
-        if (user != null) {
-            accountService.changePassword(user.getUsername(), data);
-        } else {
-            throw new UserNotLoggedInException();
-        }
-
+        accountService.changePassword(getEmailOfLoggedinUser(response), data);
         return "success";
+
     }
 
-    @RequestMapping(value = "b/account/changeEmail.do", method = RequestMethod.POST)
+    @RequestMapping(value = "b/account/email", method = RequestMethod.POST)
     public
     @ResponseBody
-    String changePassword(@RequestBody @Valid ChangeEmail data, HttpServletRequest request, HttpServletResponse
+    String accountChangePassword(@RequestBody @Valid AccountChangeEmail data, HttpServletRequest request, HttpServletResponse
             response) throws UserNotLoggedInException, EmailNotFoundException, EmailFoundException {
 
-        UserDetails user = getUserFromSecurityContext(response);
-
-        if (user != null) {
-            accountService.changeEmail(user.getUsername(), data);
-        } else {
-            throw new UserNotLoggedInException();
-        }
-
+        accountService.changeEmail(getEmailOfLoggedinUser(response), data);
         return "success";
+
     }
 
-    @RequestMapping(value = "b/account/changeName.do", method = RequestMethod.POST)
+    @RequestMapping(value = "b/account/name", method = RequestMethod.POST)
     public
     @ResponseBody
-    String changeName(@RequestBody @Valid ChangeName data, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException {
+    String accountChangeName(@RequestBody @Valid AccountName data, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException {
 
-        UserDetails user = getUserFromSecurityContext(response);
-
-        if (user != null) {
-            accountService.changeName(user.getUsername(), data);
-        } else {
-            throw new UserNotLoggedInException();
-        }
-
+        accountService.changeName(getEmailOfLoggedinUser(response), data);
         return "success";
+
+    }
+
+    @RequestMapping(value = "b/account/name", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    AccountName accountName(HttpServletRequest request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException {
+
+        return accountService.getName(getEmailOfLoggedinUser(response));
+
     }
 
     /**
      * ******************************
      * <p/>
-     * Store
+     * Store (LocalBusiness)
      * <p/>
      * ******************************
      */
@@ -299,48 +273,172 @@ public class BusinessController {
     @RequestMapping(value = "/b/stores", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<LocalBusiness> localBusinesses(HttpServletRequest request, HttpServletResponse response) throws UserNotLoggedInException {
+    Stores stores(HttpServletRequest request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException {
 
-        UserDetails user = getUserFromSecurityContext(response);
-
-        if (user != null) {
-            return localBusinessService.getStores(user.getUsername());
-        } else {
-            throw new UserNotLoggedInException();
-        }
+        return storeService.getStores(getEmailOfLoggedinUser(response));
 
     }
 
-    @RequestMapping(value = "/b/storesWithDetails", method = RequestMethod.GET)
+    @RequestMapping(value = "/b/stores/details", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<LocalBusinessDetails> localBusinessesWithDetails(HttpServletRequest request, HttpServletResponse response) throws UserNotLoggedInException {
+    StoresDetails storesDetails(HttpServletRequest request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException {
 
-        UserDetails user = getUserFromSecurityContext(response);
+        return storeService.getStoresWithDetails(getEmailOfLoggedinUser(response));
 
-        if (user != null) {
-            return localBusinessService.getStoresWithDetails(user.getUsername());
-        } else {
-            throw new UserNotLoggedInException();
-        }
+    }
+
+    @RequestMapping(value = "/b/store", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Store addStore(@RequestBody @Valid AddStore data, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, PostalCodeNotFoundException, SubcategoryNotFoundException, TypeNotFoundException, CategoryNotFoundException {
+
+        return storeService.addStore(getEmailOfLoggedinUser(response), data);
 
     }
 
     @RequestMapping(value = "/b/store/{storeId}", method = RequestMethod.GET)
     public
     @ResponseBody
-    LocalBusinessDetails localBusiness(@PathVariable(value = "storeId") String storeId, HttpServletRequest
-            request, HttpServletResponse response) throws UserNotLoggedInException {
+    StoreDetails store(@PathVariable(value = "storeId") String storeId, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, StoreNotFoundException {
 
-        UserDetails user = getUserFromSecurityContext(response);
-
-        if (user != null) {
-            return localBusinessService.getStore(user.getUsername(), storeId);
-        } else {
-            throw new UserNotLoggedInException();
-        }
+        return storeService.getStore(getEmailOfLoggedinUser(response), storeId);
 
     }
+
+    @RequestMapping(value = "/b/store/{storeId}/pictures", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    StorePictures storePictures(@PathVariable(value = "storeId") String storeId, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, StoreNotFoundException {
+
+        return storeService.getStorePictures(getEmailOfLoggedinUser(response), storeId);
+
+    }
+
+    @RequestMapping(value = "/b/store/{storeId}/location", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    StoreLocation storeLocation(@PathVariable(value = "storeId") String storeId, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, StoreNotFoundException {
+
+        return storeService.getStoreLocation(getEmailOfLoggedinUser(response), storeId);
+
+    }
+
+    @RequestMapping(value = "/b/store/{storeId}/code", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    StoreCode storeCode(@PathVariable(value = "storeId") String storeId, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, StoreNotFoundException {
+
+        return storeService.getStoreCode(getEmailOfLoggedinUser(response), storeId);
+
+    }
+
+    @RequestMapping(value = "/b/store/{storeId}/settings", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    StoreSettings storeSettings(@PathVariable(value = "storeId") String storeId, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, StoreNotFoundException {
+
+        return storeService.getStoreSettings(getEmailOfLoggedinUser(response), storeId);
+
+    }
+
+    @RequestMapping(value = "/b/store/{storeId}/name", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String storeChangeName(@PathVariable(value = "storeId") String storeId, @Valid @RequestBody StoreName data, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, StoreNotFoundException {
+
+        storeService.changeStoreName(getEmailOfLoggedinUser(response), storeId, data);
+        return "success";
+
+    }
+
+    @RequestMapping(value = "/b/store/{storeId}/name", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    StoreName storeName(@PathVariable(value = "storeId") String storeId, HttpServletResponse response) throws UserNotLoggedInException, StoreNotFoundException, EmailNotFoundException {
+
+        return storeService.getStoreName(getEmailOfLoggedinUser(response), storeId);
+
+    }
+
+    @RequestMapping(value = "/b/store/{storeId}/address", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String storeChangeAddress(@PathVariable(value = "storeId") String storeId, @Valid @RequestBody StoreAddress data, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, StoreNotFoundException, PostalCodeNotFoundException {
+
+        storeService.changeStoreAddress(getEmailOfLoggedinUser(response), storeId, data);
+        return "success";
+
+    }
+
+    @RequestMapping(value = "/b/store/{storeId}/address", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    StoreAddress storeAddress(@PathVariable(value = "storeId") String storeId, HttpServletResponse response) throws UserNotLoggedInException, StoreNotFoundException, EmailNotFoundException {
+
+        return storeService.getStoreAddress(getEmailOfLoggedinUser(response), storeId);
+
+    }
+
+    @RequestMapping(value = "/b/store/{storeId}/contact", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String storeChangeContact(@PathVariable(value = "storeId") String storeId, @Valid @RequestBody StoreContact data, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, StoreNotFoundException {
+
+        storeService.changeStoreContact(getEmailOfLoggedinUser(response), storeId, data);
+        return "success";
+
+    }
+
+    @RequestMapping(value = "/b/store/{storeId}/contact", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    StoreContact storeContact(@PathVariable(value = "storeId") String storeId, HttpServletResponse response) throws UserNotLoggedInException, StoreNotFoundException, EmailNotFoundException {
+
+        return storeService.getStoreContact(getEmailOfLoggedinUser(response), storeId);
+
+    }
+
+    @RequestMapping(value = "/b/store/{storeId}/type", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String storeChangeType(@PathVariable(value = "storeId") String storeId, @Valid @RequestBody StoreType data, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, StoreNotFoundException, SubcategoryNotFoundException, TypeNotFoundException, CategoryNotFoundException {
+
+        storeService.changeStoreType(getEmailOfLoggedinUser(response), storeId, data);
+        return "success";
+
+    }
+
+    @RequestMapping(value = "/b/store/{storeId}/type", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    StoreType storeType(@PathVariable(value = "storeId") String storeId, HttpServletResponse response) throws UserNotLoggedInException, StoreNotFoundException, EmailNotFoundException {
+
+        return storeService.getStoreType(getEmailOfLoggedinUser(response), storeId);
+
+    }
+
+    @RequestMapping(value = "/b/store/{storeId}/close", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String storeClose(@PathVariable(value = "storeId") String storeId, @Valid @RequestBody StoreClose data, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, StoreNotFoundException {
+
+        storeService.close(getEmailOfLoggedinUser(response), storeId, data);
+        return "success";
+
+    }
+
 
     /**
      * ******************************
@@ -353,30 +451,46 @@ public class BusinessController {
     @RequestMapping(value = "/b/coupons", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<Coupon> coupons(HttpServletRequest request, HttpServletResponse response) throws UserNotLoggedInException {
+    Coupons coupons(HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException {
 
-        UserDetails user = getUserFromSecurityContext(response);
-
-        if (user != null) {
-            return couponService.getCoupons(user.getUsername());
-        } else {
-            throw new UserNotLoggedInException();
-        }
+        return couponService.getCoupons(getEmailOfLoggedinUser(response));
 
     }
 
-    @RequestMapping(value = "/b/couponsWithDetails", method = RequestMethod.GET)
+    @RequestMapping(value = "/b/coupons/active", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<CouponDetails> couponsWithDetails(HttpServletRequest request, HttpServletResponse response) throws UserNotLoggedInException {
+    CouponsDetails activeCoupons(HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException {
 
-        UserDetails user = getUserFromSecurityContext(response);
+        return couponService.getActiveCoupons(getEmailOfLoggedinUser(response));
 
-        if (user != null) {
-            return couponService.getCouponsWithDetails(user.getUsername());
-        } else {
-            throw new UserNotLoggedInException();
-        }
+    }
+
+    @RequestMapping(value = "/b/coupons/inactive", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    CouponsDetails inactiveCoupons(HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException {
+
+        return couponService.getInactiveCoupons(getEmailOfLoggedinUser(response));
+
+    }
+
+    @RequestMapping(value = "/b/coupons/invalid", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    CouponsDetails invalidCoupons(HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException {
+
+        return couponService.getInvalidCoupons(getEmailOfLoggedinUser(response));
+
+    }
+
+    @RequestMapping(value = "/b/coupon", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Coupon addCoupon(@RequestBody @Valid AddCoupon data, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CategoryNotFoundException, StoreNotFoundException {
+
+        return couponService.addCoupon(getEmailOfLoggedinUser(response), data);
 
     }
 
@@ -384,102 +498,173 @@ public class BusinessController {
     public
     @ResponseBody
     CouponDetails coupon(@PathVariable(value = "couponId") String couponId, HttpServletRequest
-            request, HttpServletResponse response) throws UserNotLoggedInException {
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException {
 
-        UserDetails user = getUserFromSecurityContext(response);
-
-        if (user != null) {
-            return couponService.getCoupon(user.getUsername(), couponId);
-        } else {
-            throw new UserNotLoggedInException();
-        }
+        return couponService.getCoupon(getEmailOfLoggedinUser(response), couponId);
 
     }
 
-    /*
-     * Exception Handler
-     */
-
-    @ExceptionHandler(UserNotLoggedInException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "User not logged in")
+    @RequestMapping(value = "/b/coupon/{couponId}/stores", method = RequestMethod.GET)
     public
     @ResponseBody
-    CoubrWebError userNotLoggedIn(HttpServletRequest request, Exception ex) {
+    CouponStores couponStores(@PathVariable(value = "couponId") String couponId, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException {
 
-        return new CoubrWebError(4000);
-
-    }
-
-    @ExceptionHandler({EmailNotFoundException.class, UsernameNotFoundException.class})
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Email not found")
-    @ResponseBody
-    CoubrWebError emailNotFound(HttpServletRequest request, Exception ex) {
-
-        return new CoubrWebError(4001);
+        return couponService.getCouponStores(getEmailOfLoggedinUser(response), couponId);
 
     }
 
-    @ExceptionHandler(PasswordNotFoundException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Password not found")
+    @RequestMapping(value = "/b/coupon/{couponId}/stores", method = RequestMethod.POST)
+    public
     @ResponseBody
-    CoubrWebError passwordNotFound(HttpServletRequest request, Exception ex) {
+    String couponChangeStores(@PathVariable(value = "couponId") String couponId, @Valid @RequestBody CouponChangeStores data, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException, StoreNotFoundException {
 
-        return new CoubrWebError(4002);
+        couponService.changeCouponStores(getEmailOfLoggedinUser(response), couponId, data);
+        return "success";
 
     }
 
-    @ExceptionHandler(CodeNotFoundException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Code not found")
+    @RequestMapping(value = "/b/coupon/{couponId}/settings", method = RequestMethod.GET)
+    public
     @ResponseBody
-    CoubrWebError codeNotFound(HttpServletRequest request, Exception ex) {
+    CouponSettings couponSettings(@PathVariable(value = "couponId") String couponId, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException {
 
-        return new CoubrWebError(4003);
+        return couponService.getCouponSettings(getEmailOfLoggedinUser(response), couponId);
 
     }
 
-    @ExceptionHandler(NotConfirmedException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Not confirmed")
+    @RequestMapping(value = "/b/coupon/{couponId}/title", method = RequestMethod.POST)
+    public
     @ResponseBody
-    CoubrWebError notConfirmed(HttpServletRequest request, Exception ex) {
+    String couponChangeTitle(@PathVariable(value = "couponId") String couponId, @Valid @RequestBody CouponTitle data, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException {
 
-        return new CoubrWebError(4004);
+        couponService.changeCouponTitle(getEmailOfLoggedinUser(response), couponId, data);
+        return "success";
 
     }
 
-    @ExceptionHandler(ConfirmedException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Confirmed")
+    @RequestMapping(value = "/b/coupon/{couponId}/title", method = RequestMethod.GET)
+    public
     @ResponseBody
-    CoubrWebError confirmed(HttpServletRequest request, Exception ex) {
+    CouponTitle couponTitle(@PathVariable(value = "couponId") String couponId, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException {
 
-        return new CoubrWebError(4005);
+        return couponService.getCouponTitle(getEmailOfLoggedinUser(response), couponId);
 
     }
 
-    @ExceptionHandler(ExpirationException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Expired")
+    @RequestMapping(value = "/b/coupon/{couponId}/validTo", method = RequestMethod.POST)
+    public
     @ResponseBody
-    CoubrWebError expired(HttpServletRequest request, Exception ex) {
+    String couponChangeValidTo(@PathVariable(value = "couponId") String couponId, @Valid @RequestBody CouponValidTo data, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException {
 
-        return new CoubrWebError(4006);
+        couponService.changeCouponValidTo(getEmailOfLoggedinUser(response), couponId, data);
+        return "success";
+
+    }
+
+    @RequestMapping(value = "/b/coupon/{couponId}/validTo", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    CouponValidTo couponValiTo(@PathVariable(value = "couponId") String couponId, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException {
+
+        return couponService.getCouponValidTo(getEmailOfLoggedinUser(response), couponId);
+
+    }
+
+    @RequestMapping(value = "/b/coupon/{couponId}/amount", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String couponChangeAmount(@PathVariable(value = "couponId") String couponId, @Valid @RequestBody CouponAmount data, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException, InvalidAmountException {
+
+        couponService.changeCouponAmount(getEmailOfLoggedinUser(response), couponId, data);
+        return "success";
+
+    }
+
+    @RequestMapping(value = "/b/coupon/{couponId}/amount", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    CouponAmount couponAmount(@PathVariable(value = "couponId") String couponId, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException {
+
+        return couponService.getCouponAmount(getEmailOfLoggedinUser(response), couponId);
+
+    }
+
+    @RequestMapping(value = "/b/coupon/{couponId}/category", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String couponChangeCategory(@PathVariable(value = "couponId") String couponId, @Valid @RequestBody CouponCategory data, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException, CategoryNotFoundException {
+
+        couponService.changeCouponCategory(getEmailOfLoggedinUser(response), couponId, data);
+        return "success";
+
+    }
+
+    @RequestMapping(value = "/b/coupon/{couponId}/category", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    CouponCategory couponCategory(@PathVariable(value = "couponId") String couponId, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException {
+
+        return couponService.getCouponCategory(getEmailOfLoggedinUser(response), couponId);
+
+    }
+
+    @RequestMapping(value = "/b/coupon/activate", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String couponActivate(@PathVariable(value = "couponId") String couponId, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException {
+
+        couponService.activateCoupon(getEmailOfLoggedinUser(response), couponId);
+        return "success";
+
+    }
+
+    @RequestMapping(value = "/b/coupon/deactivate", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String couponDeactivate(@PathVariable(value = "couponId") String couponId, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException {
+
+        couponService.deactivateCoupon(getEmailOfLoggedinUser(response), couponId);
+        return "success";
+
+    }
+
+    @RequestMapping(value = "/b/coupon/delete", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String couponDelete(@PathVariable(value = "couponId") String couponId, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, CouponNotFoundException {
+
+        couponService.deleteCoupon(getEmailOfLoggedinUser(response), couponId);
+        return "success";
 
     }
 
 
-    @ExceptionHandler(EmailFoundException.class)
-    @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Email already available")
+    /**
+     * ******************************
+     * <p/>
+     * Feedback (coubr beta)
+     * <p/>
+     * ******************************
+     */
+
+    @RequestMapping(value = "/b/feedback", method = RequestMethod.POST)
+    public
     @ResponseBody
-    CoubrWebError emailFound(HttpServletRequest request, Exception ex) {
+    String sendFeedback(@Valid @RequestBody Feedback data, HttpServletRequest
+            request, HttpServletResponse response) throws UserNotLoggedInException, EmailNotFoundException, SendMessageException {
 
-        return new CoubrWebError(4091);
-
-    }
-
-    @ExceptionHandler(MessagingException.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "Could not send email")
-    @ResponseBody
-    CoubrWebError messagingError(HttpServletRequest request, Exception ex) {
-
-        return new CoubrWebError(5001);
+        feedbackService.sendFeedback(getEmailOfLoggedinUser(response), data);
+        return "success";
 
     }
 
@@ -487,9 +672,16 @@ public class BusinessController {
      * Private methods
      */
 
-    private UserDetails getUserFromSecurityContext(HttpServletResponse response) {
+    private String getEmailOfLoggedinUser(HttpServletResponse response) throws UserNotLoggedInException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return authenticationService.loadUserByUsername(auth.getName());
+        UserDetails user = authenticationService.loadUserByUsername(auth.getName());
+
+        if (user != null) {
+            return user.getUsername();
+        } else {
+            throw new UserNotLoggedInException();
+        }
+
     }
 
 }

@@ -1,5 +1,6 @@
 package com.coubr.web.services;
 
+import com.coubr.web.exceptions.SendMessageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -20,16 +21,20 @@ public class MailService {
     @Autowired
     JavaMailSender mailSender;
 
-    public void sendEmail(final String receiverAddress, final String subject, final String plainBody, final String htmlBody) throws MessagingException {
+    public void sendEmail(final String receiverAddress, final String subject, final String plainBody, final String htmlBody) throws SendMessageException {
 
         final MimeMessage mimeMessage = mailSender.createMimeMessage();
-        final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
+        try {
+            final MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
 
-        message.setFrom(SENDER_ADDRESS);
-        message.setTo(receiverAddress);
-        message.setSubject(subject);
-        message.setText(plainBody, htmlBody);
-        mailSender.send(mimeMessage);
+            message.setFrom(SENDER_ADDRESS);
+            message.setTo(receiverAddress);
+            message.setSubject(subject);
+            message.setText(plainBody, htmlBody);
+            mailSender.send(mimeMessage);
+        } catch (MessagingException ex) {
+            throw new SendMessageException();
+        }
     }
 
 }

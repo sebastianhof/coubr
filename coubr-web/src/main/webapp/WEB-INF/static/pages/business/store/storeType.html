@@ -1,0 +1,129 @@
+<div class="container">
+
+    <cbrerror class="label label-danger error">Error!</cbrerror>
+
+    <div class="jumbotron">
+
+        <div class="row">
+
+            <div class="col-lg-6">
+
+
+                <h2>Change Type and Category</h2>
+                <br/>
+
+                <cbrform postTo="b/store/:storeId/type"
+                         thenGoTo="#store/:storeId/settings"
+                         initFrom="b/store/:storeId/type" ng-controller="StoreTypeController">
+
+                    <p>Currently only food establishments available.</p>
+
+                    <!-- Type -->
+
+                    <div class="row types">
+
+                        <div class="type" ng-repeat="type in types">
+                            <input type="radio" name="type" ng-model="data.type" ng-value="type.id" required hidden/>
+                            <img class="img-thumbnail thumbnail-coubr"
+                                 ng-class="{'thumbnail-selected': data.type == type.id}"
+                                 ng-src="static/images/types/{{ type.id }}.png" ng-click="selectType(type.id)"/>
+
+                            <p>{{ type.name }}</p>
+                        </div>
+
+                    </div>
+                    <cbrinputerror class="help-block" cbrname="type">Error.</cbrinputerror>
+
+                    <!-- Category -->
+
+                    <h3>Category</h3>
+
+                    <div ng-show="data.type == null">
+
+                        <p>Select a type first.</p>
+
+                    </div>
+
+                    <div ng-show="data.type">
+
+                        <div class="row types">
+
+                            <div ng-show="categories == null || categories.length == 0">
+
+                                <p>No categories.</p>
+
+                            </div>
+
+                            <div class="type" ng-repeat="category in categories">
+                                <input type="radio" name="category" ng-model="data.category" ng-value="category.id"
+                                       hidden/>
+                                <img class="img-thumbnail thumbnail-coubr"
+                                     ng-class="{'thumbnail-selected': data.category == category.id}"
+                                     ng-src="static/images/types/{{ category.id }}.png"
+                                     ng-click="selectCategory(category.id)"/>
+
+                                <p>{{ category.name }}</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Subcategory -->
+
+                    <h3>Subcategories</h3>
+
+                    <div ng-show="data.category == null">
+
+                        <p>Select a category first.</p>
+
+                    </div>
+
+                    <div ng-show="data.category">
+
+                        <div ng-show="subcategories == null || subcategories.length == 0">
+
+                            <p>No subcategories.</p>
+
+                        </div>
+
+                        <div class="row types">
+
+                            <div class="type" ng-repeat="subcategory in subcategories">
+                                <input type="radio" name="subcategory" ng-model="data.subcategory"
+                                       ng-value="subcategory.id"
+                                       hidden/>
+                                <img class="img-thumbnail thumbnail-coubr"
+                                     ng-class="{'thumbnail-selected': data.subcategory == subcategory.id}"
+                                     ng-src="static/images/types/{{ subcategory.id }}.png"
+                                     ng-click="selectSubcategory(subcategory.id)"/>
+
+                                <p>{{ subcategory.name }}</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <br/>
+
+                    <div>
+                        <cbrprocess class="label process-submit">Processing...</cbrprocess>
+                        <cbrerror class="label error-submit">Error!</cbrerror>
+                        <cbrsubmit class="btn btn-coubr btn-lg">Change</cbrsubmit>
+                        <span>or <a ng-href="#store/{{ route.storeId }}/settings">Go back</a></span>
+                    </div>
+
+
+                </cbrform>
+
+                <br/>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

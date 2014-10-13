@@ -1,0 +1,46 @@
+<div class="container">
+
+    <cbrerror class="label label-danger error">Error!</cbrerror>
+
+    <div class="jumbotron">
+
+        <div class="row">
+
+            <div class="col-lg-7">
+
+                <h2>Delete coupons</h2>
+                <br/>
+
+                <cbrform postTo="b/coupon/:couponId/delete"
+                         thenGoTo="#coupons">
+
+                    <p>Do you really want to delete this coupon?</p>
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon">
+                            <input type="radio" name="choice" ng-model="data.choice" ng-value="true" checked="false">
+                        </span>
+
+                        <p class="form-control well">Yes</p>
+                    </div>
+
+                    <cbrinputerror class="help-block" cbrname="choice">Error.</cbrinputerror>
+
+                    </br />
+
+                    <div>
+                        <cbrprocess class="label process-submit">Processing...</cbrprocess>
+                        <cbrerror class="label error-submit">Error!</cbrerror>
+                        <cbrsubmit class="btn btn-coubr btn-lg">Delete</cbrsubmit>
+                        <span>or <a ng-href="#/coupon/{{ route.couponId }}/settings">Go back</a></span>
+                    </div>
+
+                </cbrform>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,27 +1,21 @@
 package com.coubr.web.services;
 
 import com.coubr.data.repositories.BusinessOwnerRepository;
-import com.coubr.web.json.account.ChangePassword;
-import com.coubr.web.services.exception.EmailNotFoundException;
+import com.coubr.web.json.account.*;
+import com.coubr.web.exceptions.EmailNotFoundException;
 import com.coubr.data.entities.BusinessOwnerEntity;
-import com.coubr.data.repositories.BusinessOwnerRepository;
-import com.coubr.web.json.account.Account;
-import com.coubr.web.json.account.ChangeEmail;
-import com.coubr.web.json.account.ChangeName;
-import com.coubr.web.json.account.ChangePassword;
-import com.coubr.web.services.exception.EmailFoundException;
-import com.coubr.web.services.exception.EmailNotFoundException;
-import com.coubr.web.services.exception.PasswordNotFoundException;
+import com.coubr.web.json.account.AccountChangeEmail;
+import com.coubr.web.json.account.AccountChangePassword;
+import com.coubr.web.exceptions.EmailFoundException;
+import com.coubr.web.exceptions.PasswordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created by sebastian on 04.10.14.
  */
 @Service("accountService")
-@Transactional
 public class AccountService {
 
     @Autowired
@@ -30,12 +24,13 @@ public class AccountService {
     @Autowired
     BCryptPasswordEncoder bcryptEncoder;
 
+    /*
+     * Getter
+     */
+
     public Account getAccount(String email) throws EmailNotFoundException {
 
-        BusinessOwnerEntity entity = repository.findByEmail(email);
-        if (entity == null) {
-            throw new EmailNotFoundException();
-        }
+        BusinessOwnerEntity entity = getBusinessOwnerEntity(email);
 
         Account account = new Account();
         account.setEmail(entity.getEmail());
@@ -45,12 +40,23 @@ public class AccountService {
         return account;
     }
 
-    public void changePassword(String email, ChangePassword data) throws EmailNotFoundException, PasswordNotFoundException {
+    public AccountName getName(String email) throws EmailNotFoundException {
+        BusinessOwnerEntity entity = getBusinessOwnerEntity(email);
 
-        BusinessOwnerEntity entity = repository.findByEmail(email);
-        if (entity == null) {
-            throw new EmailNotFoundException();
-        }
+        AccountName accountName = new AccountName();
+        accountName.setFirstName(entity.getFirstName());
+        accountName.setLastName((entity.getLastName()));
+
+        return accountName;
+    }
+
+    /*
+     * Setter
+     */
+
+    public void changePassword(String email, AccountChangePassword data) throws EmailNotFoundException, PasswordNotFoundException {
+
+        BusinessOwnerEntity entity = getBusinessOwnerEntity(email);
 
         if (!bcryptEncoder.matches(data.getPassword(), entity.getPassword())) {
             throw new PasswordNotFoundException();
@@ -61,12 +67,9 @@ public class AccountService {
 
     }
 
-    public void changeEmail(String email, ChangeEmail data) throws EmailNotFoundException, EmailFoundException {
+    public void changeEmail(String email, AccountChangeEmail data) throws EmailNotFoundException, EmailFoundException {
 
-        BusinessOwnerEntity entity = repository.findByEmail(email);
-        if (entity == null) {
-            throw new EmailNotFoundException();
-        }
+        BusinessOwnerEntity entity = getBusinessOwnerEntity(email);
 
 
         if (repository.findByEmail(data.getNewEmail()) != null) {
@@ -78,18 +81,28 @@ public class AccountService {
 
     }
 
-    public void changeName(String email, ChangeName data) throws EmailNotFoundException {
+    public void changeName(String email, AccountName data) throws EmailNotFoundException {
 
-        BusinessOwnerEntity entity = repository.findByEmail(email);
-        if (entity == null) {
-            throw new EmailNotFoundException();
-        }
+        BusinessOwnerEntity entity = getBusinessOwnerEntity(email);
 
         entity.setFirstName(data.getFirstName());
         entity.setLastName(data.getLastName());
         repository.save(entity);
 
     }
+
+    /*
+     * Private
+     */
+
+    private BusinessOwnerEntity getBusinessOwnerEntity(String email) throws EmailNotFoundException {
+        BusinessOwnerEntity entity = repository.findByEmail(email);
+        if (entity == null) {
+            throw new EmailNotFoundException();
+        }
+        return entity;
+    }
+
 
 
 }

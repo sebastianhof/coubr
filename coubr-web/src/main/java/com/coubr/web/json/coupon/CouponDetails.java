@@ -1,8 +1,14 @@
 package com.coubr.web.json.coupon;
 
-import com.coubr.web.json.localbusiness.LocalBusiness;
+import com.coubr.data.entities.LocalBusinessEntity;
+import com.coubr.data.entities.OfferEntity;
+import com.coubr.web.json.store.Store;
+import com.coubr.web.services.ObfuscationService;
+import com.coubr.web.validation.DateSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -16,15 +22,76 @@ public class CouponDetails {
 
     private String description;
 
-    private Date fromDate;
+    private String category;
 
-    private Date toDate;
+    @JsonSerialize(using = DateSerializer.class)
+    private Date validTo;
 
-    private int remainingAmount;
+    private long amountToIssue;
 
-    private int totalAmount;
+    private long amountIssued;
 
-    private List<LocalBusiness> localBusinesses;
+    private String status;
+
+    private List<Store> stores;
+
+    public CouponDetails(OfferEntity entity) {
+
+        this.title = entity.getTitle();
+        this.couponId = ObfuscationService.encode(entity.getOfferId(), ObfuscationService.SALT_COUPON);
+        this.description = entity.getDescription();
+        this.category = entity.getDescription();
+        this.validTo = entity.getValidTo();
+        this.amountToIssue = entity.getAmountToIssue();
+        this.amountIssued = entity.getAmountIssued();
+        this.status = entity.getStatus().toString();
+
+        this.stores = new LinkedList<Store>();
+        for (LocalBusinessEntity localBusinessEntity : entity.getLocalBusinesses()) {
+            stores.add(new Store(localBusinessEntity));
+        }
+
+    }
+
+    public Date getValidTo() {
+        return validTo;
+    }
+
+    public void setValidTo(Date validTo) {
+        this.validTo = validTo;
+    }
+
+    public long getAmountToIssue() {
+        return amountToIssue;
+    }
+
+    public void setAmountToIssue(long amountToIssue) {
+        this.amountToIssue = amountToIssue;
+    }
+
+    public long getAmountIssued() {
+        return amountIssued;
+    }
+
+    public void setAmountIssued(long amountIssued) {
+        this.amountIssued = amountIssued;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getTitle() {
         return title;
@@ -50,43 +117,13 @@ public class CouponDetails {
         this.description = description;
     }
 
-    public Date getFromDate() {
-        return fromDate;
+    public List<Store> getStores() {
+        return stores;
     }
 
-    public void setFromDate(Date fromDate) {
-        this.fromDate = fromDate;
+    public void setStores(List<Store> stores) {
+        this.stores = stores;
     }
 
-    public Date getToDate() {
-        return toDate;
-    }
 
-    public void setToDate(Date toDate) {
-        this.toDate = toDate;
-    }
-
-    public int getRemainingAmount() {
-        return remainingAmount;
-    }
-
-    public void setRemainingAmount(int remainingAmount) {
-        this.remainingAmount = remainingAmount;
-    }
-
-    public int getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(int totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public List<LocalBusiness> getLocalBusinesses() {
-        return localBusinesses;
-    }
-
-    public void setLocalBusinesses(List<LocalBusiness> localBusinesses) {
-        this.localBusinesses = localBusinesses;
-    }
 }

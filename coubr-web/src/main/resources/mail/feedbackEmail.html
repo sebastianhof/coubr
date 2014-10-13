@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body style="font-family: sans-serif;">
+<div class="container" style="
+        width: 100%;
+        color: #333333;
+        background-color: #F2F1EF;
+        width: 100%;
+        padding: 2em;
+        padding-bottom: 5em;">
+
+    <h1>You got feedback</h1>
+
+    <p>Hi there,</p>
+
+    <p>You got following feedback from <span th:text="${email}" style="font-weight: bold">email</span> with user agent <span th:text="${userAgent}" style="font-weight: bold;">agent</span> for the location <span
+            th:text="${location}" style="font-weight: bold;">location</span>:</p>
+
+    <p style="max-width: 90%; text-align: justify;" th:text="${feedback}">Feedback</p>
+
+</div>
+<div class="footer" style="background-color: #F2784B;
+        text-align: center;
+        padding: 1em;
+        color: #333333;">
+
+    <p>coubr &copy; 2014 &middot; All rights reserved &middot; <a href="https://www.coubr.de/business#/imprint" style="color: #F2F1EF; text-decoration: none">Imprint</a> &middot;
+        <a href="https://www.coubr.de/business#/privacy" style="color: #F2F1EF; text-decoration: none">Privacy</a> &middot;
+        <a href="https://www.coubr.de/business#/terms" style="color: #F2F1EF; text-decoration: none">Terms</a></p>
+
+</div>
+
+
+</body>
+</html>

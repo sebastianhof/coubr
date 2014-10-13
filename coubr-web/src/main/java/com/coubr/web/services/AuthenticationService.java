@@ -3,7 +3,7 @@ package com.coubr.web.services;
 import com.coubr.data.entities.BusinessOwnerEntity;
 import com.coubr.data.repositories.BusinessOwnerRepository;
 import com.coubr.web.json.auth.*;
-import com.coubr.web.services.exception.*;
+import com.coubr.web.exceptions.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -12,14 +12,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring4.context.SpringWebContext;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
@@ -28,7 +26,6 @@ import java.util.*;
  * Created by sebastian on 02.10.14.
  */
 @Service("authenticationService")
-@Transactional
 public class AuthenticationService implements UserDetailsService {
 
     private static int CONFIRM_CODE_TOKEN_LENGTH = 20;
@@ -38,30 +35,28 @@ public class AuthenticationService implements UserDetailsService {
     private static String ENCODING = "UTF-8";
 
     @Autowired
-    BCryptPasswordEncoder bcryptEncoder;
+    private BCryptPasswordEncoder bcryptEncoder;
 
     @Autowired
-    MailService mailService;
+    private MailService mailService;
 
     @Autowired
-    BusinessOwnerRepository repository;
+    private BusinessOwnerRepository businessOwnerRepository;
 
     @Autowired
-    TemplateEngine templateEngine;
+    private TemplateEngine templateEngine;
 
     @Autowired
-    ApplicationContext applicationContext;
+    private ApplicationContext applicationContext;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return repository.findByEmail(email);
+        return businessOwnerRepository.findByEmail(email);
     }
 
     public void login(Login data) throws EmailNotFoundException, PasswordNotFoundException, NotConfirmedException {
-        BusinessOwnerEntity entity = repository.findByEmail(data.getEmail());
-        if (entity == null) {
-            throw new EmailNotFoundException();
-        }
+
+        BusinessOwnerEntity entity = getBusinessOwnerEntity(data.getEmail());
 
         if (entity.getConfirmationCode() != null) {
             throw new NotConfirmedException();
@@ -77,12 +72,9 @@ public class AuthenticationService implements UserDetailsService {
 
     }
 
-    public void resetPassword(ResetPassword data, HttpServletRequest request, HttpServletResponse response) throws EmailNotFoundException, MessagingException {
+    public void resetPassword(ResetPassword data, HttpServletRequest request, HttpServletResponse response) throws EmailNotFoundException, SendMessageException {
 
-        BusinessOwnerEntity entity = repository.findByEmail(data.getEmail());
-        if (entity == null) {
-            throw new EmailNotFoundException();
-        }
+        BusinessOwnerEntity entity = getBusinessOwnerEntity(data.getEmail());
 
         entity.setPasswordResetCode(RandomStringUtils.randomAlphanumeric(PASSWORD_RESET_CODE_TOKEN_LENGTH));
 
@@ -92,7 +84,7 @@ public class AuthenticationService implements UserDetailsService {
 
         entity.setPasswordResetExpirationDate(calendar.getTime());
 
-        repository.save(entity);
+        businessOwnerRepository.save(entity);
 
         sendPasswordResetLetter(entity, request, response);
 
@@ -100,10 +92,7 @@ public class AuthenticationService implements UserDetailsService {
 
     public void resetPasswordConfirm(ResetPasswordConfirm data) throws EmailNotFoundException, CodeNotFoundException, ExpirationException {
 
-        BusinessOwnerEntity entity = repository.findByEmail(data.getEmail());
-        if (entity == null) {
-            throw new EmailNotFoundException();
-        }
+        BusinessOwnerEntity entity = getBusinessOwnerEntity(data.getEmail());
 
         if (entity.getPasswordResetCode() == null && entity.getPasswordResetExpirationDate() == null) {
             throw new CodeNotFoundException();
@@ -114,7 +103,7 @@ public class AuthenticationService implements UserDetailsService {
             throw new CodeNotFoundException();
         }
 
-        if (entity.getPasswordResetExpirationDate().compareTo(new Date()) < 0) {
+        if (entity.getPasswordResetExpirationDate().before(new Date())) {
             throw new ExpirationException();
         }
 
@@ -122,13 +111,13 @@ public class AuthenticationService implements UserDetailsService {
         entity.setPasswordResetExpirationDate(null);
         entity.setPassword(bcryptEncoder.encode(data.getPassword()));
 
-        repository.save(entity);
+        businessOwnerRepository.save(entity);
 
     }
 
-    public void register(Register data, HttpServletRequest request, HttpServletResponse response) throws EmailFoundException, MessagingException {
+    public void register(Register data, HttpServletRequest request, HttpServletResponse response) throws EmailFoundException, SendMessageException {
 
-        BusinessOwnerEntity entity = repository.findByEmail(data.getEmail());
+        BusinessOwnerEntity entity = businessOwnerRepository.findByEmail(data.getEmail());
         if (entity != null) {
             throw new EmailFoundException();
         }
@@ -145,7 +134,7 @@ public class AuthenticationService implements UserDetailsService {
 
         entity.setConfirmExpirationDate(calendar.getTime());
 
-        repository.save(entity);
+        businessOwnerRepository.save(entity);
 
         sendConfirmLetter(entity, request, response);
 
@@ -153,10 +142,7 @@ public class AuthenticationService implements UserDetailsService {
 
     public void confirmRegistration(ConfirmRegistration data) throws EmailNotFoundException, CodeNotFoundException, ExpirationException, ConfirmedException {
 
-        BusinessOwnerEntity entity = repository.findByEmail(data.getEmail());
-        if (entity == null) {
-            throw new EmailNotFoundException();
-        }
+        BusinessOwnerEntity entity = getBusinessOwnerEntity(data.getEmail());
 
         if (entity.getConfirmationCode() == null && entity.getConfirmExpirationDate() == null) {
             throw new ConfirmedException();
@@ -166,23 +152,22 @@ public class AuthenticationService implements UserDetailsService {
             throw new CodeNotFoundException();
         }
 
-        if (entity.getConfirmExpirationDate().compareTo(new Date()) < 0) {
+        if (entity.getConfirmExpirationDate().before(new Date())) {
             throw new ExpirationException();
         }
 
         entity.setConfirmationCode(null);
         entity.setConfirmExpirationDate(null);
 
-        repository.save(entity);
+        businessOwnerRepository.save(entity);
     }
 
 
-    public void resendConfirmation(ResendConfirmation data, HttpServletRequest request, HttpServletResponse response) throws EmailNotFoundException, MessagingException, ConfirmedException {
 
-        BusinessOwnerEntity entity = repository.findByEmail(data.getEmail());
-        if (entity == null) {
-            throw new EmailNotFoundException();
-        }
+
+    public void resendConfirmation(ResendConfirmation data, HttpServletRequest request, HttpServletResponse response) throws EmailNotFoundException, SendMessageException, ConfirmedException {
+
+        BusinessOwnerEntity entity = getBusinessOwnerEntity(data.getEmail());
 
         if (entity.getConfirmationCode() == null) {
             throw new ConfirmedException();
@@ -196,16 +181,28 @@ public class AuthenticationService implements UserDetailsService {
 
         entity.setConfirmExpirationDate(calendar.getTime());
 
-        repository.save(entity);
+        businessOwnerRepository.save(entity);
 
         sendConfirmLetter(entity, request, response);
     }
 
-    private void sendConfirmLetter(BusinessOwnerEntity entity, HttpServletRequest request, HttpServletResponse response) throws MessagingException {
+    /*
+     * Private
+     */
+
+    private BusinessOwnerEntity getBusinessOwnerEntity(String email) throws EmailNotFoundException {
+        BusinessOwnerEntity entity = businessOwnerRepository.findByEmail(email);
+        if (entity == null) {
+            throw new EmailNotFoundException();
+        }
+        return entity;
+    }
+
+    private void sendConfirmLetter(BusinessOwnerEntity entity, HttpServletRequest request, HttpServletResponse response) throws SendMessageException {
         mailService.sendEmail(entity.getEmail(), "coubr: Confirm your registration", createPlainConfirmLetter(entity, request), createHTMLConfirmLetter(entity, request, response));
     }
 
-    private void sendPasswordResetLetter(BusinessOwnerEntity entity, HttpServletRequest request, HttpServletResponse response) throws MessagingException {
+    private void sendPasswordResetLetter(BusinessOwnerEntity entity, HttpServletRequest request, HttpServletResponse response) throws SendMessageException {
         mailService.sendEmail(entity.getEmail(), "coubr: You're password request", createPlainPasswordResetLetter(entity, request), createHTMLPasswordResetLetter(entity, request, response));
     }
 

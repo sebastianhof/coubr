@@ -1,0 +1,175 @@
+<div class="container">
+
+    <cbrfetch getFrom="b/store/:storeId/settings">
+
+        <div class="navbar">
+            <div>
+                <ul class="nav nav-pills">
+                    <li><a ng-href="#store/{{ route.storeId }}">Overview</a></li>
+                    <li><a ng-href="#store/{{ route.storeId }}/pictures">Pictures</a></li>
+                    <li><a ng-href="#store/{{ route.storeId }}/location">Location</a></li>
+                    <li><a ng-href="#store/{{ route.storeId }}/code">Code</a></li>
+                    <li><a ng-href="#store/{{ route.storeId }}/settings">Settings</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <cbrerror class="label label-danger error">Error!</cbrerror>
+
+        <div class="jumbotron">
+
+            <div class="row">
+
+                <div class="col-lg-6">
+
+                    <h3>General</h3>
+
+                    <!-- Name -->
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/name-40.png"/></span>
+
+                        <div class="well form-control">{{ data.name }}</div>
+                    </div>
+
+                    <br/>
+
+                    <!-- Description -->
+
+                    <div class="input-group">
+                                        <span class="input-group-addon"><img class="input-group-img"
+                                                                             style="height: 32px; width: 32px; padding: 5px"
+                                                                             ng-src="static/images/icons/note-40.png"/></span>
+                        <textarea class="form-control textarea" rows="5" disabled>{{ data.description }}</textarea>
+                    </div>
+
+                    <br/>
+
+                    <p><a ng-href="#store/{{ route.storeId }}/settings/changeName">Change name and description</a></p>
+
+                    <h3>Address</h3>
+
+                    <!-- Street -->
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/street-40.png"/></span>
+
+                        <div class="well form-control">{{ data.street }}</div>
+                    </div>
+
+                    <br/>
+
+                    <!-- Postal code and address -->
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/city-40.png"/></span>
+
+                        <div class="well form-control">{{ data.postalCode }} {{ data.city }}</div>
+                    </div>
+
+                    <br/>
+
+                    <p><a ng-href="#store/{{ route.storeId }}/settings/changeAddress">Change address</a></p>
+
+                    <h3>Contact</h3>
+
+                    <!-- Telephone -->
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/telephone-40.png"/></span>
+
+                        <div class="well form-control">{{ data.phone }}</div>
+                    </div>
+
+                    <br/>
+
+                    <!-- Email -->
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/email-40.png"/></span>
+
+                        <div class="well form-control">{{ data.email }}</div>
+                    </div>
+
+                    <br/>
+
+                    <p><a ng-href="#store/{{ route.storeId }}/settings/changeContact">Change contact</a></p>
+
+                </div>
+
+                <div class="col-lg-6">
+
+                    <h3>Type</h3>
+
+                    <!-- Type and Category -->
+
+                    <div class="types"><img class="img-thumbnail thumbnail-selected"
+                                            src="static/images/types/{{ data.type }}.png"/>
+
+                        <p>{{ store.type }}</p></div>
+
+                    <h3>Category</h3>
+
+                    <div ng-show="store.category" class="types">
+                        <img class="img-thumbnail thumbnail-selected"
+                             src="static/images/types/{{ data.category }}.png"/>
+
+                        <p>{{data.category}}</p>
+                    </div>
+
+                    <div ng-show="!store.category">
+                        <p>No category.</p>
+                    </div>
+
+                    <div ng-show="store.subcategory" class="types">
+                        <img class="img-thumbnail thumbnail-selected"
+                             src="static/images/types/{{ data.subcategory }}.png"/>
+
+                        <p>{{data.subcategory }}</p></div>
+
+                    <div ng-show="!store.subcategory">
+                        <p>No subcategory.</p>
+                    </div>
+
+                    <p><a ng-href="#store/{{ route.storeId }}/settings/changeType">Change type and category</a></p>
+
+
+
+                </div>
+
+                <div class="col-lg-12">
+
+                    <div class="row">
+
+                        <div class="col-lg-6">
+
+                            <div class="dangerZone">
+
+                                <h3>Danger Zone</h3>
+
+                                <br/>
+
+                                <p><a ng-href="#store/{{ route.storeId }}/settings/close">Close store</a></p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </cbrfetch>
+
+</div>

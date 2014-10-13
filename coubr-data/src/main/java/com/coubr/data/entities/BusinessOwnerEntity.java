@@ -1,5 +1,6 @@
 package com.coubr.data.entities;
 
+import com.coubr.data.GlobalDataLengthConstants;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,14 +21,16 @@ public class BusinessOwnerEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long businessOwnerId;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, length = GlobalDataLengthConstants.EMAIL_LENGTH, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = GlobalDataLengthConstants.PASSWORD_ENCODED_LENGTH)
     private String password;
 
+    @Column(nullable = true, length = GlobalDataLengthConstants.NAME_LENGTH)
     private String firstName;
 
+    @Column(nullable = true, length = GlobalDataLengthConstants.NAME_LENGTH)
     private String lastName;
 
     /*
@@ -35,19 +38,24 @@ public class BusinessOwnerEntity implements UserDetails {
      */
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = true)
     private Date confirmExpirationDate;
 
+    @Column(nullable = true, length = GlobalDataLengthConstants.CODE_LENGTH)
     private String confirmationCode;
 
+    @Column(nullable = true, length = GlobalDataLengthConstants.CODE_LENGTH)
     private String unlockCode;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = true)
     private Date passwordResetExpirationDate;
 
+    @Column(nullable = true, length = GlobalDataLengthConstants.CODE_LENGTH)
     private String passwordResetCode;
 
     @OneToMany(mappedBy = "businessOwner")
-    private List<LocalBusinessEntity> stores;
+    private List<LocalBusinessEntity> stores = new ArrayList<LocalBusinessEntity>();
 
     /*
      Getter and Setter
@@ -182,6 +190,27 @@ public class BusinessOwnerEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj instanceof BusinessOwnerEntity) {
+
+            BusinessOwnerEntity businessOwnerEntity = (BusinessOwnerEntity) obj;
+
+            if (businessOwnerEntity.getBusinessOwnerId() == businessOwnerId) {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return new Long(businessOwnerId).hashCode();
     }
 
 }

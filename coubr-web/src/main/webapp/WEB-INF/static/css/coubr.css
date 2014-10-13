@@ -1,11 +1,68 @@
+@font-face {
+    font-family: raleway-thin;
+    src: url('../fonts/Raleway-Thin.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/Raleway-Thin.woff') format('woff'), /* Modern Browsers */
+    url('../fonts/Raleway-Thin.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('../fonts/Raleway-Thin.svg') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+    font-family: raleway-light;
+    src: url('../fonts/Raleway-Light.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/Raleway-Light.woff') format('woff'), /* Modern Browsers */
+    url('../fonts/Raleway-Light.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('../fonts/Raleway-Light.svg') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+    font-family: raleway-regular;
+    src: url('../fonts/Raleway-Regular.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/Raleway-Regular.woff') format('woff'), /* Modern Browsers */
+         url('../fonts/Raleway-Regular.ttf')  format('truetype'), /* Safari, Android, iOS */
+         url('../fonts/Raleway-Regular.svg') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+    font-family: raleway-bold;
+    src: url('../fonts/Raleway-Bold.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/Raleway-Bold.woff') format('woff'), /* Modern Browsers */
+    url('../fonts/Raleway-Bold.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('../fonts/Raleway-Bold.svg') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+    font-family: courgette-regular;
+    src: url('../fonts/Courgette-Regular.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/Courgette-Regular.woff') format('woff'), /* Modern Browsers */
+    url('../fonts/Courgette-Regular.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('../fonts/Courgette-Regular.svg') format('svg'); /* Legacy iOS */
+}
+
+/*
+ * Coubr Logo
+ */
+
+.coubr {
+    font-family: courgette-regular;
+}
+
+/*
+ * HTML
+ */
+
 html, body {
     height: 100%;
+    font-family: raleway-light, helvetica, arial, sans-serif;
 }
 
 p {
     text-align: justify;
     max-width: 50em;
 }
+
+/*
+ * Header
+ */
 
 .header {
     padding-top: 1em;
@@ -14,24 +71,38 @@ p {
 }
 
 .header a {
+    font-family: raleway-regular, helvetica, arial, sans-serif;
     color: #333333;
 }
+
+/*
+ * Body
+ */
 
 .body {
     min-height: 100%;
-    background-color: #F2F1EF;
     padding-top: 2em;
     padding-bottom: 5em;
+    background-color: #F2F1EF;
 }
 
+.body a {
+    color: #F2784B;
+}
+
+/*
+ * Footer
+ */
+
 .footer {
+    min-height: 5em;
     padding: 2em;
     background-color: #F2784B;
     color: #333333;
-    min-height: 5em;
 }
 
 .footer a {
+    font-family: raleway-regular, helvetica, arial, sans-serif;
     color: #F2F1EF;
 }
 
@@ -40,49 +111,33 @@ p {
     max-width: 100%;
 }
 
-.jumbotron {
-    background-color: transparent;
-}
-
-.fullscreen {
-    min-height: 100%;
-}
-
-.input-group-img {
-    height: 95%;
-}
-
-.col-centered {
-    float: none;
-    margin: 0 auto;
-}
-
 /*
- * Business Owner
+ * coubre for Business
  */
 
-.dashboard {
+/* Dashboard */
+
+.dashboard-numbers {
+    padding: 1em;
 }
 
-.numbers {
-
-}
-
-.numbers p {
+.dashboard-numbers p {
     text-align: center;
 }
 
-.number-large {
-    color: #66CDFF;
+.dashboard-number-lg {
+    color: #F2784B;
     font-size: 5em;
     text-align: center;
 }
 
-.number-small {
-    color: #66CDFF;
+.dashboard-number-sm {
+    color: #F2784B;
     font-size: 3em;
     text-align: center;
 }
+
+/* Stores */
 
 .stores {
     padding: 1em;
@@ -98,13 +153,7 @@ p {
     margin-bottom: 1em;
 }
 
-.stores img {
-
-}
-
-.store {
-
-}
+/* Coupons */
 
 .coupons {
     padding: 1em;
@@ -120,29 +169,41 @@ p {
     margin-bottom: 1em;
 }
 
-.coupon {
+/* Store types */
 
-}
-
-.categories {
+.types {
     padding: 1em;
 }
 
-.categories img {
+.types img {
     margin-right: 1em;
+    color: black;
 }
 
-.categories p {
-    margin-left: 1em;
+.types input {
+    margin-right: 0.5em;
+}
+
+.types p {
     display: inline;
 }
+
+.type {
+    margin-bottom: 1em;
+}
+
+.type {
+
+}
+
+/* Image Upload */
 
 .imageUpload {
     width: 100%;
     min-height: 400px;
     position: relative;
     padding: 1em;
-    border: 2px dashed #66CDFF;
+    border: 2px dashed #F2784B;
 }
 
 .imageUpload p {
@@ -156,6 +217,14 @@ p {
     top: 50%;
     bottom: 50%;
 
+}
+
+/*
+ * other Classes
+ */
+
+.fullscreen {
+    min-height: 100%;
 }
 
 .textarea {
@@ -181,4 +250,76 @@ p {
 
 .placeholder-10 {
     margin-top: 10em;
+}
+
+.dangerZone {
+    margin-top: 3em;
+    padding: 1em;
+    border: 2px dashed #F9414F;
+}
+
+.dangerZone a {
+    color: #F9414F;
+}
+
+.weisendorf {
+    height: 3em;
+    display: inline;
+}
+
+.error {
+    margin: 0 auto;
+    display: table;
+    padding: 1em;
+    background-color: #F9414F;
+}
+
+.error-submit {
+    display: table;
+    margin-bottom: 1em;
+    padding: 1em;
+    background-color: #F9414F;
+}
+
+.process-submit {
+    display: table;
+    margin-bottom: 1em;
+    padding: 1em;
+    background-color: #66CDFF;
+}
+
+/*
+ * Bootstrap
+ */
+
+.jumbotron {
+    background-color: transparent;
+}
+
+.input-group-img {
+    height: 95%;
+}
+
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
+
+.btn-coubr {
+    background-color: #F2784B;
+    color: #333333 !important;
+    font-family: raleway-regular, helvetica, arial, sans-serif;
+}
+
+
+.thumbnail-coubr {
+    background-color: #F2784B;
+}
+
+.thumbnail-coubr:hover {
+    background-color: #333333;
+}
+
+.thumbnail-selected {
+    background-color: #333333;
 }

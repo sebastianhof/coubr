@@ -1,0 +1,69 @@
+<div class="container">
+
+    <cbrerror class="label label-danger error">Error!</cbrerror>
+
+    <div class="jumbotron">
+
+        <div class="row">
+
+            <div class="col-lg-7">
+
+                <h2>Delete Account</h2>
+                <br/>
+
+                <form cbrform name="form"
+                      postTo="b/account/delete"
+                      thenGoTo="business">
+
+                    <p>Deleting a account means</p>
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon">
+                            <input type="radio" name="radio" ng-model="data.reason" value="1" ng-required="true">
+                        </span>
+
+                        <p class="form-control well">You don't want use <span
+                                class="coubr">coubr</span> anymore.</p>
+                    </div>
+
+                    <br/>
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon">
+                            <input type="radio" name="radio" ng-model="data.reason" value="2" ng-required="true">
+                        </span>
+
+                        <p class="form-control well">Other reason.</p>
+                    </div>
+
+                    </br />
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/email-40.png"/></span>
+                        <input type="email" class="form-control" name="email"
+                               placeholder="Type in your email to confirm"
+                               ng-model="data.email" ng-required="true">
+                    </div>
+
+                    <cbrinputerror class="help-block" cbrname="email">Error.</cbrinputerror>
+
+                    <br/>
+
+                    <div>
+                        <cbrprocess class="label process-submit">Processing...</cbrprocess>
+                        <cbrerror class="label error-submit">Error!</cbrerror>
+                        <cbrsubmit class="btn btn-coubr btn-lg">Bye Bye</cbrsubmit>
+                        <span>or <a ng-href="#account">Go back</a></span>
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7FF27E28-AFA6-4CC6-A270-216F905437EE</string>
+	<key>IDESourceControlProjectName</key>
+	<string>coubr</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>414E0B912514175B9469631F196EFF2BBDC532DF</key>
+		<string>github.com:sebastianhof/coubr.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>coubr-ios/coubr/coubr.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>414E0B912514175B9469631F196EFF2BBDC532DF</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:sebastianhof/coubr.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>414E0B912514175B9469631F196EFF2BBDC532DF</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>414E0B912514175B9469631F196EFF2BBDC532DF</string>
+			<key>IDESourceControlWCCName</key>
+			<string>coubr</string>
+		</dict>
+	</array>
+</dict>
+</plist>

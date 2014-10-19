@@ -1,0 +1,53 @@
+<div class="container">
+
+    <cbrerror class="label label-danger error">Error!</cbrerror>
+
+    <div class="jumbotron">
+
+        <div class="row">
+
+            <div class="col-lg-6">
+
+                <h2>Change Amount</h2>
+                <br/>
+
+                <form cbrform name="form"
+                      postTo="b/coupon/:couponId/amount"
+                      thenGoTo="#coupon/:couponId/settings"
+                      initFrom="b/coupon/:couponId/amount">
+
+                    <!-- Amount -->
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="static/images/icons/calculator-40.png"/></span>
+                        <input type="number" class="form-control" name="amountToIssue"
+                               placeholder="Type in amount of coupons"
+                               ng-model="data.amountToIssue"
+                               min="1" ng-required="true">
+                    </div>
+                    <cbrinputerror class="help-block" cbrname="amountToIssue"
+                                   cbrmin="Amount must be greater than 0.">Error.</cbrinputerror>
+
+                    <br/>
+
+                    <div>
+                        <cbrprocess class="label process-submit">Processing...</cbrprocess>
+                        <cbrerror class="label error-submit">Error!</cbrerror>
+                        <cbrsubmit class="btn btn-coubr btn-lg">Change</cbrsubmit>
+                        <span>or <a ng-href="#coupon/{{ route.couponId }}/settings">Go back</a></span>
+                    </div>
+
+
+                </form>
+
+                <br/>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

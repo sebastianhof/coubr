@@ -1,0 +1,64 @@
+<div class="container">
+
+    <cbrerror class="label label-danger error">Error!</cbrerror>
+
+    <div class="jumbotron">
+
+        <div class="row">
+
+            <div class="col-lg-6">
+
+
+                <h2>Change Name and Description</h2>
+                <br/>
+
+                <form cbrform name="form"
+                      postTo="b/store/:storeId/name"
+                      thenGoTo="#store/:storeId/settings"
+                      initFrom="b/store/:storeId/name">
+
+                    <!-- Name -->
+
+                    <div class="input-group input-group-lg">
+                                        <span class="input-group-addon"><img class="input-group-img"
+                                                                             ng-src="static/images/icons/title-40.png"/></span>
+                        <input type="text" class="form-control" name="name" placeholder="Type in a name"
+                               ng-model="data.name" ng-required="true">
+                    </div>
+                    <cbrinputerror class="help-block" cbrname="name">Error.</cbrinputerror>
+
+                    <br/>
+
+                    <!-- Description -->
+
+                    <div class="input-group">
+                                        <span class="input-group-addon"><img class="input-group-img"
+                                                                             style="height: 32px; width: 32px; padding: 5px"
+                                                                             ng-src="static/images/icons/note-40.png"/></span>
+                        <textarea class="form-control textarea" name="description"
+                                  placeholder="Type in a description (optional)"
+                                  ng-model="data.description" rows="5" ng-required="false"></textarea>
+                    </div>
+
+                    <br/>
+
+                    <div>
+                        <cbrprocess class="label process-submit">Processing...</cbrprocess>
+                        <cbrerror class="label error-submit">Error!</cbrerror>
+                        <cbrsubmit class="btn btn-coubr btn-lg">Change</cbrsubmit>
+                        <span>or <a ng-href="#store/{{ route.storeId }}/settings">Go back</a></span>
+                    </div>
+
+
+                </form>
+
+                <br/>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

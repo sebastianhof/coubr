@@ -31,11 +31,11 @@ public class OfferEntity {
     private String category;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = true)
+    @Column(nullable = false)
     private Date validTo;
 
     @Column(nullable = false)
-    private long amountToIssue = 0; // unlimited
+    private long amountToIssue = 100; // unlimited
 
     @Column(nullable = false)
     private long amountIssued = 0;

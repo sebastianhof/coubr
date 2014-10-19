@@ -5,6 +5,10 @@ package com.coubr.data.types;
  */
 public class OfferCategory {
 
+    public static final String[] couponCategories = {
+            "default",
+    };
+
     public static boolean isValid(String type, String category) {
 
         if (category == null || type == null) {
@@ -14,9 +18,13 @@ public class OfferCategory {
 
         if (type.equals("coupon")) {
 
-            // TODO: define categories
+            for (String currentCategory : couponCategories) {
 
-            return true;
+                if (currentCategory.equals(category)) {
+                    return true;
+                }
+
+            }
         }
 
         return false;

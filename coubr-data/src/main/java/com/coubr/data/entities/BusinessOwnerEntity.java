@@ -102,11 +102,11 @@ public class BusinessOwnerEntity implements UserDetails {
         this.lastName = lastName;
     }
 
-    public List<LocalBusinessEntity> getStores() {
+    public List<LocalBusinessEntity> getLocalBusinesses() {
         return stores;
     }
 
-    public void setStores(List<LocalBusinessEntity> stores) {
+    public void setLocalBusinesses(List<LocalBusinessEntity> stores) {
         this.stores = stores;
     }
 

@@ -1,0 +1,47 @@
+<div class="container">
+
+    <cbrfetch getFrom="b/coupon/:couponId/stores">
+
+        <div class="navbar">
+            <div>
+                <ul class="nav nav-pills">
+                    <li><a ng-href="#coupon/{{ route.couponId }}">Overview</a></li>
+                    <li class="active"><a ng-href="#coupon/{{ route.couponId }}/stores">Stores</a></li>
+                    <li><a ng-href="#coupon/{{ route.couponId }}/settings">Settings</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <cbrerror class="label label-danger error">Error!</cbrerror>
+
+        <div class="jumbotron">
+
+            <div ng-show="data.stores == null || data.stores.length == 0">
+
+                <p>No stores.</p>
+
+            </div>
+
+            <div class="row stores">
+
+                <div class="col-lg-3" ng-repeat="store in data.stores">
+
+                    <a ng-href="#store/{{ store.storeId }}" class="thumbnail">
+                        <img ng-src="static/images/icons/store-128.png"/>
+                    </a>
+
+                    <p><a ng-href="#store/{{ store.storeId }}">{{ store.name }}</a></p>
+
+                </div>
+
+            </div>
+
+            <br/>
+
+            <p><a ng-href="#coupon/{{ route.couponId }}/stores/manageStores">Manage stores</a></p>
+
+        </div>
+
+    </cbrfetch>
+
+</div>

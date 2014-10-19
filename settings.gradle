@@ -1,1 +1,1 @@
-include 'coubr-data', 'coubr-web'
+include 'coubr-main', 'coubr-data', 'coubr-business', 'coubr-app'

@@ -11,6 +11,6 @@
 
 @interface coubrExploreTableViewCell : UITableViewCell
 
-- (void)initCellWithExploreItem:(Explore *)explore;
+- (void)initCellWithExplore:(Explore *)explore;
 
 @end

@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface coubrHelpViewController : UIViewController
+@interface coubrHelpViewController : UIViewController <UIWebViewDelegate>
 
 @end

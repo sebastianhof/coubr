@@ -2,7 +2,7 @@
 //  Explore.m
 //  coubr
 //
-//  Created by Sebastian Hof on 16.10.14.
+//  Created by Sebastian Hof on 23/10/14.
 //  Copyright (c) 2014 coubr. All rights reserved.
 //
 
@@ -12,14 +12,14 @@
 
 @implementation Explore
 
-@dynamic storeId;
-@dynamic name;
-@dynamic type;
 @dynamic category;
-@dynamic subcategory;
+@dynamic distance;
 @dynamic latitude;
 @dynamic longitude;
-@dynamic distance;
+@dynamic name;
+@dynamic storeId;
+@dynamic subcategory;
+@dynamic type;
 @dynamic coupons;
 
 @end

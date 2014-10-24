@@ -33,8 +33,16 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MKDirectionsApplicationSupportedModes</key>
+	<array>
+		<string>MKDirectionsModePedestrian</string>
+	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Die Kamera wird verwendet um QR Codes zu scannen.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Der Standort wird verwendet um Stores in der Nähe zu finden.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Der Standort wird verwendet um Geschäfte in der Nähe zu finden.</string>
+	<string>Der Standort wird verwendet um Stores in der Nähe zu finden.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

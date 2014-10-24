@@ -12,6 +12,6 @@
 
 - (void)loadExploreJSONWithinDistance:(double)distance
                     completionHandler:(void (^)(NSDictionary *))onCompletion
-                         errorHandler:(void(^)())onError;
+                         errorHandler:(void(^)(NSInteger))onError;
 
 @end

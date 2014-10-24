@@ -10,6 +10,7 @@
 
 #import "coubrRemoteManager.h"
 #import "coubrConstants.h"
+#import "coubrUtil.h"
 
 @implementation coubrRemoteManager
 
@@ -26,14 +27,14 @@ static coubrRemoteManager *remoteManagerInstance = nil;
 }
 
 - (void)loadJSONFromRemoteWithRequestJSONData:(NSData *)JSONData
-                                 andURLString:(NSString *)urlString
+                                       andURL:(NSURL *)url
                             completionHandler:(void (^)(NSDictionary *))onCompletion
-                                 errorHandler:(void(^)())onError
+                                 errorHandler:(void(^)(NSInteger))onError
 {
     
     // Prepare HTTP Request
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:EXPLORE_URL]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-type"];
@@ -41,10 +42,28 @@ static coubrRemoteManager *remoteManagerInstance = nil;
     [request setHTTPMethod:@"POST"];
     [request setHTTPBody:JSONData];
     
+    [self loadJSONFromRemoteWithURLRequest:request completionHandler:onCompletion errorHandler:onError];
+    
+}
+
+- (void)loadJSONFromRemoteWithURL:(NSURL *)url
+            completionHandler:(void (^)(NSDictionary *))onCompletion
+                 errorHandler:(void(^)(NSInteger))onError
+{
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    [self loadJSONFromRemoteWithURLRequest:request completionHandler:onCompletion errorHandler:onError];
+    
+}
+
+- (void)loadJSONFromRemoteWithURLRequest:(NSURLRequest *)request
+                       completionHandler:(void (^)(NSDictionary *))onCompletion
+                            errorHandler:(void(^)(NSInteger))onError
+{
+    
     // Prepare Session
-    
-    // currently there is a bug in iOS 8
-    
+
     NSURLSessionConfiguration *sessionConfiguration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
     sessionConfiguration.allowsCellularAccess = YES;
     sessionConfiguration.timeoutIntervalForRequest = TIMEOUT_INTERVAL_FOR_REQUEST;
@@ -61,24 +80,35 @@ static coubrRemoteManager *remoteManagerInstance = nil;
         if (data) {
             jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
         }
-        if (error || jsonError) {
+        
+        NSInteger status = 0;
+        if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+            status = ((NSHTTPURLResponse *) response).statusCode;
+        }
+        
+        if (error || jsonError || status >= 400) {
             NSLog(@"Could not load data from remote: %@", error.localizedDescription);
-            
-            NSMutableDictionary *errorDictionary = [[NSMutableDictionary alloc] init];
-            
-            if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-                NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-                [errorDictionary setValue:[NSHTTPURLResponse localizedStringForStatusCode:[httpResponse statusCode]] forKey:@"status"];
-            }
+
             
             if (jsonDictionary) {
-                [errorDictionary setValue:[jsonDictionary valueForKey:COUBR_ERROR_CODE] forKey:@"code"];
+                
+                NSString *code = isValidJSONValue(jsonDictionary[COUBR_ERROR_CODE]) ? jsonDictionary[COUBR_ERROR_CODE] : nil;
+                
+                NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+                [formatter setNumberStyle:NSNumberFormatterNoStyle];
+                
+                if (onError) {
+                    onError([[formatter numberFromString:code] integerValue]);
+                }
+                
+            } else {
+                
+                if (onError) {
+                    onError(UNKNOWN_ERROR);
+                }
+                
             }
-            
-            if (onError) {
-                onError(errorDictionary);
-            }
-            
+
         } else {
             
             if (onCompletion) {
@@ -86,16 +116,15 @@ static coubrRemoteManager *remoteManagerInstance = nil;
             }
             
         }
-        
-        
-        
+ 
         
     }];
-    
+
     // Download
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     [dataTask resume];
+    
 }
 
 #pragma mark - NSURLSessionDelegate

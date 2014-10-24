@@ -1,6 +1,7 @@
 package com.coubr.main.controller;
 
 import com.coubr.app.exceptions.AppCouponNotFoundException;
+import com.coubr.app.exceptions.AppStoreCodeNotFoundException;
 import com.coubr.app.exceptions.AppStoreNotFoundException;
 import com.coubr.business.exceptions.*;
 import com.coubr.main.exceptions.UserNotLoggedInException;
@@ -71,7 +72,7 @@ public class ExceptionController {
 
     }
 
-    @ExceptionHandler({StoreNotFoundException.class, AppStoreNotFoundException.class})
+    @ExceptionHandler({StoreNotFoundException.class})
     ModelAndView storeNotFoundException(HttpServletResponse response) {
 
         return badRequestError("40007", response);
@@ -92,7 +93,7 @@ public class ExceptionController {
 
     }
 
-    @ExceptionHandler({CouponNotFoundException.class, AppCouponNotFoundException.class})
+    @ExceptionHandler({CouponNotFoundException.class})
     ModelAndView couponNotFoundException(HttpServletResponse response) {
 
         return badRequestError("40010", response);
@@ -103,6 +104,27 @@ public class ExceptionController {
     ModelAndView invalidAmountException(HttpServletResponse response) {
 
         return badRequestError("40011", response);
+
+    }
+
+    @ExceptionHandler(AppStoreNotFoundException.class)
+    ModelAndView appStoreNotFoundException(HttpServletResponse response) {
+
+        return badRequestError("10001", response);
+
+    }
+
+    @ExceptionHandler(AppCouponNotFoundException.class)
+    ModelAndView appCouponNotFoundException(HttpServletResponse response) {
+
+        return badRequestError("10002", response);
+
+    }
+
+    @ExceptionHandler(AppStoreCodeNotFoundException.class)
+    ModelAndView appStoreCodeNotFoundException(HttpServletResponse response) {
+
+        return badRequestError("10003", response);
 
     }
 

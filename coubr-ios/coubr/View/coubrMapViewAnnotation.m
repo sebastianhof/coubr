@@ -40,14 +40,14 @@
     _annotationCoordinate = newCoordinate;
 }
 
-- (instancetype)initWithTitle:(NSString *)title description:(NSString *)description andCoordinate:(CLLocationCoordinate2D)coordinate
+- (instancetype)initWithTitle:(NSString *)title description:(NSString *)description andCoordinate:(CLLocationCoordinate2D)locationCoordinate
 {
     self = [super init];
     
     if (self) {
         _annotationTitle = title;
         _annotationDescription = description;
-        _annotationCoordinate = coordinate;
+        _annotationCoordinate = locationCoordinate;
     }
     
     return self;

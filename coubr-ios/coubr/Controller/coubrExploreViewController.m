@@ -15,100 +15,110 @@
 #import "coubrConstants.h"
 #import "coubrRemoteManager+Explore.h"
 
-#import "Explore+Delete.h"
-#import "Explore+Insert.h"
-#import "Explore+Fetch.h"
+#import "Explore+CRUD.h"
 
 #import "coubrExploreMapViewController.h"
+#import "coubrExploreHeaderViewController.h"
 #import "coubrExploreTableViewController.h"
+
+#import "coubrExploreFilterViewController.h"
 
 #import "coubrLocationManager.h"
 
 @interface coubrExploreViewController ()
 
-@property (strong, nonatomic) coubrExploreTableViewController *exploreTableViewController;
+@property (strong, nonatomic) IBOutlet UIScrollView *exploreScrollView;
+
 @property (strong, nonatomic) coubrExploreMapViewController *exploreMapViewController;
+@property (strong, nonatomic) coubrExploreHeaderViewController *exploreHeaderViewController;
+@property (strong, nonatomic) coubrExploreTableViewController *exploreTableViewController;
 
-@property (weak, nonatomic) IBOutlet UIButton *leftBottomButton;
-@property (weak, nonatomic) IBOutlet UIButton *leftBottomLabelButton;
-
-@property (weak, nonatomic) UIView *exploreTableView;
 @property (weak, nonatomic) UIView *exploreMapView;
+@property (weak, nonatomic) UIView *exploreHeaderView;
+@property (weak, nonatomic) UIView *exploreTableView;
 
 @end
 
 @implementation coubrExploreViewController
 
+#pragma mark - view lifecycle
+
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
+    // setup notification listener
     
     [[NSNotificationCenter defaultCenter] addObserverForName:ManagedDatabaseDidBecomeAvailableNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[Explore fetchRequestForExploreItemsWithinDistance:EXPLORE_DEFAULT_DISTANCE] managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
+        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[Explore fetchRequestForExploreWithinDistance:EXPLORE_DEFAULT_DISTANCE] managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
         
-        [self refresh];
+        // refresh
+        [self updateFetchedResultsController];
+        
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:LocationDidBecomeAvailableNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        [self refresh];
-    }];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:LocationDidFailNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        // DO something on location error
+        [self updateFetchedResultsController];
     }];
     
 }
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [[coubrLocationManager defaultManager] updateLocation];
-    [self showTableViewInExploreView];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
+    
+    [self initScrollView];
 }
 
-#pragma mark - init
+#pragma mark - init controllers
 
-- (coubrExploreTableViewController *)exploreTableViewController
-{
-    if (!_exploreTableViewController) {
-        _exploreTableViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"coubrExploreTableViewController"];
-        [_exploreTableViewController setParentController:self];
-        [self addChildViewController:_exploreTableViewController];
-    }
-    return _exploreTableViewController;
-}
+#define HEADER_RATIO 2.5 //1.778 // 16:9
 
 - (coubrExploreMapViewController *)exploreMapViewController
 {
     if (!_exploreMapViewController) {
         _exploreMapViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"coubrExploreMapViewController"];
         [_exploreMapViewController setParentController:self];
-        [self addChildViewController:_exploreMapViewController];
     }
     return _exploreMapViewController;
 }
 
-- (UIView *)exploreTableView
+- (coubrExploreHeaderViewController *)exploreHeaderViewController
 {
-    if (!_exploreTableView) {
-        _exploreTableView  = self.exploreTableViewController.view;
-        
-        CGRect superviewFrame = self.view.frame;
-
-        CGRect frame = _exploreTableView.frame;
-        frame.size.width = superviewFrame.size.width;
-        frame.size.height = superviewFrame.size.width * (3.0 / 2.0);
-        frame.origin.y = 0;
-        frame.origin.x = 0;
-        [_exploreTableView setFrame:frame];
-        
+    if (!_exploreHeaderViewController) {
+        _exploreHeaderViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"coubrExploreHeaderViewController"];
+        [_exploreHeaderViewController setParentController:self];
     }
-    return _exploreTableView;
+    return _exploreHeaderViewController;
+}
+
+- (coubrExploreTableViewController *)exploreTableViewController
+{
+    if (!_exploreTableViewController) {
+        _exploreTableViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"coubrExploreTableViewController"];
+        [_exploreTableViewController setParentController:self];
+    }
+    return _exploreTableViewController;
+}
+
+#pragma mark - init views
+
+- (void)initScrollView {
+    [self.exploreScrollView addSubview:self.exploreHeaderView];
+    [self.exploreScrollView addSubview:self.exploreTableView];
+
+    CGRect superviewFrame = self.view.frame;
+    CGSize size = CGSizeMake(superviewFrame.size.width, superviewFrame.size.height + (superviewFrame.size.height - (1 / HEADER_RATIO) * superviewFrame.size.width));
+    [self.exploreScrollView setContentSize:size];
+    
+    // scroll to bottom
+    [self scrollToBottom];
 }
 
 - (UIView *)exploreMapView
@@ -120,53 +130,143 @@
         
         CGRect frame = _exploreMapView.frame;
         frame.size.width = superviewFrame.size.width;
-        frame.size.height = superviewFrame.size.width * (3.0 / 2.0);
+        frame.size.height = superviewFrame.size.height - (1 / HEADER_RATIO) * superviewFrame.size.width;
         frame.origin.y = 0;
         frame.origin.x = 0;
         [_exploreMapView setFrame:frame];
         
-
     }
     return _exploreMapView;
 }
 
-#pragma mark - refresh
+- (UIView *)exploreHeaderView
+{
+    if (!_exploreHeaderView) {
+        _exploreHeaderView = self.exploreHeaderViewController.view;
+        
+        CGRect superviewFrame = self.view.frame;
+        
+        CGRect frame = _exploreHeaderView.frame;
+        frame.size.width = superviewFrame.size.width;
+        frame.size.height = superviewFrame.size.width * (1 / HEADER_RATIO);
+        frame.origin.y = superviewFrame.size.height - (1 / HEADER_RATIO) * superviewFrame.size.width;
+        frame.origin.x = 0;
+        [_exploreHeaderView setFrame:frame];
+        
+    }
+    return _exploreHeaderView;
+}
 
-- (void)refresh
+- (UIView *)exploreTableView
+{
+    if (!_exploreTableView) {
+        _exploreTableView  = self.exploreTableViewController.view;
+        
+        CGRect superviewFrame = self.view.frame;
+
+        CGRect frame = _exploreTableView.frame;
+        frame.size.width = superviewFrame.size.width;
+        frame.size.height = superviewFrame.size.height - (1 / HEADER_RATIO) * superviewFrame.size.width;
+        frame.origin.y = superviewFrame.size.height;
+        frame.origin.x = 0;
+        [_exploreTableView setFrame:frame];
+
+    }
+    return _exploreTableView;
+}
+
+#pragma mark - update FetchedResultsController
+
+- (void)updateLocationAndFetchedResultsController
 {
     
+    [[coubrLocationManager defaultManager] updateLocation];
+    
+}
+
+- (void)updateFetchedResultsController
+{
+    
+    // Load data from remote
     if ([[coubrLocationManager defaultManager] lastLocation] && [[coubrDatabaseManager defaultManager] managedObjectContext]) {
+        
+        // wipe database before loading
+        [Explore deleteExploreItemsInDatabase];
         
         [[coubrRemoteManager defaultManager] loadExploreJSONWithinDistance:10000 completionHandler:^(NSDictionary *JSONData) {
             
-            // Update Database with JSON Explore Data            
+            // Update Database with JSON Explore Data
             
-            [Explore deleteExploreItemsInDatabase];
-            [Explore insertExploreItemsIntoDatabaseFromExploreJSON:JSONData];
+            [Explore insertExploreIntoDatabaseFromExploreJSON:JSONData];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:ConnectionDidBecomeAvailableNotification object:self];
             
             // Update FetchedResultsController
-            
             NSError *error;
             [self.fetchedResultsController performFetch:&error];
-            
-            if (error) {
-                NSLog(@"Could not perform fetch");
+
+            if (!error) {
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:FetchedResultsControllerDidUpdatedNotification object:self];
             }
             
-            // Send notification
-            [[NSNotificationCenter defaultCenter] postNotificationName:FetchedResultsControllerDidUpdatedNotification object:self];
+        } errorHandler:^(NSInteger errorCode) {
             
-        } errorHandler:^(NSDictionary *error) {
-            NSLog(@"Could not load data");
+            [[NSNotificationCenter defaultCenter] postNotificationName:ConnectionDidFailNotification object:self];
+            
+            NSLog(@"Could not load data: %li", errorCode);
+
         }];
         
     }
     
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - scrollview
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGRect superviewFrame = self.view.frame;
+    
+    if (scrollView.contentOffset.y == 0) {
+        
+        if (![[scrollView subviews] containsObject:_exploreMapView]) {
+            [scrollView addSubview:self.exploreMapView];
+        }
+
+    } else if (scrollView.contentOffset.y > superviewFrame.size.height - (1 / HEADER_RATIO) * superviewFrame.size.width - 16) {
+        
+        if ([[scrollView subviews] containsObject:_exploreMapView]) {
+            [self.exploreMapView removeFromSuperview];
+            self.exploreMapView = nil;
+            [self.exploreMapViewController removeFromParentViewController];
+            self.exploreMapViewController = nil;
+        }
+        
+    }
+    
+}
+
+- (void)scrollToTop
+{
+    // scroll to top
+    CGPoint topOffset = CGPointMake(0, 0);
+    [self.exploreScrollView setContentOffset:topOffset animated:YES];
+}
+
+- (void)scrollToBottom
+{
+    // scroll to bottom
+    CGPoint bottomOffset = CGPointMake(0, self.exploreScrollView.contentSize.height - self.exploreScrollView.bounds.size.height);
+    [self.exploreScrollView setContentOffset:bottomOffset animated:YES];
+}
+
+- (void)scrollToPosition:(CGFloat)position
+{
+    
+}
+
+/*
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
@@ -174,58 +274,23 @@
 }
 */
 
-- (IBAction)toggleExploreChildView:(id)sender {
-    
-    if ([[self.view subviews] containsObject:self.exploreTableView]) {
-        // show map view
-        [self showMapViewInExploreView];
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"showFilterView"]) {
         
-    } else if ([[self.view subviews] containsObject:self.exploreMapView]) {
-        // show table view
-        [self showTableViewInExploreView];
+        if ([segue.destinationViewController isKindOfClass:[coubrExploreFilterViewController class]]) {
+            
+            coubrExploreFilterViewController *fvc = (coubrExploreFilterViewController *)segue.destinationViewController;
+            [fvc setParentController:self];
+            
+        }
+        
     }
     
 }
 
-- (void)showTableViewInExploreView
-{
-    [self.exploreMapView removeFromSuperview];
-    [self.view addSubview:self.exploreTableView];
-    
-    [self.leftBottomButton setImage:[UIImage imageNamed:@"Map"] forState:UIControlStateNormal];
-        
-    [UIView transitionWithView:self.leftBottomButton duration:1 options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
-        [self.leftBottomButton setImage:[UIImage imageNamed:@"Map"] forState:UIControlStateNormal];
-    } completion:nil];
-    
-    [UIView transitionWithView:self.leftBottomLabelButton duration:1 options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
-        [self.leftBottomLabelButton setTitle:@"Map" forState:UIControlStateNormal];
-    } completion:nil];
-    
-}
-
-- (void)showMapViewInExploreView
-{
-    [self.exploreTableView removeFromSuperview];
-
-    [self.view addSubview:self.exploreMapView];
-
-    [UIView transitionWithView:self.leftBottomButton duration:0.5 options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
-        [self.leftBottomButton setImage:[UIImage imageNamed:@"Table"] forState:UIControlStateNormal];
-    } completion:nil];
-    
-    [UIView transitionWithView:self.leftBottomLabelButton duration:0.5 options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
-        [self.leftBottomLabelButton setTitle:@"List" forState:UIControlStateNormal];
-    } completion:nil];
-    
-}
-
-- (IBAction)showFilterInExploreView:(id)sender {
-    
-    
-    
-    
-}
 
 
 @end

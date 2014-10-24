@@ -1,11 +1,11 @@
 package com.coubr.main.controller;
 
+import com.coubr.app.exceptions.AppCouponNotFoundException;
+import com.coubr.app.exceptions.AppStoreCodeNotFoundException;
 import com.coubr.app.exceptions.AppStoreNotFoundException;
-import com.coubr.app.json.Coupon;
-import com.coubr.app.json.Explore;
-import com.coubr.app.json.ExploreRequest;
-import com.coubr.app.json.Store;
+import com.coubr.app.json.*;
 import com.coubr.app.services.ExploreService;
+import com.coubr.app.services.RedeemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +21,9 @@ public class AppController {
 
     @Autowired
     ExploreService exploreService;
+
+    @Autowired
+    RedeemService redeemService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
@@ -44,7 +47,11 @@ public class AppController {
 
     }
 
-    @RequestMapping(value = "/a/store/{storeId}")
+    /*
+     * Store
+     */
+
+    @RequestMapping(value = "/a/store/{storeId}", method = RequestMethod.GET)
     public @ResponseBody
     Store store(@PathVariable(value = "storeId") String storeId, HttpServletRequest request) throws AppStoreNotFoundException {
 
@@ -52,13 +59,16 @@ public class AppController {
 
     }
 
-//    @RequestMapping(value = "/a/coupon/{couponId}")
-//    public @ResponseBody
-//    Coupon coupon(@PathVariable(value = "couponId") String couponId, HttpServletRequest request) {
-//
-//        return exploreService.getCoupon(couponId);
-//
-//    }
+    /*
+     * Redeem
+     */
+
+    @RequestMapping(value = "/a/coupon/{couponId}/redeem", method = RequestMethod.POST)
+    public @ResponseBody Success redeemCoupon(@PathVariable(value = "couponId") String couponId, @RequestBody RedeemCoupon redeemCoupon, HttpServletRequest request) throws AppStoreCodeNotFoundException, AppCouponNotFoundException, AppStoreNotFoundException {
+
+        redeemService.redeemCoupon(couponId, redeemCoupon);
+        return new Success();
+    }
 
     @RequestMapping(value = "/a/test", method = RequestMethod.GET)
     public @ResponseBody String test() {

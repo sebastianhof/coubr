@@ -20,7 +20,7 @@
 -(void)showNavigationViewInMainView;
 
 -(void)showExploreViewInMainView;
--(void)showHistoryViewInMainView;
+-(void)showProfileViewInMainView;
 -(void)showSettingsViewInMainView;
 
 @end

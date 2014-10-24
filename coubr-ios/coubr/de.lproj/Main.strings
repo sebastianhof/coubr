@@ -1,0 +1,192 @@
+
+/* Class = "IBUIButton"; normalTitle = "Search in another location?"; ObjectID = "1Bi-n4-bSC"; */
+"1Bi-n4-bSC.normalTitle" = "An einem anderen Ort suchen?";
+
+/* Class = "IBUILabel"; text = "This store does not offer any coupons"; ObjectID = "1Q8-gR-wZY"; */
+"1Q8-gR-wZY.text" = "Dieses Lokal bietet keine Coupons an";
+
+/* Class = "IBUITableViewSection"; headerTitle = "Support"; ObjectID = "1WC-wK-Ib6"; */
+"1WC-wK-Ib6.headerTitle" = "Support";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "1kh-NQ-7gi"; */
+"1kh-NQ-7gi.text" = "Label";
+
+/* Class = "IBUILabel"; text = "Your device did not provide a location"; ObjectID = "2c5-mc-CFS"; */
+"2c5-mc-CFS.text" = "Ihr Gerät konnte den Standort nicht bestimmen";
+
+/* Class = "IBUILabel"; text = "Location could not be determined"; ObjectID = "3hq-eK-g1R"; */
+"3hq-eK-g1R.text" = "Kein Standort vorhanden";
+
+/* Class = "IBUILabel"; text = "Explore"; ObjectID = "4oD-Eh-XQT"; */
+"4oD-Eh-XQT.text" = "Entdecke";
+
+/* Class = "IBUILabel"; text = "Redeem by scanning a QR code"; ObjectID = "4p3-Re-C3L"; */
+"4p3-Re-C3L.text" = "Scanne einen QR code um den Coupon einzulösen";
+
+/* Class = "IBUIButton"; normalTitle = "..."; ObjectID = "63O-F2-uLC"; */
+"63O-F2-uLC.normalTitle" = "...";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "7rA-xX-yuQ"; */
+"7rA-xX-yuQ.text" = "...";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "8Rl-Mq-9bN"; */
+"8Rl-Mq-9bN.text" = "...";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "BIx-bR-Kdf"; */
+"BIx-bR-Kdf.text" = "...";
+
+/* Class = "IBUILabel"; text = "Help"; ObjectID = "CmK-I0-mja"; */
+"CmK-I0-mja.text" = "Hilfe";
+
+/* Class = "IBUILabel"; text = "No visits"; ObjectID = "DFX-Nc-lN5"; */
+"DFX-Nc-lN5.text" = "Keine Besuche vorhanden";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "E45-hL-aFu"; */
+"E45-hL-aFu.text" = "...";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "E87-EJ-gJu"; */
+"E87-EJ-gJu.text" = "...";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "F7t-G7-V3x"; */
+"F7t-G7-V3x.text" = "...";
+
+/* Class = "IBUILabel"; text = "Legal"; ObjectID = "GQC-QR-b1P"; */
+"GQC-QR-b1P.text" = "Rechtliches";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "ID1-DX-vxh"; */
+"ID1-DX-vxh.text" = "...";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "K4M-BT-eF8"; */
+"K4M-BT-eF8.text" = "...";
+
+/* Class = "IBUILabel"; text = "Profile"; ObjectID = "NRJ-Ye-sNo"; */
+"NRJ-Ye-sNo.text" = "Profil";
+
+/* Class = "IBUILabel"; text = "No favorites"; ObjectID = "OOL-gV-wbz"; */
+"OOL-gV-wbz.text" = "Kein Stammlokal vorhanden";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "OZE-Ql-L9V"; */
+"OZE-Ql-L9V.text" = "...";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "QSt-2v-map"; */
+"QSt-2v-map.text" = "...";
+
+/* Class = "IBUIButton"; normalTitle = "Redeem"; ObjectID = "Qnv-ZG-H3h"; */
+"Qnv-ZG-H3h.normalTitle" = "Einlösen";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "QoS-l3-lJk"; */
+"QoS-l3-lJk.text" = "...";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "SKq-8F-nO6"; */
+"SKq-8F-nO6.text" = "...";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "U5X-V0-UDQ"; */
+"U5X-V0-UDQ.text" = "...";
+
+/* Class = "IBUILabel"; text = "Profile"; ObjectID = "UDP-kR-5b7"; */
+"UDP-kR-5b7.text" = "Profil";
+
+/* Class = "IBUILabel"; text = "and the store will be marked as visited"; ObjectID = "VLE-dd-18z"; */
+"VLE-dd-18z.text" = "und das Lokal wird als besucht markiert";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "Vkj-7C-4ys"; */
+"Vkj-7C-4ys.text" = "...";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "Wme-zb-CvL"; */
+"Wme-zb-CvL.text" = "...";
+
+/* Class = "IBUILabel"; text = "Redeem a coupon"; ObjectID = "Z2S-NK-Ygo"; */
+"Z2S-NK-Ygo.text" = "Löse ein Coupon ein";
+
+/* Class = "IBUILabel"; text = "Distance"; ObjectID = "bKP-MN-XcP"; */
+"bKP-MN-XcP.text" = "Distanz";
+
+/* Class = "IBUILabel"; text = "No coupons"; ObjectID = "baU-ia-xH0"; */
+"baU-ia-xH0.text" = "Keine Coupons vorhanden";
+
+/* Class = "IBUITableViewSection"; headerTitle = "About"; ObjectID = "bca-Jw-eQT"; */
+"bca-Jw-eQT.headerTitle" = "Über";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "cef-fS-jiR"; */
+"cef-fS-jiR.text" = "...";
+
+/* Class = "IBUILabel"; text = "Address"; ObjectID = "cql-KW-1Ez"; */
+"cql-KW-1Ez.text" = "Adresse";
+
+/* Class = "IBUITableViewSection"; headerTitle = "General"; ObjectID = "eZf-7a-S4a"; */
+"eZf-7a-S4a.headerTitle" = "Allgemein";
+
+/* Class = "IBUILabel"; text = "Contact"; ObjectID = "gI1-7g-SxV"; */
+"gI1-7g-SxV.text" = "Kontakt";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "hby-C3-73U"; */
+"hby-C3-73U.text" = "...";
+
+/* Class = "IBUIButton"; normalTitle = "..."; ObjectID = "iDf-6a-ixs"; */
+"iDf-6a-ixs.normalTitle" = "...";
+
+/* Class = "IBUILabel"; text = "Feedback"; ObjectID = "iJC-7c-boj"; */
+"iJC-7c-boj.text" = "Feedback";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "ie4-Ov-5xI"; */
+"ie4-Ov-5xI.text" = "...";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "j3t-Bw-frA"; */
+"j3t-Bw-frA.text" = "...";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "jBM-aW-b3q"; */
+"jBM-aW-b3q.text" = "...";
+
+/* Class = "IBUILabel"; text = "Notifications"; ObjectID = "kAU-nA-dQH"; */
+"kAU-nA-dQH.text" = "Benachrichtigungen";
+
+/* Class = "IBUILabel"; text = "coubr"; ObjectID = "kXv-dQ-1jR"; */
+"kXv-dQ-1jR.text" = "coubr";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "lHW-U5-XQi"; */
+"lHW-U5-XQi.text" = "...";
+
+/* Class = "IBUILabel"; text = "Version 0.1"; ObjectID = "lOn-k0-Clv"; */
+"lOn-k0-Clv.text" = "Version 0.1";
+
+/* Class = "IBUILabel"; text = "is not available at your location"; ObjectID = "lfu-0d-oq6"; */
+"lfu-0d-oq6.text" = "ist in deiner Umgebung nicht verfügbar";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "lu9-FA-6gz"; */
+"lu9-FA-6gz.text" = "...";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "mNf-6m-B42"; */
+"mNf-6m-B42.text" = "...";
+
+/* Class = "IBUILabel"; text = "Explore"; ObjectID = "oDf-Sn-52p"; */
+"oDf-Sn-52p.text" = "Entdecke";
+
+/* Class = "IBUILabel"; text = "Settings"; ObjectID = "owq-Gh-rLt"; */
+"owq-Gh-rLt.text" = "Einstelllungen";
+
+/* Class = "IBUILabel"; text = "in the store page"; ObjectID = "ozi-qp-e7I"; */
+"ozi-qp-e7I.text" = "drückst";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "pUx-9b-Esr"; */
+"pUx-9b-Esr.text" = "...";
+
+/* Class = "IBUILabel"; text = "coubr"; ObjectID = "rNB-gW-ZG4"; */
+"rNB-gW-ZG4.text" = "coubr";
+
+/* Class = "IBUILabel"; text = "..."; ObjectID = "sPW-VK-HOF"; */
+"sPW-VK-HOF.text" = "...";
+
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "sXh-Gc-ZpS"; */
+"sXh-Gc-ZpS.title" = "Zurück";
+
+/* Class = "IBUILabel"; text = "No stores nearby"; ObjectID = "sfP-i8-DBT"; */
+"sfP-i8-DBT.text" = "Keine Lokale in der Nähe";
+
+/* Class = "IBUIButton"; normalTitle = "Close"; ObjectID = "uJ2-dm-85l"; */
+"uJ2-dm-85l.normalTitle" = "Schließen";
+
+/* Class = "IBUILabel"; text = "Please check your internet connection"; ObjectID = "vf2-e0-alX"; */
+"vf2-e0-alX.text" = "Bitte überprüfe die Internetverbindung";
+
+/* Class = "IBUILabel"; text = "Add your favorite store by clicking on"; ObjectID = "w3T-Og-XJk"; */
+"w3T-Og-XJk.text" = "Füge ein Lokal hinzu indem du auf der Lokalseite auf";

@@ -17,9 +17,9 @@
 
 @implementation coubrNavigationViewController
 
-- (IBAction)showHistoryViewInMainView:(id)sender {
+- (IBAction)showProfileViewInMainView:(id)sender {
     if ([self.parentViewController conformsToProtocol:@protocol(coubrNavigationViewDelegate)]) {
-        [self.parentViewController performSelector:@selector(showHistoryViewInMainView)];
+        [self.parentViewController performSelector:@selector(showProfileViewInMainView)];
     }
 }
 

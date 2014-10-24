@@ -13,8 +13,12 @@
 + (instancetype)defaultManager;
 
 - (void)loadJSONFromRemoteWithRequestJSONData:(NSData *)JSONData
-                                 andURLString:(NSString *)urlString
+                                 andURL:(NSURL *)url
                             completionHandler:(void (^)(NSDictionary *))onCompletion
-                                 errorHandler:(void(^)())onError;
+                                 errorHandler:(void(^)(NSInteger))onError;
+
+- (void)loadJSONFromRemoteWithURL:(NSURL *)url
+                            completionHandler:(void (^)(NSDictionary *))onCompletion
+                                 errorHandler:(void(^)(NSInteger))onError;
 
 @end

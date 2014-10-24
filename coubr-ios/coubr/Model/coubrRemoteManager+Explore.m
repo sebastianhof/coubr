@@ -16,7 +16,7 @@
 
 - (void)loadExploreJSONWithinDistance:(double)distance
                     completionHandler:(void (^)(NSDictionary *))onCompletion
-                         errorHandler:(void(^)())onError
+                         errorHandler:(void(^)(NSInteger))onError
 {
     
     // Prepare JSON Data
@@ -32,12 +32,11 @@
     NSError *error;
     NSData *JSONData = [NSJSONSerialization dataWithJSONObject:requestData options:0 error:&error];
     if (error) {
-        NSLog(@"Could not create request data for remote: %@", error.localizedDescription);
-        onError(nil);
+        onError(JSON_ERROR);
         return;
     }
     
-    [self loadJSONFromRemoteWithRequestJSONData:JSONData andURLString:EXPLORE_URL completionHandler:onCompletion errorHandler:onError];
+    [self loadJSONFromRemoteWithRequestJSONData:JSONData andURL:[NSURL URLWithString:EXPLORE_URL] completionHandler:onCompletion errorHandler:onError];
     
 }
 

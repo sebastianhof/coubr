@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Coupon.h"
 
-@interface coubrCouponOverviewController : UIViewController
+#define ModalViewDidDismissedNotification @"ModalViewDidDismissedNotification"
+
+@interface coubrCouponOverviewController : UIViewController <UIAlertViewDelegate>
+
+@property (nonatomic, weak) Coupon *coupon;
+
+- (void)willRedeemWithCode:(NSString *)code;
+
+- (void)didFailToRedeem;
 
 @end

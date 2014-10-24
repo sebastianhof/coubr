@@ -88,7 +88,6 @@ static coubrLocationManager *locationManagerInstance = nil;
 - (void)requestAuthorization
 {
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
-
     
     if (status == kCLAuthorizationStatusDenied) {
         

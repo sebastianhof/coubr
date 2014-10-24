@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface coubrLegalViewController : UIViewController
+@interface coubrLegalViewController : UIViewController <UIWebViewDelegate>
 
 @end

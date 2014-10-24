@@ -7,8 +7,12 @@
 //
 #import <CoreData/CoreData.h>
 
+#import "coubrLocale.h"
 #import "coubrExploreTableViewController.h"
 #import "coubrExploreTableViewCell.h"
+
+#import "coubrStoreViewController.h"
+#import "coubrLocationManager.h"
 
 #import "Explore.h"
 
@@ -16,22 +20,77 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *exploreTableView;
 
+@property (strong, nonatomic)UIViewController *emptyTableViewController;
+@property (strong, nonatomic)UIViewController *noConnectionViewController;
+@property (strong, nonatomic)UIViewController *noLocationViewController;
+
+@property (weak, nonatomic) UIView *emptyTableView;
+@property (weak, nonatomic) UIView *noConnectionView;
+@property (weak, nonatomic) UIView *noLocationView;
+
 @end
 
 @implementation coubrExploreTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Do any additional setup after loading the view.
-    [self.exploreTableView setDataSource:self];
-    [self.exploreTableView setDelegate:self];
-    
+        
     [self initRefreshControl];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:FetchedResultsControllerDidUpdatedNotification object:self.parentController queue:nil usingBlock:^(NSNotification *note) {
-        [self.exploreTableView reloadData];
-        [self.refreshControl endRefreshing];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if ([[self.parentController.fetchedResultsController fetchedObjects] count] > 0) {
+                [self.exploreTableView reloadData];
+                [self.refreshControl endRefreshing];
+                
+                [self hideEmptyTableView];
+                
+            } else {
+                
+                [self.refreshControl endRefreshing];
+                [self showEmptyTableView];
+                
+            }
+            
+            
+        });
+        
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:LocationDidFailNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.refreshControl endRefreshing];
+            [self locationDidFail];
+        });
+        
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:LocationDidBecomeAvailableNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+     
+        dispatch_async(dispatch_get_main_queue(), ^{
+                [self locationDidBecomeAvailable];
+        });
+        
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:ConnectionDidFailNotification object:self.parentController queue:nil usingBlock:^(NSNotification *note) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.refreshControl endRefreshing];
+            [self connectionDidFail];
+        });
+        
+    }];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:ConnectionDidBecomeAvailableNotification object:self.parentController queue:nil usingBlock:^(NSNotification *note) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self connectionDidBecomeAvailable];
+        });    
+            
     }];
     
 }
@@ -45,36 +104,25 @@
         self.refreshControl = [[UIRefreshControl alloc] init];
     }
     
-    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:@"Refreshing coubr"];
+    NSMutableAttributedString *coubr = [[NSMutableAttributedString alloc] initWithString:@" coubr"
+                                                                attributes:@{ NSFontAttributeName: [UIFont fontWithName:@"Courgette" size:14]}];
+    NSMutableAttributedString *refreshControlTitle = [[NSMutableAttributedString alloc] initWithString:LOCALE_REFRESHING
+                                                                     attributes:@{ NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]}];
 
-    [title addAttributes:@{ NSFontAttributeName: [UIFont fontWithName:@"Raleway-Light" size:14] }
-                   range:NSMakeRange(0, 10)];
-    
-    [title addAttributes:@{ NSFontAttributeName: [UIFont fontWithName:@"Courgette" size:14] }
-                   range:NSMakeRange(11, 5)];
+    [refreshControlTitle appendAttributedString:coubr];
 
-    [self.refreshControl setAttributedTitle:title];
+    [self.refreshControl setAttributedTitle:refreshControlTitle];
     self.refreshControl.tintColor = [UIColor colorWithRed:51 green:51 blue:51 alpha:1];
     
     [self.refreshControl addTarget:self action:@selector(refreshTableView) forControlEvents:UIControlEventValueChanged];
     [self.refreshControl beginRefreshing];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 #pragma mark - Refresh
 
 - (void)refreshTableView
 {
-    [self.parentController refresh];
+    [self.parentController updateLocationAndFetchedResultsController];
 }
 
 #pragma mark - Table View Delegate
@@ -101,7 +149,7 @@
     NSManagedObject *managedObject = [self.parentController.fetchedResultsController objectAtIndexPath:indexPath];
     
     if ([managedObject isKindOfClass:[Explore class]]) {
-        [(coubrExploreTableViewCell *) cell initCellWithExploreItem:(Explore *)managedObject];
+        [(coubrExploreTableViewCell *) cell initCellWithExplore:(Explore *)managedObject];
     }
     
     return cell;
@@ -126,6 +174,154 @@
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
     return [self.parentController.fetchedResultsController sectionForSectionIndexTitle:title atIndex:index];
+}
+
+#pragma mark - Navigation
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSManagedObject *managedObject = [self.parentController.fetchedResultsController objectAtIndexPath:indexPath];
+    if ([managedObject isKindOfClass:[Explore class]]) {
+        coubrStoreViewController *spvc = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreViewController"];
+        
+        [spvc setStoreId:((Explore *) managedObject).storeId];
+    
+        [self.parentController.navigationController pushViewController:spvc animated:YES];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
+    
+}
+
+#pragma mark - Empty table view
+
+- (UIViewController *)emptyTableViewController
+{
+    if (!_emptyTableViewController) {
+        _emptyTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrExploreTableViewEmptyViewController"];
+    }
+    return _emptyTableViewController;
+}
+
+- (UIView *)emptyTableView
+{
+    if (!_emptyTableView) {
+        _emptyTableView = self.emptyTableViewController.view;
+        
+        CGRect superviewFrame = self.tableView.frame;
+        CGRect frame = CGRectMake(0, 0, superviewFrame.size.width, superviewFrame.size.height);
+        [_emptyTableView setFrame:frame];
+    }
+    return _emptyTableView;
+}
+
+- (void)showEmptyTableView
+{
+    
+    if (![[self.tableView subviews] containsObject:_emptyTableView]) {
+        [self.tableView addSubview:self.emptyTableView];
+    }
+    
+}
+
+- (void)hideEmptyTableView
+{
+    
+    if ([[self.tableView subviews] containsObject:_emptyTableView]) {
+        [self.emptyTableView removeFromSuperview];
+        _emptyTableView = nil;
+        _emptyTableViewController = nil;
+    }
+    
+}
+
+#pragma mark - No Location view
+
+#pragma mark - location
+
+- (UIViewController *)noLocationViewController
+{
+    if (!_noLocationViewController) {
+        _noLocationViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrErrorNoLocationViewController"];
+    }
+    return _noLocationViewController;
+}
+
+- (UIView *)noLocationView
+{
+    if (!_noLocationView) {
+        _noLocationView = self.noLocationViewController.view;
+        
+        CGRect superviewFrame = self.tableView.frame;
+        CGRect frame = CGRectMake(0, 0, superviewFrame.size.width, superviewFrame.size.height);
+        
+        [_noLocationView setFrame:frame];
+    }
+    return _noLocationView;
+}
+
+- (void)locationDidBecomeAvailable
+{
+    
+    if ([[self.tableView subviews] containsObject:_noLocationView]) {
+        [self.noLocationView removeFromSuperview];
+        _noLocationView = nil;
+        _noLocationViewController = nil;
+    }
+    
+}
+
+- (void)locationDidFail
+{
+    
+    if (![[self.tableView subviews] containsObject:_noLocationView]) {
+        [self.tableView addSubview:self.noLocationView];
+    }
+    
+    
+}
+
+#pragma mark - No connection view
+
+- (UIViewController *)noConnectionViewController
+{
+    if (!_noConnectionViewController) {
+        _noConnectionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrErrorNoConnectionViewController"];
+    }
+    return _noConnectionViewController;
+}
+
+- (UIView *)noConnectionView
+{
+    if (!_noConnectionView) {
+        _noConnectionView = self.noConnectionViewController.view;
+        
+        CGRect superviewFrame = self.tableView.frame;
+        CGRect frame = CGRectMake(0, 0, superviewFrame.size.width, superviewFrame.size.height);
+        
+        [_noConnectionView setFrame:frame];
+
+    }
+    return _noConnectionView;
+}
+
+- (void)connectionDidBecomeAvailable
+{
+ 
+    if ([[self.tableView subviews] containsObject:_noConnectionView]) {
+        [self.noConnectionView removeFromSuperview];
+        _noConnectionView = nil;
+        _noConnectionViewController = nil;
+    }
+    
+}
+
+- (void)connectionDidFail
+{
+    
+    if (![[self.tableView subviews] containsObject:_noConnectionView]) {
+        [self.tableView addSubview:self.noConnectionView];
+    }
+    
 }
 
 @end

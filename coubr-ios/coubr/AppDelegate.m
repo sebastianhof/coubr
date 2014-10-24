@@ -7,8 +7,9 @@
 //
 #import "AppDelegate.h"
 
-#import "Explore+Delete.h"
-#import "Explore+Insert.h"
+#import "coubrDatabaseManager.h"
+
+#import <CoreData/CoreData.h>
 
 #import "coubrDatabaseManager.h"
 
@@ -21,6 +22,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:242 green:120 blue:75 alpha:1]];
+    [[UINavigationBar appearance] setTranslucent:NO];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [[coubrDatabaseManager defaultManager] initDatabase];
@@ -49,6 +53,19 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    NSManagedObjectContext *context = [[coubrDatabaseManager defaultManager] managedObjectContext];
+    
+    [context performBlockAndWait:^{
+       
+        NSError *error;
+        [context save:&error];
+        
+        if (error) {
+            NSLog(@"Could not save database: %@", [error localizedDescription]);
+        }
+        
+    }];
+    
 }
 
 @end

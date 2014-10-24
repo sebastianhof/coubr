@@ -20,4 +20,6 @@
 
 - (void)updateLocation;
 
+- (void)requestAuthorization;
+
 @end

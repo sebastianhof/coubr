@@ -18,36 +18,46 @@
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 
-
 @end
 
 @implementation coubrExploreMapViewController
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:FetchedResultsControllerDidUpdatedNotification object:self.parentController queue:nil usingBlock:^(NSNotification *note) {
+        
+        [self addAnnotations];
+        [self updateMapView];
+        
+    }];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:FetchedResultsControllerDidUpdatedNotification object:self.parentController queue:nil usingBlock:^(NSNotification *note) {
-        // Update Map
-        
-        [self updateMapView];
-        [self addAnnotations];
-        
-    }];
+    [self addAnnotations];
+    [self updateMapView];
     
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    self.mapView.showsUserLocation = NO;
 }
 
 #pragma mark - Init
 
 - (void)updateMapView
 {
-    
     CLLocationCoordinate2D coordinate = [[coubrLocationManager defaultManager] lastLocation].coordinate;
     
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate, EXPLORE_DEFAULT_DISTANCE * 2, EXPLORE_DEFAULT_DISTANCE * 2);
-    MKCoordinateRegion adjustedRegion = [self.mapView regionThatFits:region];
-    [self.mapView setRegion:adjustedRegion animated:YES];
-    self.mapView.showsUserLocation = YES;
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate, EXPLORE_DEFAULT_DISTANCE * 2, EXPLORE_DEFAULT_DISTANCE *2);
+    [self.mapView setRegion:region];
     
+    self.mapView.showsUserLocation = YES;
 }
 
 #define PIN_REUSE_IDENTIFIER = @"Pin"
@@ -64,7 +74,7 @@
    
             coubrMapViewAnnotation *annotation = [[coubrMapViewAnnotation alloc]
                                                    initWithTitle:explore.name
-                                                   description:@"Description"
+                                                   description:nil
                                                    andCoordinate: CLLocationCoordinate2DMake([explore.latitude doubleValue], [explore.longitude doubleValue])];
             [annotations addObject:annotation];
         }
@@ -80,10 +90,6 @@
 
 
 
-- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
-{
-
-}
 
 #pragma mark - Annotation View
 
@@ -111,20 +117,6 @@ static NSString* DEFAULT_ANNOTATION_VIEW_IDENTIFIER = @"DefaultAnnotationViewIde
     return annotationView;
     
 }
-
-- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
-{
-    
-    
-    
-}
-
-
-//- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
-
-#pragma mark - Annotation Pin View
-
-
 
 
 @end

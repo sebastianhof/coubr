@@ -9,7 +9,7 @@
 #import "coubrMainViewController.h"
 #import "coubrNavigationViewController.h"
 #import "coubrSettingsTableViewController.h"
-#import "coubrHistoryViewController.h"
+#import "coubrProfileViewController.h"
 
 #import "UIImage+ImageEffects.h"
 
@@ -26,19 +26,19 @@
 @property (strong, nonatomic) coubrSettingsTableViewController *settingsViewController;
 @property (weak, nonatomic) UIView *settingsView;
 
-@property (strong, nonatomic) coubrHistoryViewController *historyViewController;
-@property (weak, nonatomic) UIView *historyView;
+@property (strong, nonatomic) coubrProfileViewController *profileViewController;
+@property (weak, nonatomic) UIView *profileView;
 
 @end
 
 @implementation coubrMainViewController
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
+    
     [self initNavigationBar];
     [self showExploreViewInMainView];
 }
-
-
 
 - (coubrNavigationViewController *)navigationViewController
 {
@@ -118,30 +118,30 @@
     return _settingsView;
 }
 
-- (coubrHistoryViewController *)historyViewController
+- (coubrProfileViewController *)profileViewController
 {
-    if (!_historyViewController) {
-        _historyViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrHistoryViewController"];
-        [self addChildViewController:_historyViewController];
+    if (!_profileViewController) {
+        _profileViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrProfileViewController"];
+        [self addChildViewController:_profileViewController];
     }
-    return _historyViewController;
+    return _profileViewController;
 }
 
-- (UIView *)historyView
+- (UIView *)profileView
 {
-    if (!_historyView) {
-        _historyView = self.historyViewController.view;
+    if (!_profileView) {
+        _profileView = self.profileViewController.view;
         
         CGRect superviewFrame = self.view.frame;
         
-        CGRect frame = _historyView.frame;
+        CGRect frame = _profileView.frame;
         frame.size.width = superviewFrame.size.width;
         frame.size.height = superviewFrame.size.height;
         frame.origin.y = 0;
         frame.origin.x = 0;
-        [_historyView setFrame:frame];
+        [_profileView setFrame:frame];
     }
-    return _historyView;
+    return _profileView;
 }
 
 
@@ -149,23 +149,18 @@
 
 - (void)hideNavigationViewInMainView
 {
-    if ([self.view.subviews containsObject:self.navigationView]) {
-        
-        // TODO animations
-        [UIView transitionWithView:self.view duration:1.0 options:UIViewAnimationOptionTransitionNone animations:^{
-            [self.navigationView removeFromSuperview];
-        } completion:nil];
+    if ([self.view.subviews containsObject:_navigationView]) {
+
+        [self.navigationView removeFromSuperview];
+
     }
 }
 
 - (void)showNavigationViewInMainView
 {
-    if (![self.view.subviews containsObject:self.navigationView]) {
-        
-        // TODO animations
-        [UIView transitionWithView:self.view duration:1.0 options:UIViewAnimationOptionTransitionNone animations:^{
-            [self.view addSubview:self.navigationView];
-        } completion:nil];
+    if (![self.view.subviews containsObject:_navigationView]) {
+
+        [self.view addSubview:self.navigationView];
         
     }
 }
@@ -179,7 +174,7 @@
         return;
     }
     
-    if ([[self.view subviews] containsObject:self.settingsView]) {
+    if ([[self.view subviews] containsObject:_settingsView]) {
         // remove settings view
         [self.settingsView removeFromSuperview];
         
@@ -187,11 +182,11 @@
         self.settingsView = nil;
         self.settingsViewController = nil;
         
-    } else if ([[self.view subviews] containsObject:self.exploreView]) {
+    } else if ([[self.view subviews] containsObject:_exploreView]) {
         // remove explore view
         [self.exploreView removeFromSuperview];
-    } else if ([[self.view subviews] containsObject:self.historyView]) {
-        [self.historyView removeFromSuperview];
+    } else if ([[self.view subviews] containsObject:_profileView]) {
+        [self.profileView removeFromSuperview];
     }
         
     // add to view
@@ -203,9 +198,9 @@
     [self showViewInMainViewWithIdentifier:self.settingsView];
 }
 
-- (void)showHistoryViewInMainView
+- (void)showProfileViewInMainView
 {
-    [self showViewInMainViewWithIdentifier:self.historyView];
+    [self showViewInMainViewWithIdentifier:self.profileView];
 }
 
 - (void)showExploreViewInMainView
@@ -215,7 +210,7 @@
 
 - (IBAction)toggleNavigationViewInMainView:(id)sender {
     
-    if ([self.view.subviews containsObject:self.navigationView]) {
+    if ([self.view.subviews containsObject:_navigationView]) {
         // hide
         [self hideNavigationViewInMainView];
     } else {
@@ -229,12 +224,6 @@
 
 - (void)initNavigationBar
 {
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:242 green:120 blue:75 alpha:1]];
-    [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:51 green:51 blue:51 alpha:1]];
-    [[UINavigationBar appearance] setTranslucent:NO];
-    
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-    
     UIButton *titleButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [titleButton addTarget:self action:@selector(toggleNavigationViewInMainView:) forControlEvents:UIControlEventTouchUpInside];
 

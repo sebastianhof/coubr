@@ -8,6 +8,7 @@
 
 #import "coubrSettingsTableViewController.h"
 #import "coubrConstants.h"
+#import "coubrLocale.h"
 
 @interface coubrSettingsTableViewController ()
 
@@ -40,15 +41,17 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     if (section == 0) {
+        // general
         return 1;
     } else if (section == 1) {
+        // support
         return 2;
     } else if (section == 2) {
+        // about
         return 2;
     } else {
         return 0;
     }
-    
     
 }
 
@@ -67,71 +70,60 @@
 #define HEADER_LEADING_SPACE 16.0
 #define HEADER_FONT_SIZE 14.0
 
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+#define HEADER_IDENTIFIER @"SettingsHeaderReuseIdentifier"
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
+    UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView *) view;
     
-    UILabel *headerLabel = [[UILabel alloc] init];
-    
-    [headerLabel setFont:[UIFont fontWithName:@"Raleway-Light" size:HEADER_FONT_SIZE]];
-    [headerLabel setTintColor:[UIColor colorWithRed:51 green:51 blue:51 alpha:1]];
-    [headerLabel setText:[self tableView:tableView titleForHeaderInSection:section]];
-    [headerLabel setFrame:(CGRectMake(HEADER_LEADING_SPACE, HEADER_TOP_SPACE, 200, HEADER_FONT_SIZE))];
-    
-    UIView *headerView = [[UIView alloc] init];
-    [headerView addSubview:headerLabel];
-    return headerView;
+    [headerView.textLabel setFont:[UIFont preferredFontForTextStyle:UIFontTextStyleCaption1]];
+    [headerView.textLabel setTintColor:[UIColor colorWithRed:51 green:51 blue:51 alpha:1]];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return HEADER_TOP_SPACE + HEADER_TOP_SPACE + HEADER_FONT_SIZE;
-}
+    if (indexPath.section == 0) {
+        // general
+        
+        
+    } else if (indexPath.section == 1) {
+        // support
+        if (indexPath.row == 1) {
+            // feedback
+            
+            MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
+            [mailController setToRecipients:@[ FEEDBACK_EMAIL ]];
+            [mailController setSubject:LOCALE_FEEDBACK_SUBJECT];
+            mailController.mailComposeDelegate = self;
+            
+            if ([MFMailComposeViewController canSendMail]){
+                [self.navigationController presentViewController:mailController animated:YES completion:nil];
+            }
+        }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    } else if(indexPath.section == 2) {
+        // about
+        
+        
+    }
     
-    // Configure the cell...
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    return cell;
+    
 }
-*/
+
+#pragma mark - Message Delegate
+
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [controller dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
+
 
 /*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -140,12 +132,11 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+
 - (IBAction)openAppStore:(id)sender {
 
-    if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:APPSTORE_LINK]]) {
-
-    }
-    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:APPSTORE_LINK]];
 }
 
 - (IBAction)openFacebook:(id)sender {

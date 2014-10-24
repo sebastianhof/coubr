@@ -7,7 +7,30 @@
 //
 
 #import "coubrHelpViewController.h"
+#import "coubrConstants.h"
+
+@interface coubrHelpViewController ()
+
+@property (strong, nonatomic) IBOutlet UIWebView *helpWebView;
+
+@end
 
 @implementation coubrHelpViewController
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    NSURL *url = [NSURL URLWithString:COUBR_BASE_URL];
+    url = [url URLByAppendingPathComponent:HELP_URL];
+    [self.helpWebView loadRequest:[[NSURLRequest alloc] initWithURL:url]];
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    // Handle error;
+     NSLog(@"Could not load help site: %@", [error localizedDescription]);
+}
+
 
 @end

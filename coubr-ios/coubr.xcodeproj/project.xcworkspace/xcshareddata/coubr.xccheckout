@@ -14,11 +14,11 @@
 		<string>github.com:sebastianhof/coubr.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>coubr-ios/coubr/coubr.xcodeproj</string>
+	<string>coubr-ios/coubr.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>414E0B912514175B9469631F196EFF2BBDC532DF</key>
-		<string>../../../..</string>
+		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>github.com:sebastianhof/coubr.git</string>

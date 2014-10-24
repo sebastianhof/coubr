@@ -7,16 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9E2A39FA19EFEB1B00310F25 /* Explore+Insert.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2A39F919EFEB1B00310F25 /* Explore+Insert.m */; };
-		9E2A39FD19EFEB7000310F25 /* Explore+Fetch.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2A39FC19EFEB7000310F25 /* Explore+Fetch.m */; };
 		9E2A3A0019EFF90600310F25 /* coubrExploreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2A39FF19EFF90600310F25 /* coubrExploreTableViewCell.m */; };
-		9E2A3A0319EFFB0500310F25 /* ExploreCoupon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2A3A0219EFFB0500310F25 /* ExploreCoupon.m */; };
 		9E2EBFAA19F2E92D009985A7 /* coubrLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFA919F2E92D009985A7 /* coubrLocationManager.m */; };
-		9E2EBFAD19F2E94E009985A7 /* Explore+Delete.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFAC19F2E94E009985A7 /* Explore+Delete.m */; };
 		9E2EBFB619F2EE52009985A7 /* coubrRemoteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFB519F2EE52009985A7 /* coubrRemoteManager.m */; };
 		9E2EBFB919F2EEAE009985A7 /* coubrRemoteManager+Explore.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFB819F2EEAE009985A7 /* coubrRemoteManager+Explore.m */; };
-		9E2EBFBF19F31FC5009985A7 /* coubrHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFBE19F31FC5009985A7 /* coubrHistoryViewController.m */; };
-		9E2EBFC219F32521009985A7 /* coubrStorePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFC119F32521009985A7 /* coubrStorePageViewController.m */; };
+		9E2EBFBF19F31FC5009985A7 /* coubrHistoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFBE19F31FC5009985A7 /* coubrHistoryTableViewController.m */; };
 		9E2EBFC519F32569009985A7 /* coubrStoreOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFC419F32569009985A7 /* coubrStoreOverviewController.m */; };
 		9E2EBFC819F32651009985A7 /* coubrCouponOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFC719F32651009985A7 /* coubrCouponOverviewController.m */; };
 		9E2EBFCB19F32AB9009985A7 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFCA19F32AB9009985A7 /* UIImage+ImageEffects.m */; };
@@ -28,18 +23,43 @@
 		9E4401F019EF1196006B36E0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E4401EF19EF1196006B36E0 /* MapKit.framework */; };
 		9E4401F219EF119B006B36E0 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E4401F119EF119B006B36E0 /* CoreData.framework */; };
 		9E4401FF19EF257C006B36E0 /* coubrModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9E4401FD19EF257C006B36E0 /* coubrModel.xcdatamodeld */; };
-		9E44021519EF3115006B36E0 /* Explore.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E44021419EF3115006B36E0 /* Explore.m */; };
+		9E480E5219F6F0B900C9D508 /* coubrStoreMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E480E5119F6F0B900C9D508 /* coubrStoreMapViewController.m */; };
+		9E480E5519F6F0D500C9D508 /* coubrStoreHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E480E5419F6F0D500C9D508 /* coubrStoreHeaderViewController.m */; };
 		9E4FE3FC19F074400018ACE7 /* coubrDatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E4FE3FB19F074400018ACE7 /* coubrDatabaseManager.m */; };
 		9E6FDE1A19EEC4D6002642C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6FDE1919EEC4D6002642C1 /* main.m */; };
 		9E6FDE1D19EEC4D6002642C1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6FDE1C19EEC4D6002642C1 /* AppDelegate.m */; };
-		9E6FDE2319EEC4D6002642C1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E6FDE2119EEC4D6002642C1 /* Main.storyboard */; };
 		9E6FDE2819EEC4D6002642C1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E6FDE2619EEC4D6002642C1 /* LaunchScreen.xib */; };
 		9E6FDE3419EEC4D6002642C1 /* coubrTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6FDE3319EEC4D6002642C1 /* coubrTests.m */; };
+		9E7056B319F862DB007C5107 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9E7056B519F862DB007C5107 /* Localizable.strings */; };
+		9E8321FF19F66B90006505B9 /* coubrExploreHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E8321FE19F66B90006505B9 /* coubrExploreHeaderViewController.m */; };
+		9E84CD7119F7D6B700B8D409 /* coubrStorePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E84CD7019F7D6B700B8D409 /* coubrStorePageViewController.m */; };
+		9E84CD7419F8243F00B8D409 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E84CD7219F8243F00B8D409 /* Main.storyboard */; };
+		9E84CD7719F829E500B8D409 /* coubrRemoteManager+Coupon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E84CD7619F829E500B8D409 /* coubrRemoteManager+Coupon.m */; };
+		9EA3E7E519F51F5D0014D0F9 /* coubrTypesToImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA3E7E419F51F5D0014D0F9 /* coubrTypesToImage.m */; };
+		9EA3E7E819F52AAA0014D0F9 /* coubrStoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA3E7E719F52AAA0014D0F9 /* coubrStoreViewController.m */; };
+		9EA3E7EB19F56FF10014D0F9 /* coubrCouponQRScanController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA3E7EA19F56FF10014D0F9 /* coubrCouponQRScanController.m */; };
+		9EA3E7EF19F571E00014D0F9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EA3E7EE19F571E00014D0F9 /* AVFoundation.framework */; };
+		9EA3E7F219F5A8320014D0F9 /* coubrProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA3E7F119F5A8320014D0F9 /* coubrProfileViewController.m */; };
+		9EA3E7FA19F5B5120014D0F9 /* coubrFavoritesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA3E7F919F5B5120014D0F9 /* coubrFavoritesTableViewController.m */; };
+		9EA3E7FD19F5B65C0014D0F9 /* coubrExploreFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA3E7FC19F5B65C0014D0F9 /* coubrExploreFilterViewController.m */; };
 		9EA9E87319EECBEC00CE407E /* coubrMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA9E87219EECBEC00CE407E /* coubrMainViewController.m */; };
 		9EA9E87919EECD7E00CE407E /* coubrExploreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA9E87819EECD7E00CE407E /* coubrExploreViewController.m */; };
+		9EC2F5F319F3EDC80004D051 /* coubrRemoteManager+Store.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC2F5F219F3EDC80004D051 /* coubrRemoteManager+Store.m */; };
+		9EC2F5FF19F429700004D051 /* coubrCouponTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC2F5FE19F429700004D051 /* coubrCouponTableViewCell.m */; };
+		9EC2F60E19F46FC80004D051 /* coubrStoreCouponTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC2F60D19F46FC80004D051 /* coubrStoreCouponTableViewController.m */; };
+		9EEE882019F9581A00740CFA /* Explore.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE881F19F9581A00740CFA /* Explore.m */; };
+		9EEE882319F9581B00740CFA /* Coupon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE882219F9581B00740CFA /* Coupon.m */; };
+		9EEE882619F9581B00740CFA /* ExploreCoupon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE882519F9581B00740CFA /* ExploreCoupon.m */; };
+		9EEE882919F9581C00740CFA /* History.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE882819F9581C00740CFA /* History.m */; };
+		9EEE882C19F9581C00740CFA /* Store.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE882B19F9581C00740CFA /* Store.m */; };
+		9EEE883019F9589D00740CFA /* Store+CRUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE882F19F9589D00740CFA /* Store+CRUD.m */; };
+		9EEE883319F9594300740CFA /* Explore+CRUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE883219F9594300740CFA /* Explore+CRUD.m */; };
+		9EEE883619F959A200740CFA /* Coupon+CRUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE883519F959A200740CFA /* Coupon+CRUD.m */; };
+		9EEE883C19F97B9A00740CFA /* coubrFavoritesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE883B19F97B9A00740CFA /* coubrFavoritesTableViewCell.m */; };
+		9EEE884219F992FB00740CFA /* coubrHistoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE884119F992FB00740CFA /* coubrHistoryTableViewCell.m */; };
+		9EEE884519F9973000740CFA /* History+CRUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE884419F9973000740CFA /* History+CRUD.m */; };
 		9EF6909319F2A5C8008350C9 /* coubrSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF6909219F2A5C8008350C9 /* coubrSettingsTableViewController.m */; };
 		9EF6909719F2C5B6008350C9 /* coubrLegalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF6909619F2C5B6008350C9 /* coubrLegalViewController.m */; };
-		9EF6909A19F2C5E9008350C9 /* coubrFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF6909919F2C5E9008350C9 /* coubrFeedbackViewController.m */; };
 		9EF6909D19F2C866008350C9 /* coubrHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF6909C19F2C866008350C9 /* coubrHelpViewController.m */; };
 		9EF690A019F2C8D7008350C9 /* coubrNotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EF6909F19F2C8D7008350C9 /* coubrNotificationsViewController.m */; };
 		9EFC11A819F13893004FC513 /* coubrNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EFC11A719F13893004FC513 /* coubrNavigationViewController.m */; };
@@ -59,26 +79,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		9E2A39F819EFEB1B00310F25 /* Explore+Insert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Explore+Insert.h"; path = "Model/Explore+Insert.h"; sourceTree = "<group>"; };
-		9E2A39F919EFEB1B00310F25 /* Explore+Insert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Explore+Insert.m"; path = "Model/Explore+Insert.m"; sourceTree = "<group>"; };
-		9E2A39FB19EFEB7000310F25 /* Explore+Fetch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Explore+Fetch.h"; path = "Model/Explore+Fetch.h"; sourceTree = "<group>"; };
-		9E2A39FC19EFEB7000310F25 /* Explore+Fetch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Explore+Fetch.m"; path = "Model/Explore+Fetch.m"; sourceTree = "<group>"; };
+		9E046DBE19FA754A00799422 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
 		9E2A39FE19EFF90600310F25 /* coubrExploreTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrExploreTableViewCell.h; path = View/coubrExploreTableViewCell.h; sourceTree = "<group>"; };
 		9E2A39FF19EFF90600310F25 /* coubrExploreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrExploreTableViewCell.m; path = View/coubrExploreTableViewCell.m; sourceTree = "<group>"; };
-		9E2A3A0119EFFB0500310F25 /* ExploreCoupon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExploreCoupon.h; path = Model/ExploreCoupon.h; sourceTree = "<group>"; };
-		9E2A3A0219EFFB0500310F25 /* ExploreCoupon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExploreCoupon.m; path = Model/ExploreCoupon.m; sourceTree = "<group>"; };
 		9E2EBFA819F2E92D009985A7 /* coubrLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrLocationManager.h; path = Model/coubrLocationManager.h; sourceTree = "<group>"; };
 		9E2EBFA919F2E92D009985A7 /* coubrLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrLocationManager.m; path = Model/coubrLocationManager.m; sourceTree = "<group>"; };
-		9E2EBFAB19F2E94E009985A7 /* Explore+Delete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Explore+Delete.h"; path = "Model/Explore+Delete.h"; sourceTree = "<group>"; };
-		9E2EBFAC19F2E94E009985A7 /* Explore+Delete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Explore+Delete.m"; path = "Model/Explore+Delete.m"; sourceTree = "<group>"; };
 		9E2EBFB419F2EE52009985A7 /* coubrRemoteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrRemoteManager.h; path = Model/coubrRemoteManager.h; sourceTree = "<group>"; };
 		9E2EBFB519F2EE52009985A7 /* coubrRemoteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrRemoteManager.m; path = Model/coubrRemoteManager.m; sourceTree = "<group>"; };
 		9E2EBFB719F2EEAE009985A7 /* coubrRemoteManager+Explore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "coubrRemoteManager+Explore.h"; path = "Model/coubrRemoteManager+Explore.h"; sourceTree = "<group>"; };
 		9E2EBFB819F2EEAE009985A7 /* coubrRemoteManager+Explore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "coubrRemoteManager+Explore.m"; path = "Model/coubrRemoteManager+Explore.m"; sourceTree = "<group>"; };
-		9E2EBFBD19F31FC5009985A7 /* coubrHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrHistoryViewController.h; path = Controller/coubrHistoryViewController.h; sourceTree = "<group>"; };
-		9E2EBFBE19F31FC5009985A7 /* coubrHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrHistoryViewController.m; path = Controller/coubrHistoryViewController.m; sourceTree = "<group>"; };
-		9E2EBFC019F32521009985A7 /* coubrStorePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStorePageViewController.h; path = Controller/coubrStorePageViewController.h; sourceTree = "<group>"; };
-		9E2EBFC119F32521009985A7 /* coubrStorePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStorePageViewController.m; path = Controller/coubrStorePageViewController.m; sourceTree = "<group>"; };
+		9E2EBFBD19F31FC5009985A7 /* coubrHistoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrHistoryTableViewController.h; path = Controller/coubrHistoryTableViewController.h; sourceTree = "<group>"; };
+		9E2EBFBE19F31FC5009985A7 /* coubrHistoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrHistoryTableViewController.m; path = Controller/coubrHistoryTableViewController.m; sourceTree = "<group>"; };
 		9E2EBFC319F32569009985A7 /* coubrStoreOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStoreOverviewController.h; path = Controller/coubrStoreOverviewController.h; sourceTree = "<group>"; };
 		9E2EBFC419F32569009985A7 /* coubrStoreOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreOverviewController.m; path = Controller/coubrStoreOverviewController.m; sourceTree = "<group>"; };
 		9E2EBFC619F32651009985A7 /* coubrCouponOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrCouponOverviewController.h; path = Controller/coubrCouponOverviewController.h; sourceTree = "<group>"; };
@@ -91,8 +102,10 @@
 		9E4401EF19EF1196006B36E0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		9E4401F119EF119B006B36E0 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		9E4401FE19EF257C006B36E0 /* coubrModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = coubrModel.xcdatamodel; sourceTree = "<group>"; };
-		9E44021319EF3115006B36E0 /* Explore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Explore.h; path = Model/Explore.h; sourceTree = "<group>"; };
-		9E44021419EF3115006B36E0 /* Explore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Explore.m; path = Model/Explore.m; sourceTree = "<group>"; };
+		9E480E5019F6F0B900C9D508 /* coubrStoreMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStoreMapViewController.h; path = Controller/coubrStoreMapViewController.h; sourceTree = "<group>"; };
+		9E480E5119F6F0B900C9D508 /* coubrStoreMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreMapViewController.m; path = Controller/coubrStoreMapViewController.m; sourceTree = "<group>"; };
+		9E480E5319F6F0D500C9D508 /* coubrStoreHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStoreHeaderViewController.h; path = Controller/coubrStoreHeaderViewController.h; sourceTree = "<group>"; };
+		9E480E5419F6F0D500C9D508 /* coubrStoreHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreHeaderViewController.m; path = Controller/coubrStoreHeaderViewController.m; sourceTree = "<group>"; };
 		9E4FE3FA19F074400018ACE7 /* coubrDatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrDatabaseManager.h; path = Model/coubrDatabaseManager.h; sourceTree = "<group>"; };
 		9E4FE3FB19F074400018ACE7 /* coubrDatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrDatabaseManager.m; path = Model/coubrDatabaseManager.m; sourceTree = "<group>"; };
 		9E6FDE1419EEC4D6002642C1 /* coubr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = coubr.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,7 +113,6 @@
 		9E6FDE1919EEC4D6002642C1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9E6FDE1B19EEC4D6002642C1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9E6FDE1C19EEC4D6002642C1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		9E6FDE2219EEC4D6002642C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9E6FDE2719EEC4D6002642C1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		9E6FDE2D19EEC4D6002642C1 /* coubrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = coubrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E6FDE3219EEC4D6002642C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -109,17 +121,70 @@
 		9E6FDE4119EEC843002642C1 /* Raleway-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Raleway-Bold.ttf"; path = "coubr/Resources/Fonts/Raleway-Bold.ttf"; sourceTree = "<group>"; };
 		9E6FDE4219EEC843002642C1 /* Raleway-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Raleway-Light.ttf"; path = "coubr/Resources/Fonts/Raleway-Light.ttf"; sourceTree = "<group>"; };
 		9E6FDE4319EEC843002642C1 /* Raleway-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Raleway-Regular.ttf"; path = "coubr/Resources/Fonts/Raleway-Regular.ttf"; sourceTree = "<group>"; };
+		9E7056A519F84E04007C5107 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		9E7056B019F86088007C5107 /* coubrLocale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = coubrLocale.h; sourceTree = "<group>"; };
+		9E7056B419F862DB007C5107 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9E7056B619F862DD007C5107 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9E8321FD19F66B90006505B9 /* coubrExploreHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrExploreHeaderViewController.h; path = Controller/coubrExploreHeaderViewController.h; sourceTree = "<group>"; };
+		9E8321FE19F66B90006505B9 /* coubrExploreHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrExploreHeaderViewController.m; path = Controller/coubrExploreHeaderViewController.m; sourceTree = "<group>"; };
+		9E84CD6F19F7D6B700B8D409 /* coubrStorePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStorePageViewController.h; path = Controller/coubrStorePageViewController.h; sourceTree = "<group>"; };
+		9E84CD7019F7D6B700B8D409 /* coubrStorePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStorePageViewController.m; path = Controller/coubrStorePageViewController.m; sourceTree = "<group>"; };
+		9E84CD7319F8243F00B8D409 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9E84CD7519F829E500B8D409 /* coubrRemoteManager+Coupon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "coubrRemoteManager+Coupon.h"; path = "Model/coubrRemoteManager+Coupon.h"; sourceTree = "<group>"; };
+		9E84CD7619F829E500B8D409 /* coubrRemoteManager+Coupon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "coubrRemoteManager+Coupon.m"; path = "Model/coubrRemoteManager+Coupon.m"; sourceTree = "<group>"; };
+		9EA3E7E319F51F5D0014D0F9 /* coubrTypesToImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrTypesToImage.h; path = View/coubrTypesToImage.h; sourceTree = "<group>"; };
+		9EA3E7E419F51F5D0014D0F9 /* coubrTypesToImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrTypesToImage.m; path = View/coubrTypesToImage.m; sourceTree = "<group>"; };
+		9EA3E7E619F52AAA0014D0F9 /* coubrStoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStoreViewController.h; path = Controller/coubrStoreViewController.h; sourceTree = "<group>"; };
+		9EA3E7E719F52AAA0014D0F9 /* coubrStoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreViewController.m; path = Controller/coubrStoreViewController.m; sourceTree = "<group>"; };
+		9EA3E7E919F56FF10014D0F9 /* coubrCouponQRScanController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrCouponQRScanController.h; path = Controller/coubrCouponQRScanController.h; sourceTree = "<group>"; };
+		9EA3E7EA19F56FF10014D0F9 /* coubrCouponQRScanController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrCouponQRScanController.m; path = Controller/coubrCouponQRScanController.m; sourceTree = "<group>"; };
+		9EA3E7EC19F571BC0014D0F9 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
+		9EA3E7EE19F571E00014D0F9 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		9EA3E7F019F5A8320014D0F9 /* coubrProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrProfileViewController.h; path = Controller/coubrProfileViewController.h; sourceTree = "<group>"; };
+		9EA3E7F119F5A8320014D0F9 /* coubrProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrProfileViewController.m; path = Controller/coubrProfileViewController.m; sourceTree = "<group>"; };
+		9EA3E7F819F5B5120014D0F9 /* coubrFavoritesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrFavoritesTableViewController.h; path = Controller/coubrFavoritesTableViewController.h; sourceTree = "<group>"; };
+		9EA3E7F919F5B5120014D0F9 /* coubrFavoritesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrFavoritesTableViewController.m; path = Controller/coubrFavoritesTableViewController.m; sourceTree = "<group>"; };
+		9EA3E7FB19F5B65C0014D0F9 /* coubrExploreFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrExploreFilterViewController.h; path = Controller/coubrExploreFilterViewController.h; sourceTree = "<group>"; };
+		9EA3E7FC19F5B65C0014D0F9 /* coubrExploreFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrExploreFilterViewController.m; path = Controller/coubrExploreFilterViewController.m; sourceTree = "<group>"; };
 		9EA9E87119EECBEC00CE407E /* coubrMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrMainViewController.h; path = Controller/coubrMainViewController.h; sourceTree = "<group>"; };
 		9EA9E87219EECBEC00CE407E /* coubrMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrMainViewController.m; path = Controller/coubrMainViewController.m; sourceTree = "<group>"; };
 		9EA9E87719EECD7E00CE407E /* coubrExploreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrExploreViewController.h; path = Controller/coubrExploreViewController.h; sourceTree = "<group>"; };
 		9EA9E87819EECD7E00CE407E /* coubrExploreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrExploreViewController.m; path = Controller/coubrExploreViewController.m; sourceTree = "<group>"; };
+		9EC2F5F019F3DC050004D051 /* coubrUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = coubrUtil.h; sourceTree = "<group>"; };
+		9EC2F5F119F3EDC80004D051 /* coubrRemoteManager+Store.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "coubrRemoteManager+Store.h"; path = "Model/coubrRemoteManager+Store.h"; sourceTree = "<group>"; };
+		9EC2F5F219F3EDC80004D051 /* coubrRemoteManager+Store.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "coubrRemoteManager+Store.m"; path = "Model/coubrRemoteManager+Store.m"; sourceTree = "<group>"; };
+		9EC2F5FD19F429700004D051 /* coubrCouponTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrCouponTableViewCell.h; path = View/coubrCouponTableViewCell.h; sourceTree = "<group>"; };
+		9EC2F5FE19F429700004D051 /* coubrCouponTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrCouponTableViewCell.m; path = View/coubrCouponTableViewCell.m; sourceTree = "<group>"; };
+		9EC2F60C19F46FC80004D051 /* coubrStoreCouponTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStoreCouponTableViewController.h; path = Controller/coubrStoreCouponTableViewController.h; sourceTree = "<group>"; };
+		9EC2F60D19F46FC80004D051 /* coubrStoreCouponTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreCouponTableViewController.m; path = Controller/coubrStoreCouponTableViewController.m; sourceTree = "<group>"; };
+		9EEE881E19F9581A00740CFA /* Explore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Explore.h; path = Model/Explore.h; sourceTree = "<group>"; };
+		9EEE881F19F9581A00740CFA /* Explore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Explore.m; path = Model/Explore.m; sourceTree = "<group>"; };
+		9EEE882119F9581B00740CFA /* Coupon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Coupon.h; path = Model/Coupon.h; sourceTree = "<group>"; };
+		9EEE882219F9581B00740CFA /* Coupon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Coupon.m; path = Model/Coupon.m; sourceTree = "<group>"; };
+		9EEE882419F9581B00740CFA /* ExploreCoupon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExploreCoupon.h; path = Model/ExploreCoupon.h; sourceTree = "<group>"; };
+		9EEE882519F9581B00740CFA /* ExploreCoupon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExploreCoupon.m; path = Model/ExploreCoupon.m; sourceTree = "<group>"; };
+		9EEE882719F9581C00740CFA /* History.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = History.h; path = Model/History.h; sourceTree = "<group>"; };
+		9EEE882819F9581C00740CFA /* History.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = History.m; path = Model/History.m; sourceTree = "<group>"; };
+		9EEE882A19F9581C00740CFA /* Store.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Store.h; path = Model/Store.h; sourceTree = "<group>"; };
+		9EEE882B19F9581C00740CFA /* Store.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Store.m; path = Model/Store.m; sourceTree = "<group>"; };
+		9EEE882E19F9589D00740CFA /* Store+CRUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Store+CRUD.h"; path = "Model/Store+CRUD.h"; sourceTree = "<group>"; };
+		9EEE882F19F9589D00740CFA /* Store+CRUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Store+CRUD.m"; path = "Model/Store+CRUD.m"; sourceTree = "<group>"; };
+		9EEE883119F9594300740CFA /* Explore+CRUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Explore+CRUD.h"; path = "Model/Explore+CRUD.h"; sourceTree = "<group>"; };
+		9EEE883219F9594300740CFA /* Explore+CRUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Explore+CRUD.m"; path = "Model/Explore+CRUD.m"; sourceTree = "<group>"; };
+		9EEE883419F959A200740CFA /* Coupon+CRUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Coupon+CRUD.h"; path = "Model/Coupon+CRUD.h"; sourceTree = "<group>"; };
+		9EEE883519F959A200740CFA /* Coupon+CRUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Coupon+CRUD.m"; path = "Model/Coupon+CRUD.m"; sourceTree = "<group>"; };
+		9EEE883A19F97B9A00740CFA /* coubrFavoritesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrFavoritesTableViewCell.h; path = View/coubrFavoritesTableViewCell.h; sourceTree = "<group>"; };
+		9EEE883B19F97B9A00740CFA /* coubrFavoritesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrFavoritesTableViewCell.m; path = View/coubrFavoritesTableViewCell.m; sourceTree = "<group>"; };
+		9EEE883D19F98C7400740CFA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9EEE884019F992FB00740CFA /* coubrHistoryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrHistoryTableViewCell.h; path = View/coubrHistoryTableViewCell.h; sourceTree = "<group>"; };
+		9EEE884119F992FB00740CFA /* coubrHistoryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrHistoryTableViewCell.m; path = View/coubrHistoryTableViewCell.m; sourceTree = "<group>"; };
+		9EEE884319F9973000740CFA /* History+CRUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "History+CRUD.h"; path = "Model/History+CRUD.h"; sourceTree = "<group>"; };
+		9EEE884419F9973000740CFA /* History+CRUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "History+CRUD.m"; path = "Model/History+CRUD.m"; sourceTree = "<group>"; };
 		9EF6909119F2A5C8008350C9 /* coubrSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrSettingsTableViewController.h; path = Controller/coubrSettingsTableViewController.h; sourceTree = "<group>"; };
 		9EF6909219F2A5C8008350C9 /* coubrSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrSettingsTableViewController.m; path = Controller/coubrSettingsTableViewController.m; sourceTree = "<group>"; };
 		9EF6909419F2B7B5008350C9 /* coubrConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = coubrConstants.h; sourceTree = "<group>"; };
 		9EF6909519F2C5B6008350C9 /* coubrLegalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrLegalViewController.h; path = Controller/coubrLegalViewController.h; sourceTree = "<group>"; };
 		9EF6909619F2C5B6008350C9 /* coubrLegalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrLegalViewController.m; path = Controller/coubrLegalViewController.m; sourceTree = "<group>"; };
-		9EF6909819F2C5E9008350C9 /* coubrFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrFeedbackViewController.h; path = Controller/coubrFeedbackViewController.h; sourceTree = "<group>"; };
-		9EF6909919F2C5E9008350C9 /* coubrFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrFeedbackViewController.m; path = Controller/coubrFeedbackViewController.m; sourceTree = "<group>"; };
 		9EF6909B19F2C865008350C9 /* coubrHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrHelpViewController.h; path = Controller/coubrHelpViewController.h; sourceTree = "<group>"; };
 		9EF6909C19F2C866008350C9 /* coubrHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrHelpViewController.m; path = Controller/coubrHelpViewController.m; sourceTree = "<group>"; };
 		9EF6909E19F2C8D7008350C9 /* coubrNotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrNotificationsViewController.h; path = Controller/coubrNotificationsViewController.h; sourceTree = "<group>"; };
@@ -139,6 +204,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EA3E7EF19F571E00014D0F9 /* AVFoundation.framework in Frameworks */,
 				9E4401F219EF119B006B36E0 /* CoreData.framework in Frameworks */,
 				9E4401F019EF1196006B36E0 /* MapKit.framework in Frameworks */,
 			);
@@ -157,6 +223,8 @@
 		9E6FDE0B19EEC4D6002642C1 = {
 			isa = PBXGroup;
 			children = (
+				9EA3E7EE19F571E00014D0F9 /* AVFoundation.framework */,
+				9EA3E7EC19F571BC0014D0F9 /* AVKit.framework */,
 				9E4401F119EF119B006B36E0 /* CoreData.framework */,
 				9E4401EF19EF1196006B36E0 /* MapKit.framework */,
 				9E6FDE1619EEC4D6002642C1 /* coubr */,
@@ -180,9 +248,7 @@
 				9E6FDE4619EECA57002642C1 /* Model */,
 				9E6FDE4519EECA50002642C1 /* Controller */,
 				9E6FDE4419EECA4A002642C1 /* View */,
-				9E6FDE2119EEC4D6002642C1 /* Main.storyboard */,
 				9EFC11A919F13FE0004FC513 /* Images.xcassets */,
-				9E6FDE2619EEC4D6002642C1 /* LaunchScreen.xib */,
 				9E6FDE3E19EEC6BB002642C1 /* Resources */,
 				9E6FDE1719EEC4D6002642C1 /* Supporting Files */,
 			);
@@ -192,7 +258,9 @@
 		9E6FDE1719EEC4D6002642C1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9E7056B019F86088007C5107 /* coubrLocale.h */,
 				9EF6909419F2B7B5008350C9 /* coubrConstants.h */,
+				9EC2F5F019F3DC050004D051 /* coubrUtil.h */,
 				9E6FDE1B19EEC4D6002642C1 /* AppDelegate.h */,
 				9E6FDE1C19EEC4D6002642C1 /* AppDelegate.m */,
 				9E6FDE1819EEC4D6002642C1 /* Info.plist */,
@@ -242,12 +310,23 @@
 		9E6FDE4419EECA4A002642C1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				9E7056B519F862DB007C5107 /* Localizable.strings */,
+				9E84CD7219F8243F00B8D409 /* Main.storyboard */,
+				9E6FDE2619EEC4D6002642C1 /* LaunchScreen.xib */,
 				9E2EBFC919F32AB9009985A7 /* UIImage+ImageEffects.h */,
 				9E2EBFCA19F32AB9009985A7 /* UIImage+ImageEffects.m */,
 				9E2A39FE19EFF90600310F25 /* coubrExploreTableViewCell.h */,
 				9E2A39FF19EFF90600310F25 /* coubrExploreTableViewCell.m */,
+				9EC2F5FD19F429700004D051 /* coubrCouponTableViewCell.h */,
+				9EC2F5FE19F429700004D051 /* coubrCouponTableViewCell.m */,
+				9EEE883A19F97B9A00740CFA /* coubrFavoritesTableViewCell.h */,
+				9EEE883B19F97B9A00740CFA /* coubrFavoritesTableViewCell.m */,
+				9EEE884019F992FB00740CFA /* coubrHistoryTableViewCell.h */,
+				9EEE884119F992FB00740CFA /* coubrHistoryTableViewCell.m */,
 				9EFC11AF19F1D923004FC513 /* coubrMapViewAnnotation.h */,
 				9EFC11B019F1D923004FC513 /* coubrMapViewAnnotation.m */,
+				9EA3E7E319F51F5D0014D0F9 /* coubrTypesToImage.h */,
+				9EA3E7E419F51F5D0014D0F9 /* coubrTypesToImage.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -255,35 +334,16 @@
 		9E6FDE4519EECA50002642C1 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				9EA3E7F719F5A9110014D0F9 /* Profile */,
+				9EA3E7F619F5A8FE0014D0F9 /* Coupon */,
+				9EA3E7F519F5A8B50014D0F9 /* Store */,
+				9EA3E7F419F5A8930014D0F9 /* Explore */,
+				9EA3E7F319F5A8440014D0F9 /* Settings */,
 				9EA9E87119EECBEC00CE407E /* coubrMainViewController.h */,
 				9EA9E87219EECBEC00CE407E /* coubrMainViewController.m */,
 				9EFC11A619F13893004FC513 /* coubrNavigationViewController.h */,
 				9EFC11A719F13893004FC513 /* coubrNavigationViewController.m */,
 				9E4401D519EEF295006B36E0 /* coubrNavigationViewDelegate.h */,
-				9EA9E87719EECD7E00CE407E /* coubrExploreViewController.h */,
-				9EA9E87819EECD7E00CE407E /* coubrExploreViewController.m */,
-				9EFC11AC19F197F0004FC513 /* coubrExploreTableViewController.h */,
-				9EFC11AD19F197F0004FC513 /* coubrExploreTableViewController.m */,
-				9E4401E319EF06AC006B36E0 /* coubrExploreMapViewController.h */,
-				9E4401E419EF06AC006B36E0 /* coubrExploreMapViewController.m */,
-				9EF6909119F2A5C8008350C9 /* coubrSettingsTableViewController.h */,
-				9EF6909219F2A5C8008350C9 /* coubrSettingsTableViewController.m */,
-				9EF6909519F2C5B6008350C9 /* coubrLegalViewController.h */,
-				9EF6909619F2C5B6008350C9 /* coubrLegalViewController.m */,
-				9EF6909819F2C5E9008350C9 /* coubrFeedbackViewController.h */,
-				9EF6909919F2C5E9008350C9 /* coubrFeedbackViewController.m */,
-				9EF6909B19F2C865008350C9 /* coubrHelpViewController.h */,
-				9EF6909C19F2C866008350C9 /* coubrHelpViewController.m */,
-				9EF6909E19F2C8D7008350C9 /* coubrNotificationsViewController.h */,
-				9EF6909F19F2C8D7008350C9 /* coubrNotificationsViewController.m */,
-				9E2EBFBD19F31FC5009985A7 /* coubrHistoryViewController.h */,
-				9E2EBFBE19F31FC5009985A7 /* coubrHistoryViewController.m */,
-				9E2EBFC019F32521009985A7 /* coubrStorePageViewController.h */,
-				9E2EBFC119F32521009985A7 /* coubrStorePageViewController.m */,
-				9E2EBFC319F32569009985A7 /* coubrStoreOverviewController.h */,
-				9E2EBFC419F32569009985A7 /* coubrStoreOverviewController.m */,
-				9E2EBFC619F32651009985A7 /* coubrCouponOverviewController.h */,
-				9E2EBFC719F32651009985A7 /* coubrCouponOverviewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -291,27 +351,122 @@
 		9E6FDE4619EECA57002642C1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9EEE882D19F9582600740CFA /* Entities */,
 				9E4FE3FA19F074400018ACE7 /* coubrDatabaseManager.h */,
 				9E4FE3FB19F074400018ACE7 /* coubrDatabaseManager.m */,
 				9E2EBFA819F2E92D009985A7 /* coubrLocationManager.h */,
 				9E2EBFA919F2E92D009985A7 /* coubrLocationManager.m */,
 				9E2EBFB419F2EE52009985A7 /* coubrRemoteManager.h */,
+				9E2EBFB519F2EE52009985A7 /* coubrRemoteManager.m */,
 				9E2EBFB719F2EEAE009985A7 /* coubrRemoteManager+Explore.h */,
 				9E2EBFB819F2EEAE009985A7 /* coubrRemoteManager+Explore.m */,
-				9E2EBFB519F2EE52009985A7 /* coubrRemoteManager.m */,
+				9EC2F5F119F3EDC80004D051 /* coubrRemoteManager+Store.h */,
+				9EC2F5F219F3EDC80004D051 /* coubrRemoteManager+Store.m */,
+				9E84CD7519F829E500B8D409 /* coubrRemoteManager+Coupon.h */,
+				9E84CD7619F829E500B8D409 /* coubrRemoteManager+Coupon.m */,
 				9E4401FD19EF257C006B36E0 /* coubrModel.xcdatamodeld */,
-				9E2A3A0119EFFB0500310F25 /* ExploreCoupon.h */,
-				9E2A3A0219EFFB0500310F25 /* ExploreCoupon.m */,
-				9E44021319EF3115006B36E0 /* Explore.h */,
-				9E44021419EF3115006B36E0 /* Explore.m */,
-				9E2EBFAB19F2E94E009985A7 /* Explore+Delete.h */,
-				9E2EBFAC19F2E94E009985A7 /* Explore+Delete.m */,
-				9E2A39F819EFEB1B00310F25 /* Explore+Insert.h */,
-				9E2A39F919EFEB1B00310F25 /* Explore+Insert.m */,
-				9E2A39FB19EFEB7000310F25 /* Explore+Fetch.h */,
-				9E2A39FC19EFEB7000310F25 /* Explore+Fetch.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		9EA3E7F319F5A8440014D0F9 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				9EF6909119F2A5C8008350C9 /* coubrSettingsTableViewController.h */,
+				9EF6909219F2A5C8008350C9 /* coubrSettingsTableViewController.m */,
+				9EF6909E19F2C8D7008350C9 /* coubrNotificationsViewController.h */,
+				9EF6909F19F2C8D7008350C9 /* coubrNotificationsViewController.m */,
+				9EF6909B19F2C865008350C9 /* coubrHelpViewController.h */,
+				9EF6909C19F2C866008350C9 /* coubrHelpViewController.m */,
+				9EF6909519F2C5B6008350C9 /* coubrLegalViewController.h */,
+				9EF6909619F2C5B6008350C9 /* coubrLegalViewController.m */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
+		9EA3E7F419F5A8930014D0F9 /* Explore */ = {
+			isa = PBXGroup;
+			children = (
+				9EA9E87719EECD7E00CE407E /* coubrExploreViewController.h */,
+				9EA9E87819EECD7E00CE407E /* coubrExploreViewController.m */,
+				9E4401E319EF06AC006B36E0 /* coubrExploreMapViewController.h */,
+				9E4401E419EF06AC006B36E0 /* coubrExploreMapViewController.m */,
+				9E8321FD19F66B90006505B9 /* coubrExploreHeaderViewController.h */,
+				9E8321FE19F66B90006505B9 /* coubrExploreHeaderViewController.m */,
+				9EFC11AC19F197F0004FC513 /* coubrExploreTableViewController.h */,
+				9EFC11AD19F197F0004FC513 /* coubrExploreTableViewController.m */,
+				9EA3E7FB19F5B65C0014D0F9 /* coubrExploreFilterViewController.h */,
+				9EA3E7FC19F5B65C0014D0F9 /* coubrExploreFilterViewController.m */,
+			);
+			name = Explore;
+			sourceTree = "<group>";
+		};
+		9EA3E7F519F5A8B50014D0F9 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				9EA3E7E619F52AAA0014D0F9 /* coubrStoreViewController.h */,
+				9EA3E7E719F52AAA0014D0F9 /* coubrStoreViewController.m */,
+				9E480E5019F6F0B900C9D508 /* coubrStoreMapViewController.h */,
+				9E480E5119F6F0B900C9D508 /* coubrStoreMapViewController.m */,
+				9E480E5319F6F0D500C9D508 /* coubrStoreHeaderViewController.h */,
+				9E480E5419F6F0D500C9D508 /* coubrStoreHeaderViewController.m */,
+				9E84CD6F19F7D6B700B8D409 /* coubrStorePageViewController.h */,
+				9E84CD7019F7D6B700B8D409 /* coubrStorePageViewController.m */,
+				9E2EBFC319F32569009985A7 /* coubrStoreOverviewController.h */,
+				9E2EBFC419F32569009985A7 /* coubrStoreOverviewController.m */,
+				9EC2F60C19F46FC80004D051 /* coubrStoreCouponTableViewController.h */,
+				9EC2F60D19F46FC80004D051 /* coubrStoreCouponTableViewController.m */,
+			);
+			name = Store;
+			sourceTree = "<group>";
+		};
+		9EA3E7F619F5A8FE0014D0F9 /* Coupon */ = {
+			isa = PBXGroup;
+			children = (
+				9E2EBFC619F32651009985A7 /* coubrCouponOverviewController.h */,
+				9E2EBFC719F32651009985A7 /* coubrCouponOverviewController.m */,
+				9EA3E7E919F56FF10014D0F9 /* coubrCouponQRScanController.h */,
+				9EA3E7EA19F56FF10014D0F9 /* coubrCouponQRScanController.m */,
+			);
+			name = Coupon;
+			sourceTree = "<group>";
+		};
+		9EA3E7F719F5A9110014D0F9 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				9EA3E7F019F5A8320014D0F9 /* coubrProfileViewController.h */,
+				9EA3E7F119F5A8320014D0F9 /* coubrProfileViewController.m */,
+				9EA3E7F819F5B5120014D0F9 /* coubrFavoritesTableViewController.h */,
+				9EA3E7F919F5B5120014D0F9 /* coubrFavoritesTableViewController.m */,
+				9E2EBFBD19F31FC5009985A7 /* coubrHistoryTableViewController.h */,
+				9E2EBFBE19F31FC5009985A7 /* coubrHistoryTableViewController.m */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
+		9EEE882D19F9582600740CFA /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				9EEE882A19F9581C00740CFA /* Store.h */,
+				9EEE882B19F9581C00740CFA /* Store.m */,
+				9EEE882719F9581C00740CFA /* History.h */,
+				9EEE882819F9581C00740CFA /* History.m */,
+				9EEE882419F9581B00740CFA /* ExploreCoupon.h */,
+				9EEE882519F9581B00740CFA /* ExploreCoupon.m */,
+				9EEE882119F9581B00740CFA /* Coupon.h */,
+				9EEE882219F9581B00740CFA /* Coupon.m */,
+				9EEE881E19F9581A00740CFA /* Explore.h */,
+				9EEE881F19F9581A00740CFA /* Explore.m */,
+				9EEE882E19F9589D00740CFA /* Store+CRUD.h */,
+				9EEE882F19F9589D00740CFA /* Store+CRUD.m */,
+				9EEE883419F959A200740CFA /* Coupon+CRUD.h */,
+				9EEE883519F959A200740CFA /* Coupon+CRUD.m */,
+				9EEE883119F9594300740CFA /* Explore+CRUD.h */,
+				9EEE883219F9594300740CFA /* Explore+CRUD.m */,
+				9EEE884319F9973000740CFA /* History+CRUD.h */,
+				9EEE884419F9973000740CFA /* History+CRUD.m */,
+			);
+			name = Entities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -382,6 +537,7 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
 			);
 			mainGroup = 9E6FDE0B19EEC4D6002642C1;
 			productRefGroup = 9E6FDE1519EEC4D6002642C1 /* Products */;
@@ -399,12 +555,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E84CD7419F8243F00B8D409 /* Main.storyboard in Resources */,
 				9E4401D619EEFA9A006B36E0 /* Courgette-Regular.ttf in Resources */,
 				9E4401D719EEFA9A006B36E0 /* Raleway-Bold.ttf in Resources */,
 				9EFC11AA19F13FE0004FC513 /* Images.xcassets in Resources */,
 				9E4401D819EEFA9A006B36E0 /* Raleway-Light.ttf in Resources */,
+				9E7056B319F862DB007C5107 /* Localizable.strings in Resources */,
 				9E4401D919EEFA9A006B36E0 /* Raleway-Regular.ttf in Resources */,
-				9E6FDE2319EEC4D6002642C1 /* Main.storyboard in Resources */,
 				9E6FDE2819EEC4D6002642C1 /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -423,35 +580,53 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EEE884219F992FB00740CFA /* coubrHistoryTableViewCell.m in Sources */,
+				9EA3E7EB19F56FF10014D0F9 /* coubrCouponQRScanController.m in Sources */,
+				9EA3E7FA19F5B5120014D0F9 /* coubrFavoritesTableViewController.m in Sources */,
 				9E2EBFAA19F2E92D009985A7 /* coubrLocationManager.m in Sources */,
-				9E2A39FA19EFEB1B00310F25 /* Explore+Insert.m in Sources */,
-				9E2A3A0319EFFB0500310F25 /* ExploreCoupon.m in Sources */,
-				9E2EBFBF19F31FC5009985A7 /* coubrHistoryViewController.m in Sources */,
+				9E84CD7719F829E500B8D409 /* coubrRemoteManager+Coupon.m in Sources */,
+				9EEE882619F9581B00740CFA /* ExploreCoupon.m in Sources */,
+				9E2EBFBF19F31FC5009985A7 /* coubrHistoryTableViewController.m in Sources */,
+				9EEE882919F9581C00740CFA /* History.m in Sources */,
+				9EEE883019F9589D00740CFA /* Store+CRUD.m in Sources */,
+				9E8321FF19F66B90006505B9 /* coubrExploreHeaderViewController.m in Sources */,
+				9E480E5219F6F0B900C9D508 /* coubrStoreMapViewController.m in Sources */,
+				9E84CD7119F7D6B700B8D409 /* coubrStorePageViewController.m in Sources */,
 				9E2EBFB919F2EEAE009985A7 /* coubrRemoteManager+Explore.m in Sources */,
+				9EA3E7FD19F5B65C0014D0F9 /* coubrExploreFilterViewController.m in Sources */,
 				9E2A3A0019EFF90600310F25 /* coubrExploreTableViewCell.m in Sources */,
-				9E2EBFC219F32521009985A7 /* coubrStorePageViewController.m in Sources */,
 				9EF6909719F2C5B6008350C9 /* coubrLegalViewController.m in Sources */,
+				9EEE883C19F97B9A00740CFA /* coubrFavoritesTableViewCell.m in Sources */,
+				9EC2F5F319F3EDC80004D051 /* coubrRemoteManager+Store.m in Sources */,
+				9EC2F5FF19F429700004D051 /* coubrCouponTableViewCell.m in Sources */,
+				9EA3E7F219F5A8320014D0F9 /* coubrProfileViewController.m in Sources */,
 				9E2EBFC519F32569009985A7 /* coubrStoreOverviewController.m in Sources */,
 				9E2EBFC819F32651009985A7 /* coubrCouponOverviewController.m in Sources */,
 				9EA9E87919EECD7E00CE407E /* coubrExploreViewController.m in Sources */,
 				9E4FE3FC19F074400018ACE7 /* coubrDatabaseManager.m in Sources */,
-				9E2A39FD19EFEB7000310F25 /* Explore+Fetch.m in Sources */,
+				9EEE882C19F9581C00740CFA /* Store.m in Sources */,
 				9EF6909D19F2C866008350C9 /* coubrHelpViewController.m in Sources */,
 				9E2EBFCB19F32AB9009985A7 /* UIImage+ImageEffects.m in Sources */,
 				9EF6909319F2A5C8008350C9 /* coubrSettingsTableViewController.m in Sources */,
 				9EFC11AE19F197F0004FC513 /* coubrExploreTableViewController.m in Sources */,
-				9E2EBFAD19F2E94E009985A7 /* Explore+Delete.m in Sources */,
-				9E44021519EF3115006B36E0 /* Explore.m in Sources */,
 				9EFC11A819F13893004FC513 /* coubrNavigationViewController.m in Sources */,
 				9EA9E87319EECBEC00CE407E /* coubrMainViewController.m in Sources */,
 				9E4401E519EF06AC006B36E0 /* coubrExploreMapViewController.m in Sources */,
-				9EF6909A19F2C5E9008350C9 /* coubrFeedbackViewController.m in Sources */,
+				9EA3E7E819F52AAA0014D0F9 /* coubrStoreViewController.m in Sources */,
 				9E4401FF19EF257C006B36E0 /* coubrModel.xcdatamodeld in Sources */,
+				9E480E5519F6F0D500C9D508 /* coubrStoreHeaderViewController.m in Sources */,
+				9EEE884519F9973000740CFA /* History+CRUD.m in Sources */,
+				9EEE883619F959A200740CFA /* Coupon+CRUD.m in Sources */,
 				9E6FDE1D19EEC4D6002642C1 /* AppDelegate.m in Sources */,
+				9EEE882319F9581B00740CFA /* Coupon.m in Sources */,
 				9EF690A019F2C8D7008350C9 /* coubrNotificationsViewController.m in Sources */,
+				9EC2F60E19F46FC80004D051 /* coubrStoreCouponTableViewController.m in Sources */,
+				9EEE882019F9581A00740CFA /* Explore.m in Sources */,
+				9EEE883319F9594300740CFA /* Explore+CRUD.m in Sources */,
 				9EFC11B119F1D923004FC513 /* coubrMapViewAnnotation.m in Sources */,
 				9E2EBFB619F2EE52009985A7 /* coubrRemoteManager.m in Sources */,
 				9E6FDE1A19EEC4D6002642C1 /* main.m in Sources */,
+				9EA3E7E519F51F5D0014D0F9 /* coubrTypesToImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,20 +649,32 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		9E6FDE2119EEC4D6002642C1 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9E6FDE2219EEC4D6002642C1 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		9E6FDE2619EEC4D6002642C1 /* LaunchScreen.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				9E6FDE2719EEC4D6002642C1 /* Base */,
+				9E7056A519F84E04007C5107 /* de */,
 			);
 			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+		9E7056B519F862DB007C5107 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9E7056B419F862DB007C5107 /* Base */,
+				9E7056B619F862DD007C5107 /* de */,
+				9EEE883D19F98C7400740CFA /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		9E84CD7219F8243F00B8D409 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9E84CD7319F8243F00B8D409 /* Base */,
+				9E046DBE19FA754A00799422 /* de */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -527,7 +714,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -562,7 +749,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -573,10 +760,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = coubr/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -584,10 +773,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = coubr/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

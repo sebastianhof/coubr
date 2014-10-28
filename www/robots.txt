@@ -1,0 +1,5 @@
+User-agent: *
+
+Disallow /#/Imprint
+Disallow /#/Privacy
+Disallow /#/Terms

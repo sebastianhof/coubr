@@ -1525,7 +1525,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M9G-yO-vlx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2056" y="-349"/>
+            <point key="canvasLocation" x="2056.5" y="-264.75"/>
         </scene>
         <!--Coubr Store Header View Controller-->
         <scene sceneID="QT7-7x-arT">
@@ -3103,7 +3103,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jYQ-UA-tTB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2137.5" y="1506"/>
+            <point key="canvasLocation" x="2121" y="1506"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="2OQ-qy-qPt">
@@ -3177,7 +3177,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cq7-8D-uk3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2691" y="1506"/>
+            <point key="canvasLocation" x="2743.5" y="1506"/>
         </scene>
         <!--Coubr Notifications View Controller-->
         <scene sceneID="WYo-yj-GRZ">
@@ -3267,7 +3267,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="123.5" y="167.5" width="153" height="27"/>
+                                    <rect key="frame" x="123" y="167" width="153" height="27"/>
                                 </variation>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="coubr" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NA8-Vg-STL">
@@ -3276,7 +3276,7 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
-                                    <rect key="frame" x="184.5" y="115.5" width="31.5" height="14"/>
+                                    <rect key="frame" x="184" y="115" width="31.5" height="14"/>
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="is not available at your location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lfu-0d-oq6">
@@ -3286,7 +3286,7 @@
                                 <nil key="highlightedColor"/>
                                 <variation key="heightClass=regular-widthClass=compact" misplaced="YES">
                                     <fontDescription key="fontDescription" name=".HelveticaNeueDeskInterface-Regular" family=".Helvetica Neue DeskInterface" pointSize="12"/>
-                                    <rect key="frame" x="117" y="137.5" width="166" height="14"/>
+                                    <rect key="frame" x="117" y="137" width="166" height="14"/>
                                 </variation>
                             </label>
                         </subviews>
@@ -3371,7 +3371,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="byU-qU-WpP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3322.5" y="1506"/>
+            <point key="canvasLocation" x="3369" y="1506"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="cA9-dn-Q5d">

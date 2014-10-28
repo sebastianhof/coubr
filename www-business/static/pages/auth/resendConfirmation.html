@@ -1,0 +1,41 @@
+<div class="container">
+
+    <div class="jumbotron">
+
+        <div class="row">
+
+            <div class="col-lg-6">
+
+                <h2>Resend Confirmation</h2>
+                <br/>
+
+                <form cbrform name="form"
+                      postTo="b/resendConfirmation"
+                      thenGoto="#confirmRegistration?:email"
+                      initFromQuery="true">
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="/static/images/icons/email-40.png"/></span>
+                        <input type="email" class="form-control" name="email" placeholder="Type in your Email"
+                               ng-model="data.email" ng-required="true">
+                    </div>
+                    <cbrinputerror class="help-block" cbrname="email">Error.</cbrinputerror>
+
+                    <br/>
+
+                    <div>
+                        <cbrprocess class="label process-submit">Processing...</cbrprocess>
+                        <cbrerror class="label error-submit">Error!</cbrerror>
+                        <cbrsubmit class="btn btn-coubr btn-lg">Send</cbrsubmit>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

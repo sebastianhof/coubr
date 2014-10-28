@@ -1,0 +1,60 @@
+<div class="container">
+
+    <div class="jumbotron">
+
+        <div class="row">
+
+            <div class="col-lg-6">
+
+                <h2>Sign In</h2>
+                <br/>
+
+                <form cbrform name="form"
+                      initFromQuery="true"
+                      postTo="b/login"
+                      thenGoto="b">
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="/static/images/icons/email-40.png"/></span>
+                        <input type="email" class="form-control" name="email" placeholder="Type in your Email"
+                               ng-model="data.email" ng-required="true">
+                    </div>
+                    <cbrinputerror class="help-block" cbrname="email">Error.</cbrinputerror>
+
+                    <br/>
+
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="/static/images/icons/key-40.png"/></span>
+                        <input type="password" class="form-control" name="password" placeholder="Type in your password"
+                               ng-model="data.password" ng-minlength="8" ng-maxlength="50" ng-required="true">
+                    </div>
+                    <cbrinputerror class="help-block" cbrname="password"
+                                   cbrmaxlength="Password must have at maximum 50 characters."
+                                   cbrminlength="Password must have at least 8 characters.">Error.</cbrinputerror>
+
+                    <br/>
+
+                    <div>
+                        <cbrprocess class="label process-submit">Processing...</cbrprocess>
+                        <cbrerror class="label error-submit">Error!</cbrerror>
+                        <cbrsubmit class="btn btn-coubr btn-lg">Sign in</cbrsubmit>
+                    </div>
+
+
+                    <br/>
+
+                </form>
+
+                <p><a ng-href="#resetPassword">Forgot password?</a></p>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>

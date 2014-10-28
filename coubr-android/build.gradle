@@ -1,0 +1,16 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.13.3'
+    }
+}
+
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 15
+    buildToolsVersion "15.0.0"
+}

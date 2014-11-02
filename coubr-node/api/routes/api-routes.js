@@ -1,3 +1,13 @@
+/************************************
+*
+* Sebastian Hof CONFIDENTIAL
+* __________________________
+*
+* Copyright 2014. Sebastian Hof
+* All Rights Reserved.
+*
+************************************/
+
 'use strict';
 
 module.exports = function(app, controller) {
@@ -6,7 +16,7 @@ module.exports = function(app, controller) {
     controller.api.explore(req, res);
   });
 
-  app.get('/store/:id', function(req, res) {
+  app.post('/store/:id', function(req, res) {
     controller.api.store(req, res);
   });
 

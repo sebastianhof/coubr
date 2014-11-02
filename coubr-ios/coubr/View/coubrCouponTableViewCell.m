@@ -33,7 +33,7 @@
 
     [self.validToLabel setText:[NSString stringWithFormat:@"%@ %@", LOCALE_COUPON_VALID_UNTIL, [dateFormatter stringFromDate:coupon.validTo]]];
     
-    [self.amontLabel setText:[NSString stringWithFormat:@"%lu %@", ([coupon.amount longValue] - [coupon.amountIssued longValue]), LOCALE_COUPON_AVAILABLE]];
+    [self.amontLabel setText:[NSString stringWithFormat:@"%lu %@", ([coupon.amount longValue] - [coupon.amountRedeemed longValue]), LOCALE_COUPON_AVAILABLE]];
     
     if (!self.notInit) {
         [self blurBackgroundImage];

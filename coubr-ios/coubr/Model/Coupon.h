@@ -2,32 +2,32 @@
 //  Coupon.h
 //  coubr
 //
-//  Created by Sebastian Hof on 23/10/14.
+//  Created by Sebastian Hof on 02/11/14.
 //  Copyright (c) 2014 coubr. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Store;
+@class History, Store;
 
 @interface Coupon : NSManagedObject
 
 @property (nonatomic, retain) NSNumber * amount;
-@property (nonatomic, retain) NSNumber * amountIssued;
+@property (nonatomic, retain) NSNumber * amountRedeemed;
 @property (nonatomic, retain) NSString * category;
 @property (nonatomic, retain) NSString * couponDescription;
 @property (nonatomic, retain) NSString * couponId;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSDate * validTo;
-@property (nonatomic, retain) Store *store;
 @property (nonatomic, retain) NSSet *histories;
+@property (nonatomic, retain) Store *store;
 @end
 
 @interface Coupon (CoreDataGeneratedAccessors)
 
-- (void)addHistoriesObject:(NSManagedObject *)value;
-- (void)removeHistoriesObject:(NSManagedObject *)value;
+- (void)addHistoriesObject:(History *)value;
+- (void)removeHistoriesObject:(History *)value;
 - (void)addHistories:(NSSet *)values;
 - (void)removeHistories:(NSSet *)values;
 

@@ -1,3 +1,13 @@
+/************************************
+*
+* Sebastian Hof CONFIDENTIAL
+* __________________________
+*
+* Copyright 2014. Sebastian Hof
+* All Rights Reserved.
+*
+************************************/
+
 "use strict"
 
 module.exports = function(model) {
@@ -64,7 +74,7 @@ module.exports = function(model) {
           owner.lastName = data.lastName;
 
           owner.save(function (err) {
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             res.json("ok");
           });
@@ -101,16 +111,16 @@ module.exports = function(model) {
 
         bcrypt.genSalt(10, function(err, salt) {
 
-          if (err) { res.status(500).json(error("50000")); return; }
+          if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
           bcrypt.hash(data.newPassword, salt, function(err, hash) {
 
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             owner.password = hash;
 
             owner.save(function (err) {
-              if (err) { res.status(500).json(error("50000")); return; }
+              if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
               res.json("ok");
             });
@@ -144,7 +154,7 @@ module.exports = function(model) {
           if (!owner) { res.status(400).json(error("40001")); return; }
 
           owner.save(function (err) {
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             // confirmation Code
             var randomString = require('random-string');
@@ -161,18 +171,48 @@ module.exports = function(model) {
 
     },
     delete: function(req, res) {
+      req.checkBody('password').notEmpty().len(8, 50);
+      if (req.validationErrors()) {
+        res.status(400).json(error("40099"));
+        return;
+      }
+
       var owner = req.user;
       var data = req.body;
+      var reason = data.reason; // 1. No coubr, 2. other
 
-      model.Owner.findOne({ email: owner.email }, function(err, owner) {
+      // check password
+      var password = data.password;
+      var bcrypt = require('bcrypt');
+      if (!bcrypt.compareSync(password, owner.password)) {
+        res.status(400).json(error("40002")); return;
+      }
 
-        if (!owner) { res.status(400).json(error("40001")); return; }
+      model.Coupon.remove({ 'owner': owner._id }, function (err) {
 
-          // TODO
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+        model.Store.remove({ 'owner': owner._id }, function (err) {
+
+          if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+          model.Owner.remove({ '_id': owner._id }, function (err) {
+
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+            // TODO log reason
+
+            req.logout();
+            res.redirect('/');
+
+          });
+
+        });
 
       });
 
     }
+
   };
 
 };

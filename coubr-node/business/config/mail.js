@@ -1,8 +1,18 @@
+/************************************
+*
+* Sebastian Hof CONFIDENTIAL
+* __________________________
+*
+* Copyright 2014. Sebastian Hof
+* All Rights Reserved.
+*
+************************************/
+
 'use strict'
 
 module.exports =  {
 
-    user: 'coubr-business',
-    key: 'pzPohKq8PjYJznp3MMnHAjuxjYKgaFcJ3PXhEPQ2'
+    user: process.env.SENDMAIL_USER || '',
+    key: process.env.SENDMAIL_KEY || '',
 
 }

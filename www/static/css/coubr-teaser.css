@@ -1,0 +1,50 @@
+@font-face {
+    font-family: raleway-light;
+    src: url('../fonts/Raleway-Light.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/Raleway-Light.woff') format('woff'), /* Modern Browsers */
+    url('../fonts/Raleway-Light.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('../fonts/Raleway-Light.svg') format('svg'); /* Legacy iOS */
+}
+
+@font-face {
+    font-family: courgette-regular;
+    src: url('../fonts/Courgette-Regular.eot'); /* IE9 Compat Modes */
+    src: url('../fonts/Courgette-Regular.woff') format('woff'), /* Modern Browsers */
+    url('../fonts/Courgette-Regular.ttf')  format('truetype'), /* Safari, Android, iOS */
+    url('../fonts/Courgette-Regular.svg') format('svg'); /* Legacy iOS */
+}
+
+body {
+    background-color: #F2784B;
+    padding: 1em;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 264px;
+    width: 264px;
+}
+
+.center {
+    position: absolute;
+    top: 10%; /* 20 */
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.text {
+    font-family: raleway-light;
+    font-size: 32pt;
+    color: #333333;
+    text-align: center;
+}
+
+.coubr {
+    font-family: courgette-regular;
+    font-size: 64pt;
+    color: #333333;
+    text-align: center;
+}

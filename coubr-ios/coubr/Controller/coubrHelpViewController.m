@@ -21,8 +21,7 @@
 {
     [super viewDidLoad];
     
-    NSURL *url = [NSURL URLWithString:COUBR_BASE_URL];
-    url = [url URLByAppendingPathComponent:HELP_URL];
+    NSURL *url = [NSURL URLWithString:HELP_URL];
     [self.helpWebView loadRequest:[[NSURLRequest alloc] initWithURL:url]];
 }
 

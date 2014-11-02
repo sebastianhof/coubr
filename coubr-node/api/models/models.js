@@ -1,3 +1,13 @@
+/************************************
+*
+* Sebastian Hof CONFIDENTIAL
+* __________________________
+*
+* Copyright 2014. Sebastian Hof
+* All Rights Reserved.
+*
+************************************/
+
 'use strict'
 
 module.exports = function(mongoose) {
@@ -24,9 +34,16 @@ module.exports = function(mongoose) {
                   coordinates: { type: [Number] },
       },
       code : { type: String },
+      coupons: [ { type : Schema.ObjectId, ref: 'Coupon' } ],
   });
 
   store.index({location: '2dsphere'});
+
+  var storeVisit = new Schema({
+    storeId: { type : Schema.ObjectId, ref: 'Store' },
+    date: { type: Date },
+    userId: { type: String },
+  });
 
   // coupon
   var coupon = new Schema({
@@ -36,23 +53,25 @@ module.exports = function(mongoose) {
       category : { type: String, lowercase: true },
       validTo: { type: Date },
       amount: { type: Number, min: 1 },
-      amountIssued: { type: Number, min: 0 },
+      amountRedeemed: { type: Number, min: 0, default: 0 },
       activated: { type: Boolean, default: true },
       code : { type: String },
-      stores: [ store ],
+      stores: [ { type : Schema.ObjectId, ref: 'Store' } ],
   });
 
-  // store objects
-  var storeOffers = new Schema({
-      store: { type: Schema.ObjectId, ref: 'Store', index: true },
-      coupons: [ coupon ],
+  var couponRedemption = new Schema({
+      couponId: { type : Schema.ObjectId, ref: 'Coupon' },
+      storeId: { type : Schema.ObjectId, ref: 'Store' },
+      date: { type: Date },
+      userId: { type: String },
   });
 
   return {
 
     Store: mongoose.model('Store', store),
+    StoreVisit: mongoose.model('StoreVisit', storeVisit),
     Coupon: mongoose.model('Coupon', coupon),
-    StoreOffers: mongoose.model('StoreOffers', storeOffers),
+    CouponRedemption: mongoose.model('CouponRedemption', couponRedemption),
 
   }
 

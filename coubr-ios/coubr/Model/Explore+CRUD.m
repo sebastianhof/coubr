@@ -7,7 +7,6 @@
 //
 
 #import "Explore+CRUD.h"
-#import "ExploreCoupon.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import "coubrLocationManager.h"
@@ -80,35 +79,7 @@
                 explore.distance = [NSNumber numberWithDouble:distance];
             }
             
-            if (isValidJSONValue(store[EXPLORE_RESPONSE_STORE_COUPONS])) {
-                
-                for (NSDictionary* coupon in store[EXPLORE_RESPONSE_STORE_COUPONS]) {
-                    
-                    NSString *couponId = isValidJSONValue(store[EXPLORE_RESPONSE_COUPON_ID]) ? coupon[EXPLORE_RESPONSE_COUPON_ID] : nil;
-                    
-                    if (!couponId) {
-                        continue;
-                    }
-                    
-                    // block: fetch coupon
-                    result = [context executeFetchRequest:[self fetchRequestForExploreCouponWithId:couponId] error:&error];
-                    
-                    ExploreCoupon *exploreCoupon;
-                    if (result.count > 0) {
-                        // coupon exists already
-                        exploreCoupon = (ExploreCoupon *) [result firstObject];
-                    } else {
-                        // insert new coupon
-                        exploreCoupon = (ExploreCoupon *) [NSEntityDescription insertNewObjectForEntityForName:@"ExploreCoupon" inManagedObjectContext:context];
-                    }
-                    
-                    exploreCoupon.couponId = couponId;
-                    exploreCoupon.title = isValidJSONValue(store[EXPLORE_RESPONSE_COUPON_TITLE]) ? coupon[EXPLORE_RESPONSE_COUPON_TITLE] : nil;
-                    exploreCoupon.store = explore;
-                    
-                }
-                
-            }
+            explore.coupons = isValidJSONValue(store[EXPLORE_RESPONSE_STORE_COUPONS]) ? store[EXPLORE_RESPONSE_STORE_COUPONS] : nil;
             
         }
         

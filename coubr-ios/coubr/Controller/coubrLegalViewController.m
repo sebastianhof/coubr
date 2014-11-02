@@ -21,8 +21,7 @@
 {
     [super viewDidLoad];
     
-    NSURL *url = [NSURL URLWithString:COUBR_BASE_URL];
-    url = [url URLByAppendingPathComponent:LEGAL_URL];
+    NSURL *url = [NSURL URLWithString:LEGAL_URL];
     [self.legalWebView loadRequest:[[NSURLRequest alloc] initWithURL:url]];
 }
 

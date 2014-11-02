@@ -87,20 +87,20 @@
                     
                     NSDate *validTo;
                     NSNumber *amount;
-                    NSNumber *amountIssued;
+                    NSNumber *amountRedeemed;
                     
-                    if (isValidJSONValue(couponJSON[STORE_RESPONSE_COUPON_AMOUNT])) {
+                    if (isValidJSONValue(couponJSON[STORE_RESPONSE_COUPON_VALID_TO])) {
                         NSTimeInterval timeInterval = [couponJSON[STORE_RESPONSE_COUPON_VALID_TO] doubleValue] / 1000.0;
                         validTo = [NSDate dateWithTimeIntervalSince1970:timeInterval];
                     }
                     
-                    if (isValidJSONValue(couponJSON[STORE_RESPONSE_COUPON_AMOUNT_ISSUED])) {
+                    if (isValidJSONValue(couponJSON[STORE_RESPONSE_COUPON_AMOUNT])) {
                         amount = couponJSON[STORE_RESPONSE_COUPON_AMOUNT];
                     }
                     
                     
-                    if (isValidJSONValue(couponJSON[STORE_RESPONSE_COUPON_VALID_TO])) {
-                        amountIssued = couponJSON[STORE_RESPONSE_COUPON_AMOUNT_ISSUED];
+                    if (isValidJSONValue(couponJSON[STORE_RESPONSE_COUPON_AMOUNT_REDEEMED])) {
+                        amountRedeemed= couponJSON[STORE_RESPONSE_COUPON_AMOUNT_REDEEMED];
                     }
                     
                     coupon.couponId = couponJSON[STORE_RESPONSE_COUPON_ID];
@@ -109,7 +109,7 @@
                     coupon.category = isValidJSONValue(couponJSON[STORE_RESPONSE_COUPON_CATEGORY]) ? couponJSON[STORE_RESPONSE_COUPON_CATEGORY] : nil;
                     coupon.validTo = validTo;
                     coupon.amount = amount;
-                    coupon.amountIssued = amountIssued;
+                    coupon.amountRedeemed = amountRedeemed;
                     coupon.store = store;
                     
                 }

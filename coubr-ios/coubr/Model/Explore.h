@@ -2,14 +2,13 @@
 //  Explore.h
 //  coubr
 //
-//  Created by Sebastian Hof on 23/10/14.
+//  Created by Sebastian Hof on 02/11/14.
 //  Copyright (c) 2014 coubr. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class ExploreCoupon;
 
 @interface Explore : NSManagedObject
 
@@ -21,14 +20,6 @@
 @property (nonatomic, retain) NSString * storeId;
 @property (nonatomic, retain) NSString * subcategory;
 @property (nonatomic, retain) NSString * type;
-@property (nonatomic, retain) NSSet *coupons;
-@end
-
-@interface Explore (CoreDataGeneratedAccessors)
-
-- (void)addCouponsObject:(ExploreCoupon *)value;
-- (void)removeCouponsObject:(ExploreCoupon *)value;
-- (void)addCoupons:(NSSet *)values;
-- (void)removeCoupons:(NSSet *)values;
+@property (nonatomic, retain) NSNumber * coupons;
 
 @end

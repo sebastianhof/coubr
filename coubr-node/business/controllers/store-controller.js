@@ -1,3 +1,13 @@
+/************************************
+*
+* Sebastian Hof CONFIDENTIAL
+* __________________________
+*
+* Copyright 2014. Sebastian Hof
+* All Rights Reserved.
+*
+************************************/
+
 'use strict'
 
 module.exports = function(model) {
@@ -29,8 +39,7 @@ module.exports = function(model) {
       type: store.type,
       category: store.category,
       subcategory: store.subcategory,
-      offers: [] // TODO stores offers
-
+      //offers: []
     };
 
   };
@@ -70,13 +79,13 @@ module.exports = function(model) {
     return {
       storeId: base64url.encode(store._id.toString()),
       name: store.name,
-      description: store.description,
+      description: store.description || 'no description',
       street: store.street,
       postalCode: store.postalCode,
       city: store.place,
-      phone: store.phone,
-      email: store.email,
-      website: store.website,
+      phone: store.phone || 'no phone',
+      email: store.email || 'no email',
+      website: store.website || 'no website',
       type: store.type,
       category: store.category,
       subcategory: store.subcategory,
@@ -177,7 +186,7 @@ module.exports = function(model) {
       var data = req.body;
 
       var store = new model.Store();
-      store.owner = owner.id;
+      store.owner = owner._id;
       store.name = data.name;
       store.description = data.description;
       store.type = data.type;
@@ -190,7 +199,11 @@ module.exports = function(model) {
       store.postalCode = data.postalCode;
       store.street = data.street;
 
-      var geocoder = require('node-geocoder').getGeocoder('google','https');
+      var randomString = require('random-string');
+      store.code = randomString({length: 128});
+
+      var googleConfig = require('../config/google');
+      var geocoder = require('node-geocoder').getGeocoder('google','https', { apiKey: googleConfig.key } );
       var query = data.street + ', ' + data.postalCode  + ' ' + data.city;
       geocoder.geocode(query, function(err, geo) {
 
@@ -198,8 +211,7 @@ module.exports = function(model) {
 
         if (geo.length > 0) {
 
-          store.latitude = geo[0].latitude;
-          store.longitude = geo[0].longitude;
+          store.location = { type : "Point", coordinates : [geo[0].longitude, geo[0].latitude] };
           store.country = geo[0].countryCode;
           store.region = geo[0].stateCode;
 
@@ -209,7 +221,7 @@ module.exports = function(model) {
         }
 
         store.save(function (err) {
-          if (err) { res.status(500).json(error("50000")); return; }
+          if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
           res.json(storeJSON(store));
         });
@@ -220,9 +232,9 @@ module.exports = function(model) {
     getAll: function(req, res) {
       var owner = req.user;
 
-      model.Store.find({ 'owner': owner.id }, function (err, stores) {
+      model.Store.find({ 'owner': owner._id }, function (err, stores) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         var data = {};
         data.stores = [];
@@ -240,9 +252,9 @@ module.exports = function(model) {
     getAllDetails: function(req, res) {
       var owner = req.user;
 
-      model.Store.find({ 'owner': owner.id }, function (err, stores) {
+      model.Store.find({ 'owner': owner._id }, function (err, stores) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         var data = {};
         data.stores = [];
@@ -262,9 +274,9 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Store.findOne({ '_id': id, 'owner': owner.id }, function (err, store) {
+      model.Store.findOne({ '_id': id, 'owner': owner._id }, function (err, store) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!store) { res.status(400).json(error("40007")); return; }
 
@@ -278,9 +290,9 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Store.findOne({ '_id': id, 'owner': owner.id }, function (err, store) {
+      model.Store.findOne({ '_id': id, 'owner': owner._id }, function (err, store) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!store) { res.status(400).json(error("40007")); return; }
 
@@ -294,9 +306,9 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Store.findOne({ '_id': id, 'owner': owner.id }, function (err, store) {
+      model.Store.findOne({ '_id': id, 'owner': owner._id }, function (err, store) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!store) { res.status(400).json(error("40007")); return; }
 
@@ -319,7 +331,7 @@ module.exports = function(model) {
           store.location = { type : "Point", coordinates : [data.longitude, data.latitude] };
 
           store.save(function (err) {
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             res.json("ok");
           });
@@ -338,9 +350,9 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Store.findOne({ '_id': id, 'owner': owner.id }, function (err, store) {
+      model.Store.findOne({ '_id': id, 'owner': owner._id }, function (err, store) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!store) { res.status(400).json(error("40007")); return; }
 
@@ -349,14 +361,32 @@ module.exports = function(model) {
       });
 
     },
+    qrcode: function(req, res) {
+      var owner = req.user;
+      var base64url = require('base64-url');
+      var id = base64url.decode(req.params.id);
+
+      model.Store.findOne({ '_id': id, 'owner': owner._id }, function (err, store) {
+
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+        if (!store) { res.status(400).json(error("40007")); return; }
+
+        var qr = require('qr-image');
+        var code = qr.image('coubrStore:' + store.code, { type: 'svg' });
+        res.type('svg');
+        code.pipe(res);
+      });
+
+    },
     settings: function(req, res) {
       var owner = req.user;
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Store.findOne({ '_id': id, 'owner': owner.id }, function (err, store) {
+      model.Store.findOne({ '_id': id, 'owner': owner._id }, function (err, store) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!store) { res.status(400).json(error("40007")); return; }
 
@@ -370,9 +400,9 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Store.findOne({ '_id': id, 'owner': owner.id }, function (err, store) {
+      model.Store.findOne({ '_id': id, 'owner': owner._id }, function (err, store) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!store) { res.status(400).json(error("40007")); return; }
 
@@ -397,7 +427,7 @@ module.exports = function(model) {
           store.description = data.description;
 
           store.save(function (err) {
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             res.json("ok");
           });
@@ -418,9 +448,9 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Store.findOne({ '_id': id, 'owner': owner.id }, function (err, store) {
+      model.Store.findOne({ '_id': id, 'owner': owner._id }, function (err, store) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!store) { res.status(400).json(error("40007")); return; }
 
@@ -449,7 +479,8 @@ module.exports = function(model) {
           store.postalCode = data.postalCode;
           store.street = data.street;
 
-          var geocoder = require('node-geocoder').getGeocoder('google','https');
+          var googleConfig = require('../config/google');
+          var geocoder = require('node-geocoder').getGeocoder('google','https', { apiKey: googleConfig.key } );
           var query = data.street + ', ' + data.postalCode  + ' ' + data.city;
           geocoder.geocode(query, function(err, geo) {
 
@@ -467,7 +498,7 @@ module.exports = function(model) {
             }
 
             store.save(function (err) {
-              if (err) { res.status(500).json(error("50000")); return; }
+              if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
               res.json("ok");
 
@@ -490,9 +521,9 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Store.findOne({ '_id': id, 'owner': owner.id }, function (err, store) {
+      model.Store.findOne({ '_id': id, 'owner': owner._id }, function (err, store) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!store) { res.status(400).json(error("40007")); return; }
 
@@ -517,7 +548,7 @@ module.exports = function(model) {
           store.website = data.website;
 
           store.save(function (err) {
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             res.json("ok");
           });
@@ -537,9 +568,9 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Store.findOne({ '_id': id, 'owner': owner.id }, function (err, store) {
+      model.Store.findOne({ '_id': id, 'owner': owner._id }, function (err, store) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!store) { res.status(400).json(error("40007")); return; }
 
@@ -561,7 +592,7 @@ module.exports = function(model) {
           store.subcategory = data.subcategory;
 
           store.save(function (err) {
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             res.json("ok");
           });
@@ -575,19 +606,38 @@ module.exports = function(model) {
       });
 
     },
-    delete: function(req, res) {
+    close: function(req, res) {
       var owner = req.user;
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Store.findOne({ '_id': id, 'owner': owner.id }, function (err, store) {
+      var data = req.body;
+      var reason = data.reason; // 1. No list, 2. Store closes, 3. other
+      var inform = data.inform;
 
-        if (err) { res.status(500).json(error("50000")); return; }
+      model.Store.findOne({ '_id': id, 'owner': owner._id }, function (err, store) {
+
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!store) { res.status(400).json(error("40007")); return; }
 
-        // TODO delete + delete offers -> delete set flag
-        // TODO inform customers
+          // remove from all coupons
+          model.Coupon.update( { 'owner': owner._id }, { $pull: { 'stores': store._id } }, { multi: true }, function (err) {
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+            // remove store
+            model.Store.remove({ '_id': id, 'owner': owner._id }, function (err) {
+
+              if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+              res.json("ok");
+
+            });
+
+          });
+
+          // TODO log reason
+          // TODO inform customers
 
       });
 

@@ -1,22 +1,19 @@
+/************************************
+*
+* Sebastian Hof CONFIDENTIAL
+* __________________________
+*
+* Copyright 2014. Sebastian Hof
+* All Rights Reserved.
+*
+************************************/
+
 "use strict"
 
 module.exports = function(model) {
 
-var exploreCoupon = function(coupon) {
-  var base64url = require('base64-url');
-
-  return {
-    ci: base64url.encode(coupon._id.toString()),
-    ct: coupon.title,
-  };
-
-}
-
 var exploreStore = function(geo) {
   var base64url = require('base64-url');
-
-  var c = [];
-  // TODO add coupons
 
   return {
     si: base64url.encode(geo.obj._id.toString()),
@@ -24,9 +21,9 @@ var exploreStore = function(geo) {
     st: geo.obj.type,
     sc: geo.obj.category,
     ss: geo.obj.subcategory,
-    lt: geo.obj.latitude,
-    lg: geo.obj.longitude,
-    c: c,
+    lt: geo.obj.location.coordinates[1],
+    lg: geo.obj.location.coordinates[0],
+    oc: geo.obj.coupons.length,
     d: geo.dis,
   };
 
@@ -55,16 +52,18 @@ var couponJSON = function(coupon) {
     c: coupon.category,
     v: coupon.validTo,
     a: coupon.amount,
-    ai: coupon.amountIssued,
+    ar: coupon.amountRedeemed,
   };
 
 };
 
-var storeJSON = function(store) {
+var storeJSON = function(store, coupons) {
   var base64url = require('base64-url');
 
-  var co = [];
-  // TODO coupons
+  var couponJSONs = [];
+  coupons.forEach(function(entry) {
+    couponJSONs.push(couponJSON(entry));
+  });
 
   return {
     i: base64url.encode(store._id.toString()),
@@ -73,15 +72,15 @@ var storeJSON = function(store) {
     t: store.type,
     c: store.category,
     s: store.subcategory,
-    lt: store.latitude,
-    lg: store.longitude,
+    lt: store.location.coordinates[1],
+    lg: store.location.coordinates[0],
     as: store.street,
     ap: store.postalCode,
-    ac: store.location,
+    ac: store.place,
     ct: store.phone,
     ce: store.email,
     cw: store.website,
-    co: co,
+    co: couponJSONs,
   }
 
 }
@@ -119,7 +118,7 @@ return {
 
     model.Store.geoNear(point, { maxDistance: data.d / EARTH_RADIUS , spherical: true, distanceMultiplier: EARTH_RADIUS }, function (err, stores) {
 
-      if (err) { res.status(500).json(error("50000")); return; }
+      if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
       if (!stores) stores = [];
 
@@ -129,36 +128,97 @@ return {
 
   },
   store: function(req, res) {
+    req.checkBody('id').notEmpty();
+
+    if (req.validationErrors()) {
+      res.status(400).json(error("10099"));
+      return;
+    }
+
+
     var base64url = require('base64-url');
     var id = base64url.decode(req.params.id);
+    var data = req.body;
 
     model.Store.findOne({ '_id': id }, function (err, store) {
 
-      if (err) { res.status(500).json(error("50000")); return; }
+      if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
       if (!store) { res.status(400).json(error("10001")); return; }
 
-      res.json(storeJSON(store));
+      model.Coupon.find({ '_id': {$in : store.coupons} } , function (err, coupons) {
+
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+        res.json(storeJSON(store, coupons));
+
+      });
+
+      var storeVisit = new model.StoreVisit();
+      storeVisit.storeId = store._id;
+      storeVisit.userId = data.id;
+      storeVisit.date = new Date();
+      storeVisit.save(function (err) {
+
+        if (err) { console.log(err); return; }
+
+      });
 
     });
 
   },
   redeemCoupon: function(req, res) {
+    req.checkBody('si').notEmpty();
+    req.checkBody('sc').notEmpty();
+    req.checkBody('id').notEmpty();
+
+    if (req.validationErrors()) {
+      res.status(400).json(error("10099"));
+      return;
+    }
+
+    var data = req.body;
+
     var base64url = require('base64-url');
     var id = base64url.decode(req.params.id);
+    model.Coupon.findOne({ '_id': id }, function (err, coupon) {
 
-    model.Store.findOne({ '_id': id }, function (err, coupon) {
-
-      if (err) { res.status(500).json(error("50000")); return; }
+      if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
       if (!coupon) { res.status(400).json(error("10002")); return; }
 
-      // TODO get stores
+      var storeId = base64url.decode(data.si);
+      model.Store.findOne({ '_id': storeId }, function (err, store) {
 
-      // store id
-      // store code
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
-      res.json({ code: 'success'});
+        if (!store) { res.status(400).json(error("10001")); return; }
+
+        if (store.code != data.sc) { res.status(400).json(error("10003")); return; }
+
+        // redeem
+        model.Coupon.update( {'_id': id }, { $inc : { amountRedeemed: 1 } }, function (err) {
+
+          if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+          // callback
+          res.json({ code: 'success'});
+
+          // add to coupon redemption
+          var couponRedemption = new model.CouponRedemption();
+          couponRedemption.couponId = coupon._id;
+          couponRedemption.storeId = store._id;
+          couponRedemption.userId = data.id;
+          couponRedemption.date = new Date();
+          couponRedemption.save(function (err) {
+
+            if (err) { console.log(err); return; }
+
+          });
+
+        });
+
+      });
 
     });
 

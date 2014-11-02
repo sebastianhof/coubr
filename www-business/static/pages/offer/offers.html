@@ -1,0 +1,43 @@
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-2">
+
+            <ul class="nav nav-pills nav-stacked" role="tablist">
+                <li class="active"><a ng-href="#offers">All Offers</a></li>
+                <li><a ng-href="#coupons">Coupons</a></li>
+                <li><a ng-href="#stamps">Stamp Cards</a></li>
+                <li><a ng-href="#specials">Special offers</a></li>
+            </ul>
+
+        </div>
+
+        <div class="col-lg-10">
+
+            <cbrfetch getFrom="offers">
+
+                <cbrerror class="label label-danger error">Error!</cbrerror>
+
+                <div class="jumbotron">
+
+                    <div ng-show="data.offers == null || data.offers.length == 0">
+
+                        <p>Not implemented. Please select coupons.</p>
+
+                    </div>
+
+                    <div class="row offersWithDetails" ng-repeat="offer in data.offers">
+
+
+                    </div>
+
+                </div>
+
+            </cbrfetch>
+
+        </div>
+
+    </div>
+
+</div>

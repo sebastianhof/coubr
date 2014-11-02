@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E1F77B91A066E180034A064 /* Explore.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1F77B81A066E180034A064 /* Explore.m */; };
+		9E1F77BC1A066ED70034A064 /* Coupon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1F77BB1A066ED70034A064 /* Coupon.m */; };
 		9E2A3A0019EFF90600310F25 /* coubrExploreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2A39FF19EFF90600310F25 /* coubrExploreTableViewCell.m */; };
 		9E2EBFAA19F2E92D009985A7 /* coubrLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFA919F2E92D009985A7 /* coubrLocationManager.m */; };
 		9E2EBFB619F2EE52009985A7 /* coubrRemoteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFB519F2EE52009985A7 /* coubrRemoteManager.m */; };
@@ -47,9 +49,6 @@
 		9EC2F5F319F3EDC80004D051 /* coubrRemoteManager+Store.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC2F5F219F3EDC80004D051 /* coubrRemoteManager+Store.m */; };
 		9EC2F5FF19F429700004D051 /* coubrCouponTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC2F5FE19F429700004D051 /* coubrCouponTableViewCell.m */; };
 		9EC2F60E19F46FC80004D051 /* coubrStoreCouponTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC2F60D19F46FC80004D051 /* coubrStoreCouponTableViewController.m */; };
-		9EEE882019F9581A00740CFA /* Explore.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE881F19F9581A00740CFA /* Explore.m */; };
-		9EEE882319F9581B00740CFA /* Coupon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE882219F9581B00740CFA /* Coupon.m */; };
-		9EEE882619F9581B00740CFA /* ExploreCoupon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE882519F9581B00740CFA /* ExploreCoupon.m */; };
 		9EEE882919F9581C00740CFA /* History.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE882819F9581C00740CFA /* History.m */; };
 		9EEE882C19F9581C00740CFA /* Store.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE882B19F9581C00740CFA /* Store.m */; };
 		9EEE883019F9589D00740CFA /* Store+CRUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE882F19F9589D00740CFA /* Store+CRUD.m */; };
@@ -80,6 +79,10 @@
 
 /* Begin PBXFileReference section */
 		9E046DBE19FA754A00799422 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
+		9E1F77B71A066E180034A064 /* Explore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Explore.h; path = Model/Explore.h; sourceTree = "<group>"; };
+		9E1F77B81A066E180034A064 /* Explore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Explore.m; path = Model/Explore.m; sourceTree = "<group>"; };
+		9E1F77BA1A066ED70034A064 /* Coupon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Coupon.h; path = Model/Coupon.h; sourceTree = "<group>"; };
+		9E1F77BB1A066ED70034A064 /* Coupon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Coupon.m; path = Model/Coupon.m; sourceTree = "<group>"; };
 		9E2A39FE19EFF90600310F25 /* coubrExploreTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrExploreTableViewCell.h; path = View/coubrExploreTableViewCell.h; sourceTree = "<group>"; };
 		9E2A39FF19EFF90600310F25 /* coubrExploreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrExploreTableViewCell.m; path = View/coubrExploreTableViewCell.m; sourceTree = "<group>"; };
 		9E2EBFA819F2E92D009985A7 /* coubrLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrLocationManager.h; path = Model/coubrLocationManager.h; sourceTree = "<group>"; };
@@ -157,12 +160,6 @@
 		9EC2F5FE19F429700004D051 /* coubrCouponTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrCouponTableViewCell.m; path = View/coubrCouponTableViewCell.m; sourceTree = "<group>"; };
 		9EC2F60C19F46FC80004D051 /* coubrStoreCouponTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStoreCouponTableViewController.h; path = Controller/coubrStoreCouponTableViewController.h; sourceTree = "<group>"; };
 		9EC2F60D19F46FC80004D051 /* coubrStoreCouponTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreCouponTableViewController.m; path = Controller/coubrStoreCouponTableViewController.m; sourceTree = "<group>"; };
-		9EEE881E19F9581A00740CFA /* Explore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Explore.h; path = Model/Explore.h; sourceTree = "<group>"; };
-		9EEE881F19F9581A00740CFA /* Explore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Explore.m; path = Model/Explore.m; sourceTree = "<group>"; };
-		9EEE882119F9581B00740CFA /* Coupon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Coupon.h; path = Model/Coupon.h; sourceTree = "<group>"; };
-		9EEE882219F9581B00740CFA /* Coupon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Coupon.m; path = Model/Coupon.m; sourceTree = "<group>"; };
-		9EEE882419F9581B00740CFA /* ExploreCoupon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExploreCoupon.h; path = Model/ExploreCoupon.h; sourceTree = "<group>"; };
-		9EEE882519F9581B00740CFA /* ExploreCoupon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ExploreCoupon.m; path = Model/ExploreCoupon.m; sourceTree = "<group>"; };
 		9EEE882719F9581C00740CFA /* History.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = History.h; path = Model/History.h; sourceTree = "<group>"; };
 		9EEE882819F9581C00740CFA /* History.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = History.m; path = Model/History.m; sourceTree = "<group>"; };
 		9EEE882A19F9581C00740CFA /* Store.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Store.h; path = Model/Store.h; sourceTree = "<group>"; };
@@ -449,14 +446,12 @@
 			children = (
 				9EEE882A19F9581C00740CFA /* Store.h */,
 				9EEE882B19F9581C00740CFA /* Store.m */,
+				9E1F77BA1A066ED70034A064 /* Coupon.h */,
+				9E1F77BB1A066ED70034A064 /* Coupon.m */,
+				9E1F77B71A066E180034A064 /* Explore.h */,
+				9E1F77B81A066E180034A064 /* Explore.m */,
 				9EEE882719F9581C00740CFA /* History.h */,
 				9EEE882819F9581C00740CFA /* History.m */,
-				9EEE882419F9581B00740CFA /* ExploreCoupon.h */,
-				9EEE882519F9581B00740CFA /* ExploreCoupon.m */,
-				9EEE882119F9581B00740CFA /* Coupon.h */,
-				9EEE882219F9581B00740CFA /* Coupon.m */,
-				9EEE881E19F9581A00740CFA /* Explore.h */,
-				9EEE881F19F9581A00740CFA /* Explore.m */,
 				9EEE882E19F9589D00740CFA /* Store+CRUD.h */,
 				9EEE882F19F9589D00740CFA /* Store+CRUD.m */,
 				9EEE883419F959A200740CFA /* Coupon+CRUD.h */,
@@ -583,9 +578,9 @@
 				9EEE884219F992FB00740CFA /* coubrHistoryTableViewCell.m in Sources */,
 				9EA3E7EB19F56FF10014D0F9 /* coubrCouponQRScanController.m in Sources */,
 				9EA3E7FA19F5B5120014D0F9 /* coubrFavoritesTableViewController.m in Sources */,
+				9E1F77B91A066E180034A064 /* Explore.m in Sources */,
 				9E2EBFAA19F2E92D009985A7 /* coubrLocationManager.m in Sources */,
 				9E84CD7719F829E500B8D409 /* coubrRemoteManager+Coupon.m in Sources */,
-				9EEE882619F9581B00740CFA /* ExploreCoupon.m in Sources */,
 				9E2EBFBF19F31FC5009985A7 /* coubrHistoryTableViewController.m in Sources */,
 				9EEE882919F9581C00740CFA /* History.m in Sources */,
 				9EEE883019F9589D00740CFA /* Store+CRUD.m in Sources */,
@@ -595,6 +590,7 @@
 				9E2EBFB919F2EEAE009985A7 /* coubrRemoteManager+Explore.m in Sources */,
 				9EA3E7FD19F5B65C0014D0F9 /* coubrExploreFilterViewController.m in Sources */,
 				9E2A3A0019EFF90600310F25 /* coubrExploreTableViewCell.m in Sources */,
+				9E1F77BC1A066ED70034A064 /* Coupon.m in Sources */,
 				9EF6909719F2C5B6008350C9 /* coubrLegalViewController.m in Sources */,
 				9EEE883C19F97B9A00740CFA /* coubrFavoritesTableViewCell.m in Sources */,
 				9EC2F5F319F3EDC80004D051 /* coubrRemoteManager+Store.m in Sources */,
@@ -618,10 +614,8 @@
 				9EEE884519F9973000740CFA /* History+CRUD.m in Sources */,
 				9EEE883619F959A200740CFA /* Coupon+CRUD.m in Sources */,
 				9E6FDE1D19EEC4D6002642C1 /* AppDelegate.m in Sources */,
-				9EEE882319F9581B00740CFA /* Coupon.m in Sources */,
 				9EF690A019F2C8D7008350C9 /* coubrNotificationsViewController.m in Sources */,
 				9EC2F60E19F46FC80004D051 /* coubrStoreCouponTableViewController.m in Sources */,
-				9EEE882019F9581A00740CFA /* Explore.m in Sources */,
 				9EEE883319F9594300740CFA /* Explore+CRUD.m in Sources */,
 				9EFC11B119F1D923004FC513 /* coubrMapViewAnnotation.m in Sources */,
 				9E2EBFB619F2EE52009985A7 /* coubrRemoteManager.m in Sources */,

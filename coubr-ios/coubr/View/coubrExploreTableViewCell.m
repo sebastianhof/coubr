@@ -10,7 +10,6 @@
 
 #import "coubrLocale.h"
 #import "coubrExploreTableViewCell.h"
-#import "ExploreCoupon.h"
 #import "coubrTypesToImage.h"
 
 
@@ -45,10 +44,10 @@
     
     // coupons
 
-    if (explore.coupons.count == 1) {
-        [self.couponsLabel setText:[NSString stringWithFormat:@"%lu %@", explore.coupons.count, LOCALE_STORE_COUPON]];
-    } else if (explore.coupons.count > 0) {
-        [self.couponsLabel setText:[NSString stringWithFormat:@"%lu %@", explore.coupons.count, LOCALE_STORE_COUPONS]];
+    if ([explore.coupons integerValue] == 1) {
+        [self.couponsLabel setText:[NSString stringWithFormat:@"%lu %@", [explore.coupons integerValue], LOCALE_STORE_COUPON]];
+    } else if ([explore.coupons integerValue] > 0) {
+        [self.couponsLabel setText:[NSString stringWithFormat:@"%lu %@", [explore.coupons integerValue], LOCALE_STORE_COUPONS]];
     }
     
     // type

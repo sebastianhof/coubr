@@ -9,6 +9,8 @@
   <script src="static/js/angular-route.min.js"></script>
   <script src="static/js/jquery-1.11.1.min.js"></script>
   <script src="static/js/bootstrap.min.js"></script>
+  <meta name="author" content="Sebastian Hof">
+  <meta name="copyright" content="Copyright 2014. Sebastian Hof">  
 </head>
 <script type="text/javascript">
 
@@ -41,9 +43,9 @@
                        templateUrl: 'static/pages/explore/explore.html'
                    }).
                 // blog
-//                    when('/blog', {
-//                        templateUrl: 'static/pages/blog/blog.html'
-//                    }).
+                   when('/blog', {
+                       templateUrl: 'static/pages/blog.html'
+                   }).
                     otherwise({
                         redirectTo: '/'
                     });
@@ -68,8 +70,8 @@
                 <ul class="nav nav-pills">
                     <li><a ng-href="#/explore">Explore</a></li>
                     <li><a ng-href="#/about">About</a></li>
-                    <!--<li><a ng-href="#/blog">Blog</a></li>-->
-                    <li><a href="http://business.coubr.de"><span class="coubr">coubr</span> for Business</a></li>
+                    <li><a ng-href="#/blog">Blog</a></li>
+                    <li><a href="http://business.coubr.de"><span class="coubr">coubr</span> Business</a></li>
                 </ul>
 
             </div>

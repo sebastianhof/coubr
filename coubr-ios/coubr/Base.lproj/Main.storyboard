@@ -1972,7 +1972,8 @@
                     <webView key="view" contentMode="scaleToFill" id="YQ0-z2-E3w">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94509803920000002" blue="0.93725490199999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="0.94901960780000005" green="0.47058823529999999" blue="0.29411764709999999" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
                             <outlet property="delegate" destination="xi8-Rh-Tp1" id="2Vn-xH-FgV"/>
                         </connections>
@@ -3204,7 +3205,8 @@
                     <webView key="view" contentMode="scaleToFill" id="Yck-a4-CFy">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94509803920000002" blue="0.93725490199999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="0.94901960780000005" green="0.47058823529999999" blue="0.29411764709999999" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
                             <outlet property="delegate" destination="BLs-VC-8LF" id="TU1-Si-EBV"/>
                         </connections>

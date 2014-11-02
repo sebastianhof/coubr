@@ -8,6 +8,8 @@
 
 #import "coubrRemoteManager+Coupon.h"
 #import "coubrConstants.h"
+#import <UIKit/UIDevice.h>
+
 
 @implementation coubrRemoteManager (Coupon)
 
@@ -18,8 +20,9 @@
     // Assert location did become available
     NSString *si = storeId;
     NSString *sc = storeCode;
+    NSString *id = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
     
-    NSDictionary *requestData = @{ @"si": si , @"sc": sc };
+    NSDictionary *requestData = @{ @"si": si , @"sc": sc, @"id": id };
     NSError *error;
     NSData *JSONData = [NSJSONSerialization dataWithJSONObject:requestData options:0 error:&error];
     if (error) {

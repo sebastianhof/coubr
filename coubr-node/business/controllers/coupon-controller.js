@@ -1,15 +1,43 @@
+/************************************
+*
+* Sebastian Hof CONFIDENTIAL
+* __________________________
+*
+* Copyright 2014. Sebastian Hof
+* All Rights Reserved.
+*
+************************************/
+
 'use strict'
 
 module.exports = function(model) {
 
+  // helper
+  var status = function(coupon) {
+    var today = new Date();
+
+    if ((coupon.amount - coupon.amountRedeemed > 0) && coupon.validTo > today) {
+
+      if (coupon.activated) {
+        return 'active';
+      } else {
+        return 'inactive';
+      }
+
+    } else {
+        return 'invalid';
+    }
+
+  }
+
   // objects to json
-  var coupon = function(coupon) {
+  var couponJSON = function(coupon) {
     var base64url = require('base64-url');
 
     return {
       couponId: base64url.encode(coupon._id.toString()),
       title: coupon.title,
-      status: 'active' // TODO set status
+      status: status(coupon),
     };
 
   };
@@ -24,34 +52,93 @@ module.exports = function(model) {
       category: coupon.category,
       validTo: coupon.validTo, // convert to json date
       amount: coupon.amount,
-      amountIssued: coupon.amountIssued,
-      status: 'active', // TODO set status,
-      // TODO stores coupons
+      amountRedeemed: coupon.amountRedeemed,
+      status: status(coupon),
+      // stores: [],
     };
 
   };
 
-  var couponStores = function(coupon) {
+  var storeJSON = function(store) {
+    var base64url = require('base64-url');
+
+    return {
+      storeId: base64url.encode(store._id.toString()),
+      name: store.name,
+    };
+
+  }
+
+  var couponStores = function(coupon, stores) {
+    var base64url = require('base64-url');
+
+    var storeJSONs = [];
+    stores.forEach(function(entry) {
+      storeJSONs.push(storeJSON(entry));
+    });
+
+    return {
+      couponId: base64url.encode(coupon._id.toString()),
+      stores: storeJSONs,
+    };
 
   };
 
   var couponSettings = function(coupon) {
+    var base64url = require('base64-url');
+
+    return {
+      couponId: base64url.encode(coupon._id.toString()),
+      title: coupon.title,
+      description: coupon.description || 'no description',
+      category: coupon.category,
+      validTo: coupon.validTo, // convert to json date
+      amount: coupon.amount,
+      amountRedeemed: coupon.amountRedeemed,
+      status: status(coupon),
+    };
 
   };
 
   var couponTitle = function(coupon) {
+    var base64url = require('base64-url');
+
+    return {
+      couponId: base64url.encode(coupon._id.toString()),
+      title: coupon.title,
+      description: coupon.description,
+    };
 
   };
 
   var couponValidTo = function(coupon) {
+    var base64url = require('base64-url');
+
+    return {
+      couponId: base64url.encode(coupon._id.toString()),
+      validTo: coupon.validTo, // convert to json date
+    };
 
   };
 
   var couponAmount = function(coupon) {
+    var base64url = require('base64-url');
+
+    return {
+      couponId: base64url.encode(coupon._id.toString()),
+      amount: coupon.amount,
+      amountRedeemed: coupon.amountRedeemed,
+    };
 
   };
 
   var couponCategory = function(coupon) {
+    var base64url = require('base64-url');
+
+    return {
+      couponId: base64url.encode(coupon._id.toString()),
+      category: coupon.category,
+    };
 
   };
 
@@ -60,10 +147,6 @@ module.exports = function(model) {
       code: code
     };
   };
-
-
-
-
 
   return {
     add: function(req, res) {
@@ -91,15 +174,8 @@ module.exports = function(model) {
       var owner = req.user;
       var data = req.body;
 
-      var stores = [];
-      data.stores.each(function(entry) {
-
-        // TODO search for store and add information
-
-      });
-
-      coupon = new model.Coupon();
-      coupon.owner = owner.id;
+      var coupon = new model.Coupon();
+      coupon.owner = owner._id;
       coupon.title = data.title;
       coupon.description = data.description;
       coupon.category = data.category;
@@ -109,30 +185,59 @@ module.exports = function(model) {
       coupon.activated = data.activated;
       coupon.amount = data.amount;
 
-      // TODO stores coupons
+      var randomString = require('random-string');
+      coupon.code = randomString({length: 128});
 
-      coupon.save(function (err) {
-        if (err) { res.status(500).json(error("50000")); return; }
-
-        res.json(coupon(coupon));
+      // stores
+      var storeIds = [];
+      var base64url = require('base64-url');
+      // convert encoded ids to mongo id
+      data.stores.forEach(function(entry) {
+        storeIds.push(base64url.decode(entry));
       });
 
+      // find stores
+      model.Store.find({ '_id': {$in : storeIds}, 'owner': owner._id } , function (err, stores) {
+
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+        // set stores
+        coupon.stores = [];
+        stores.forEach(function(entry) {
+          coupon.stores.push(entry._id);
+        });
+
+        // save coupon
+        coupon.save(function (err) {
+          if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+          // update store
+          model.Store.update( {'_id': { $in: storeIds }}, { $addToSet: { 'coupons': coupon._id } }, { multi: true }, function (err) {
+
+            // return
+            res.json(couponJSON(coupon));
+
+          });
+
+        });
+
+      });
 
     },
     getAll: function(req, res) {
       var owner = req.user;
 
-      model.Coupon.find({ 'owner': owner.id }, function (err, coupons) {
+      model.Coupon.find({ 'owner': owner._id }, function (err, coupons) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         var data = {};
         data.coupons = [];
 
         coupons.forEach(function(entry) {
 
-          // TODO Filtering
-          data.coupons.push(coupon(entry));
+
+          data.coupons.push(couponJSON(entry));
 
         });
 
@@ -143,17 +248,20 @@ module.exports = function(model) {
     getAllActive: function(req, res) {
       var owner = req.user;
 
-      model.Coupon.find({ 'owner': owner.id }, function (err, coupons) {
+      var today = new Date();
+      model.Coupon.find({ 'owner': owner._id, 'activated': true, 'validTo': { $gte: today }}, function (err, coupons) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         var data = {};
         data.coupons = [];
 
         coupons.forEach(function(entry) {
 
-          // TODO Filtering
-          data.coupons.push(couponDetails(entry));
+          // filter as no aggregation is applied
+          if ((entry.amount - entry.amountRedeemed) > 0) {
+            data.coupons.push(couponDetails(entry));
+          }
 
         });
 
@@ -165,17 +273,19 @@ module.exports = function(model) {
     getAllInactive: function(req, res) {
       var owner = req.user;
 
-      model.Coupon.find({ 'owner': owner.id }, function (err, coupons) {
+      model.Coupon.find({ 'owner': owner._id, 'activated': false, 'validTo': { $gte: new Date() }}, function (err, coupons) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         var data = {};
         data.coupons = [];
 
         coupons.forEach(function(entry) {
 
-          // TODO Filtering
-          data.coupons.push(couponDetails(entry));
+          // filter as no aggregation is applied
+          if ((entry.amount - entry.amountRedeemed) > 0) {
+            data.coupons.push(couponDetails(entry));
+          }
 
         });
 
@@ -186,17 +296,19 @@ module.exports = function(model) {
     getAllInvalid: function(req, res) {
       var owner = req.user;
 
-      model.Coupon.find({ 'owner': owner.id }, function (err, coupons) {
+      model.Coupon.find({ 'owner': owner._id, 'validTo': { $lt: new Date() }}, function (err, coupons) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         var data = {};
         data.coupons = [];
 
         coupons.forEach(function(entry) {
 
-          // TODO Filtering
-          data.coupons.push(couponDetails(entry));
+          // filter as no aggregation is applied
+          if ((entry.amount - entry.amountRedeemed) <= 0) {
+            data.coupons.push(couponDetails(entry));
+          }
 
         });
 
@@ -209,9 +321,9 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Coupon.findOne({ '_id': id, 'owner': owner.id }, function (err, coupon) {
+      model.Coupon.findOne({ '_id': id, 'owner': owner._id }, function (err, coupon) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!coupon) { res.status(400).json(error("40010")); return; }
 
@@ -225,25 +337,67 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Coupon.findOne({ '_id': id, 'owner': owner.id }, function (err, coupon) {
+      model.Coupon.findOne({ '_id': id, 'owner': owner._id }, function (err, coupon) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!coupon) { res.status(400).json(error("40010")); return; }
 
         if (req.body && req.method == 'POST') {
 
-          // TODO stores coupons
+          // stores
+          var data = req.body;
 
-          coupon.save(function (err) {
-            if (err) { res.status(500).json(error("50000")); return; }
+          var storeIds = [];
+          var base64url = require('base64-url');
+          // convert encoded ids to mongo id
+          data.stores.forEach(function(entry) {
+            storeIds.push(base64url.decode(entry));
+          });
 
-            res.json("ok");
+          // find stores
+          model.Store.find({ '_id': {$in : storeIds}, 'owner': owner._id } , function (err, stores) {
+
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+            // set stores
+            coupon.stores = [];
+            stores.forEach(function(entry) {
+              coupon.stores.push(entry._id);
+            });
+
+            // save coupon
+            coupon.save(function (err) {
+              if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+              // remove from all stores
+              model.Store.update( { 'owner': owner._id }, { $pull: { 'coupons': coupon._id } }, { multi: true }, function (err) {
+                if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+                 // update store
+                model.Store.update( {'_id': { $in: storeIds }, 'owner': owner._id }, { $addToSet: { 'coupons': coupon._id } }, { multi: true }, function (err) {
+                  if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+                  // return
+                  res.json(couponJSON(coupon));
+
+                });
+
+              });
+
+            });
+
           });
 
         } else {
 
-          res.json(couponStores(coupon));
+          model.Store.find({ '_id': {$in : coupon.stores}, 'owner': owner._id } , function (err, stores) {
+
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+            res.json(couponStores(coupon, stores));
+
+          });
 
         }
 
@@ -256,9 +410,9 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Coupon.findOne({ '_id': id, 'owner': owner.id }, function (err, coupon) {
+      model.Coupon.findOne({ '_id': id, 'owner': owner._id }, function (err, coupon) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!coupon) { res.status(400).json(error("40010")); return; }
 
@@ -272,9 +426,9 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Coupon.findOne({ '_id': id, 'owner': owner.id }, function (err, coupon) {
+      model.Coupon.findOne({ '_id': id, 'owner': owner._id }, function (err, coupon) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!coupon) { res.status(400).json(error("40010")); return; }
 
@@ -299,7 +453,7 @@ module.exports = function(model) {
           coupon.description = data.description;
 
           coupon.save(function (err) {
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             res.json("ok");
           });
@@ -318,9 +472,9 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Coupon.findOne({ '_id': id, 'owner': owner.id }, function (err, coupon) {
+      model.Coupon.findOne({ '_id': id, 'owner': owner._id }, function (err, coupon) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!coupon) { res.status(400).json(error("40010")); return; }
 
@@ -342,7 +496,7 @@ module.exports = function(model) {
           coupon.validTo = data.validTo.set( { hour: 23, minute: 59, second: 59 });
 
           coupon.save(function (err) {
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             res.json("ok");
           });
@@ -361,9 +515,9 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Coupon.findOne({ '_id': id, 'owner': owner.id }, function (err, coupon) {
+      model.Coupon.findOne({ '_id': id, 'owner': owner._id }, function (err, coupon) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!coupon) { res.status(400).json(error("40010")); return; }
 
@@ -384,7 +538,7 @@ module.exports = function(model) {
           coupon.amount = data.amount;
 
           coupon.save(function (err) {
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             res.json("ok");
           });
@@ -403,9 +557,9 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Coupon.findOne({ '_id': id, 'owner': owner.id }, function (err, coupon) {
+      model.Coupon.findOne({ '_id': id, 'owner': owner._id }, function (err, coupon) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!coupon) { res.status(400).json(error("40010")); return; }
 
@@ -423,7 +577,7 @@ module.exports = function(model) {
           coupon.category = data.category;
 
           coupon.save(function (err) {
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             res.json("ok");
           });
@@ -441,15 +595,15 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Coupon.findOne({ '_id': id, 'owner': owner.id }, function (err, coupon) {
+      model.Coupon.findOne({ '_id': id, 'owner': owner._id }, function (err, coupon) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!coupon) { res.status(400).json(error("40010")); return; }
 
         coupon.activated = true;
         coupon.save(function (err) {
-          if (err) { res.status(500).json(error("50000")); return; }
+          if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
           res.json("ok");
         });
@@ -462,15 +616,15 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Coupon.findOne({ '_id': id, 'owner': owner.id }, function (err, coupon) {
+      model.Coupon.findOne({ '_id': id, 'owner': owner._id }, function (err, coupon) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!coupon) { res.status(400).json(error("40010")); return; }
 
         coupon.activated = false;
         coupon.save(function (err) {
-          if (err) { res.status(500).json(error("50000")); return; }
+          if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
           res.json("ok");
         });
@@ -483,14 +637,26 @@ module.exports = function(model) {
       var base64url = require('base64-url');
       var id = base64url.decode(req.params.id);
 
-      model.Coupon.findOne({ '_id': id, 'owner': owner.id }, function (err, coupon) {
+      model.Coupon.findOne({ '_id': id, 'owner': owner._id }, function (err, coupon) {
 
-        if (err) { res.status(500).json(error("50000")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
         if (!coupon) { res.status(400).json(error("40010")); return; }
 
-        // TODO delete + delete offers -> delete set flag
-        // TODO inform customers
+        // remove from all stores
+        model.Store.update( { 'owner': owner._id }, { $pull: { 'coupons': coupon._id } }, { multi: true }, function (err) {
+          if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+          // remove coupon
+          model.Coupon.remove({ '_id': id, 'owner': owner._id }, function (err) {
+
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
+
+            res.json("ok");
+
+          });
+
+        });
 
       });
 

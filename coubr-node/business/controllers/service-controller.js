@@ -1,3 +1,13 @@
+/************************************
+*
+* Sebastian Hof CONFIDENTIAL
+* __________________________
+*
+* Copyright 2014. Sebastian Hof
+* All Rights Reserved.
+*
+************************************/
+
 "use strict"
 
 module.exports = function() {
@@ -31,7 +41,7 @@ module.exports = function() {
 
       });
       sendgrid.send(email, function(err, json) {
-        if (err) { res.status(500).json(error("50001")); return; }
+        if (err) { console.log(err); res.status(500).json(error("50001")); return; }
 
         res.json("ok");
 

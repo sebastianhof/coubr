@@ -1,8 +1,9 @@
 /*
  * coubr-business
  * http://www.coubr.com/labs/coubrUI
-
+ *
  * Version: 0.0.1
+ * Copyright 2014. Sebastian Hof
  * License: proprietary
  */
 var coubrBusiness = angular.module('coubrBusiness', [
@@ -185,7 +186,6 @@ coubrBusiness.controller('CouponCategoryController', ['$scope', 'Coupon', functi
 
     });
 
-
 }]);
 
 coubrBusiness.controller('CouponActivationController', ['$scope', 'Coubr', function ($scope, Coubr) {
@@ -289,6 +289,30 @@ coubrBusiness.controller('CouponStoreController', ['$scope', 'Coupon', 'Coubr', 
 
 }]);
 
+coubrBusiness.controller('CouponValidToDateController', ['$scope', 'Coubr', function ($scope, Coubr) {
+
+    $scope.today = Date.now();
+
+    Coubr.get(Coubr.transformURI('coupon/:couponId/validTo')).then(function (success) {
+
+        $scope.data.validTo = new Date(success.data.validTo);
+
+    });
+
+    // $scope.$on('success', function (event, success) {
+    //
+    //     if (success.data && success.data.validTo) {
+    //         $scope.data.validTo = new Date(success.data.validTo);
+    //     }
+    //
+    // });
+
+
+}]);
+
+
+
+
 /**********************************************
  **********************************************
  *
@@ -302,7 +326,7 @@ coubrBusiness.controller('FeedbackController', ['$scope', '$modal', function ($s
     $scope.open = function (size) {
 
         var modalInstance = $modal.open({
-            templateUrl: '/static/pages/business/feedback.html',
+            templateUrl: '/static/pages/feedback.html',
             controller: 'FeedbackInstanceController',
             size: size
         });
@@ -604,6 +628,10 @@ coubrBusiness.directive('cbrinputerror', function () {
                             text('cbremail', 'Not a valid email address.');
                         }
 
+                        if (scope.form[attrs.cbrname].$error.url) {
+                            text('cbrrequired', 'Not a valid url. Try to put http:// or https:// in the beginning.');
+                        }
+
                         if (scope.form[attrs.cbrname].$error.date) {
                             text('cbrdate', 'Not a valid date format.');
                         }
@@ -653,6 +681,10 @@ coubrBusiness.directive('cbrinputerror', function () {
                 });
 
                 scope.$watch('form.' + [attrs.cbrname] + '.$error.email', function (newValue, oldValue) {
+                    message();
+                });
+
+                scope.$watch('form.' + [attrs.cbrname] + '.$error.url', function (newValue, oldValue) {
                     message();
                 });
 

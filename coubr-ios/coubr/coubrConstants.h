@@ -17,11 +17,11 @@
 
 // URL Loading
 
-#define COUBR_BASE_URL @"https://192.168.2.10:8443/coubr-0.1/a/"
+#define COUBR_BASE_URL @"https://api.coubr.de"
 #define TIMEOUT_INTERVAL_FOR_REQUEST (10) // seconds
 
-#define LEGAL_URL @"legal"
-#define HELP_URL @"help"
+#define LEGAL_URL @"http://coubr.de/static/pages/legal/legal-ios.html"
+#define HELP_URL @"http://coubr.de/static/pages/help/help-ios.html"
 
 // Error
 
@@ -37,7 +37,7 @@ static int STORE_CODE_NOT_FOUND_ERROR = 10003;
 
 // Explore
 
-#define EXPLORE_URL @"https://192.168.2.10:8443/coubr-0.1/a/explore"
+#define EXPLORE_URL @"https://api.coubr.de/explore"
 #define EXPLORE_DEFAULT_DISTANCE 10000.0
 
 #define EXPLORE_REQUEST_LATITUDE @"lt"
@@ -52,15 +52,11 @@ static int STORE_CODE_NOT_FOUND_ERROR = 10003;
 #define EXPLORE_RESPONSE_STORE_SUBCATEGORY @"ss"
 #define EXPLORE_RESPONSE_STORE_LATITUDE @"lt"
 #define EXPLORE_RESPONSE_STORE_LONGITUDE @"lg"
-#define EXPLORE_RESPONSE_STORE_COUPONS @"c"
-
-#define EXPLORE_RESPONSE_COUPON_ID @"ci"
-#define EXPLORE_RESPONSE_COUPON_TITLE @"ct"
-#define EXPLORE_RESPONSE_COUPON_STATUS @"cs"
+#define EXPLORE_RESPONSE_STORE_COUPONS @"oc"
 
 // Store
 
-#define STORE_BASE_URL @"https://192.168.2.10:8443/coubr-0.1/a/store"
+#define STORE_BASE_URL @"https://api.coubr.de/store"
 
 #define STORE_RESPONSE_STORE_ID @"i"
 #define STORE_RESPONSE_STORE_NAME @"n"
@@ -83,12 +79,12 @@ static int STORE_CODE_NOT_FOUND_ERROR = 10003;
 #define STORE_RESPONSE_COUPON_CATEGORY @"c"
 #define STORE_RESPONSE_COUPON_VALID_TO @"v"
 #define STORE_RESPONSE_COUPON_AMOUNT @"a"
-#define STORE_RESPONSE_COUPON_AMOUNT_ISSUED @"ai"
+#define STORE_RESPONSE_COUPON_AMOUNT_REDEEMED @"ar"
 #define STORE_RESPONSE_COUPON_STATUS @"s"
 
 // Redeem
 
-#define COUPON_BASE_URL @"https://192.168.2.10:8443/coubr-0.1/a/coupon/"
+#define COUPON_BASE_URL @"https://api.coubr.de/coupon/"
 #define COUPON_REDEEM_URL @"redeem"
 
 // Social Media Links

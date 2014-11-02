@@ -1,3 +1,13 @@
+/************************************
+*
+* Sebastian Hof CONFIDENTIAL
+* __________________________
+*
+* Copyright 2014. Sebastian Hof
+* All Rights Reserved.
+*
+************************************/
+
 'use strict'
 
 module.exports = function(model) {
@@ -37,11 +47,11 @@ module.exports = function(model) {
           owner.passwordResetExpirationDate = Date.today().add(7).days();
 
           owner.save(function (err) {
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             var link = 'https://business.coubr.de/#/resetPasswordConfirm?email=' + owner.email + '&code=' + owner.passwordResetCode;
             var text = 'Hi there,\n\n' +
-            'You recently requested a link to reset your coubr password.' +
+            'You recently requested a link to reset your coubr password. ' +
             'Please set a new password by following the link below:\n\n' + link + '\n\n ' +
             'Password reset code: ' + owner.passwordResetCode + '\n\n' +
             'You can ignore this mail when you did not requested a link. Your code will expire in 7 days.\n\n' +
@@ -59,7 +69,7 @@ module.exports = function(model) {
 
             }); // TODO html email
             sendgrid.send(email, function(err, json) {
-              if (err) { res.status(500).json(error("50001")); return; }
+              if (err) { console.log(err); res.status(500).json(error("50001")); return; }
 
               res.json("ok");
 
@@ -94,18 +104,18 @@ module.exports = function(model) {
           var bcrypt = require('bcrypt');
           bcrypt.genSalt(10, function(err, salt) {
 
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             bcrypt.hash(data.password, salt, function(err, hash) {
 
-              if (err) { res.status(500).json(error("50000")); return; }
+              if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
               owner.password = hash;
               owner.passwordResetExpirationDate = null;
               owner.passwordResetCode = null;
 
               owner.save(function (err) {
-                if (err) { res.status(500).json(error("50000")); return; }
+                if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
                 res.json("ok");
               });
@@ -141,11 +151,11 @@ module.exports = function(model) {
           var bcrypt = require('bcrypt');
           bcrypt.genSalt(10, function(err, salt) {
 
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             bcrypt.hash(data.password, salt, function(err, hash) {
 
-              if (err) { res.status(500).json(error("50000")); return; }
+              if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
               owner.password = hash;
 
@@ -157,11 +167,11 @@ module.exports = function(model) {
               owner.confirmExpirationDate = Date.today().add(7).days();
 
               owner.save(function (err) {
-                if (err) { res.status(500).json(error("50000")); return; }
+                if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
                 var link = 'https://business.coubr.de/#/confirmRegistration?email=' + owner.email + '&code=' + owner.confirmCode;
                 var text = 'Hi there,\n\n' +
-                'You recently registered on coubr.' +
+                'You recently registered on coubr. ' +
                 'Please confirm your registration by following the link below:\n\n' + link + '\n\n' +
                 'Confirmation code: ' + owner.confirmCode + '\n\n' +
                 'You have 7 days to confirm your registration.\n\n' +
@@ -180,7 +190,7 @@ module.exports = function(model) {
 
                 }); // TODO html email
                 sendgrid.send(email, function(err, json) {
-                  if (err) { res.status(500).json(error("50001")); return; }
+                  if (err) { console.log(err); res.status(500).json(error("50001")); return; }
 
                   res.json("ok");
 
@@ -220,7 +230,7 @@ module.exports = function(model) {
           owner.confirmCode = null;
 
           owner.save(function (err) {
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
             res.json("ok");
           });
 
@@ -252,11 +262,11 @@ module.exports = function(model) {
           owner.confirmExpirationDate = Date.today().add(7).days();
 
           owner.save(function (err) {
-            if (err) { res.status(500).json(error("50000")); return; }
+            if (err) { console.log(err); res.status(500).json(error("50000")); return; }
 
             var link = 'https://business.coubr.de/#/confirmRegistration?email=' + owner.email + '&code=' + owner.confirmCode;
             var text = 'Hi there,\n\n' +
-            'You recently registered on coubr.' +
+            'You recently registered on coubr. ' +
             'Please confirm your registration by following the link below:\n\n' + link + '\n\n' +
             'Confirmation code: ' + owner.confirmCode + '\n\n' +
             'You have 7 days to confirm your registration.\n\n' +
@@ -275,7 +285,7 @@ module.exports = function(model) {
 
             }); // TODO html email
             sendgrid.send(email, function(err, json) {
-              if (err) { res.status(500).json(error("50001")); return; }
+              if (err) { console.log(err); res.status(500).json(error("50001")); return; }
 
               res.json("ok");
 

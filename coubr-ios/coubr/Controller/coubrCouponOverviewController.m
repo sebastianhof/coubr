@@ -44,7 +44,7 @@
     
     [self.validToLabel setText:[NSString stringWithFormat:@"%@ %@", LOCALE_COUPON_VALID_UNTIL, [dateFormatter stringFromDate:self.coupon.validTo]]];
     
-    [self.amountLabel setText:[NSString stringWithFormat:@"%lu %@", ([self.coupon.amount longValue] - [self.coupon.amountIssued longValue]), LOCALE_COUPON_AVAILABLE]];
+    [self.amountLabel setText:[NSString stringWithFormat:@"%lu %@", ([self.coupon.amount longValue] - [self.coupon.amountRedeemed longValue]), LOCALE_COUPON_AVAILABLE]];
  
     [self.descriptionTextView setText: self.coupon.couponDescription ? self.coupon.couponDescription : LOCALE_COUPON_NO_DESCRIPTION];
     
@@ -98,7 +98,7 @@
         
         [context performBlockAndWait:^{
             
-            self.coupon.amountIssued = [NSNumber numberWithInteger:[self.coupon.amountIssued integerValue] + 1];
+            self.coupon.amountRedeemed = [NSNumber numberWithInteger:[self.coupon.amountRedeemed integerValue] + 1];
             
         }];
         
@@ -106,7 +106,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             
             // update label
-            [self.amountLabel setText:[NSString stringWithFormat:@"%lu %@", ([self.coupon.amount longValue] - [self.coupon.amountIssued longValue]), LOCALE_COUPON_AVAILABLE]];
+            [self.amountLabel setText:[NSString stringWithFormat:@"%lu %@", ([self.coupon.amount longValue] - [self.coupon.amountRedeemed longValue]), LOCALE_COUPON_AVAILABLE]];
             
             // deactivate button
             self.redeemButton.enabled = NO;

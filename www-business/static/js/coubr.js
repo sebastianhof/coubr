@@ -3,6 +3,7 @@
  * http://www.coubr.com/labs/coubrJS
 
  * Version: 0.0.1
+ * Copyright 2014. Sebastian Hof
  * License: MIT
  */
 var coubrJS = angular.module('coubrJS', []);

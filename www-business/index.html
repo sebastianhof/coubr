@@ -14,6 +14,8 @@
 
   <script src="static/js/coubr.js"></script>
   <script src="static/js/coubr-business.js"></script>
+  <meta name="author" content="Sebastian Hof">  
+  <meta name="copyright" content="Copyright 2014. Sebastian Hof">
 </head>
 <script type="text/javascript">
 
@@ -56,10 +58,9 @@
                         templateUrl: 'static/pages/auth/resendConfirmation.html'
                     }).
                 // blog
-//                    when('/blog', {
-//                        templateUrl: 'static/pages/blog/blog.html',
-//                        controller: 'BlogFetch'
-//                    }).
+                   when('/blog', {
+                       templateUrl: 'static/pages/blog.html'
+                   }).
                     otherwise({
                         redirectTo: '/'
                     });
@@ -74,7 +75,7 @@
         <div class="navbar" role="navigation">
 
             <div class="navbar-header">
-                <a class="navbar-brand" href="#"><span class="coubr">coubr</span> for Business</a>
+                <a class="navbar-brand" href="#"><span class="coubr">coubr</span> Business</a>
             </div>
 
             <div class="pull-right">
@@ -82,8 +83,8 @@
                 <ul class="nav nav-pills">
                     <li><a ng-href="#/login">Sign in</a></li>
                     <li><a ng-href="#/about">About</a></li>
-                    <!--<li><a ng-href="#/blog">Blog</a></li>-->
-                    <li><a href="http://www.coubr.de"><span class="coubr">coubr</span> for User</a></li>
+                    <li><a ng-href="#/blog">Blog</a></li>
+                    <li><a href="http://www.coubr.de"><span class="coubr">coubr</span> App</a></li>
                 </ul>
 
             </div>

@@ -1,3 +1,13 @@
+/************************************
+*
+* Sebastian Hof CONFIDENTIAL
+* __________________________
+*
+* Copyright 2014. Sebastian Hof
+* All Rights Reserved.
+*
+************************************/
+
 'use strict';
 
 module.exports = function(app, passport, controller) {
@@ -71,7 +81,7 @@ module.exports = function(app, passport, controller) {
   });
 
   // delete
-  app.delete('/account', auth, function(req, res) {
+  app.post('/account/delete', auth, function(req, res) {
     controller.account.delete(req, res);
   });
 
@@ -102,6 +112,10 @@ module.exports = function(app, passport, controller) {
 
   app.get('/store/:id/code', auth, function(req, res) {
     controller.store.code(req, res);
+  });
+
+  app.get('/store/:id/code/qr.svg', auth, function(req, res) {
+    controller.store.qrcode(req, res);
   });
 
   app.get('/store/:id/settings', auth, function(req, res) {
@@ -150,8 +164,8 @@ module.exports = function(app, passport, controller) {
   });
 
   // delete
-  app.delete('/store/:id', auth, function(req, res) {
-    controller.store.delete(req, res);
+  app.post('/store/:id/close', auth, function(req, res) {
+    controller.store.close(req, res);
   });
 
   /*
@@ -237,7 +251,7 @@ module.exports = function(app, passport, controller) {
   });
 
   // delete
-  app.delete('/coupon/:id', auth, function(req, res) {
+  app.post('/coupon/:id/delete', auth, function(req, res) {
     controller.coupon.delete(req, res);
   });
 

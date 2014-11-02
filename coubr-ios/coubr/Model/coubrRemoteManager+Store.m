@@ -8,6 +8,7 @@
 
 #import "coubrRemoteManager+Store.h"
 #import "coubrConstants.h"
+#import <UIKit/UIDevice.h>
 
 @implementation coubrRemoteManager (Store)
 
@@ -15,10 +16,21 @@
                completionHandler:(void (^)(NSDictionary *))onCompletion
                     errorHandler:(void(^)(NSInteger))onError {
     
+    // Prepare JSON Data
+    NSString *id = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    
+    NSDictionary *requestData = @{ @"id": id };
+    NSError *error;
+    NSData *JSONData = [NSJSONSerialization dataWithJSONObject:requestData options:0 error:&error];
+    if (error) {
+        onError(JSON_ERROR);
+        return;
+    }
+    
     NSURL *url = [NSURL URLWithString:STORE_BASE_URL];
     url = [url URLByAppendingPathComponent:storeId];
     
-    [self loadJSONFromRemoteWithURL:url completionHandler:onCompletion errorHandler:onError];
+    [self loadJSONFromRemoteWithRequestJSONData:JSONData andURL:url completionHandler:onCompletion errorHandler:onError];
     
 }
 

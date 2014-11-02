@@ -7,7 +7,6 @@
 //
 
 #import "Explore.h"
-#import "ExploreCoupon.h"
 
 @interface Explore (CRUD)
 

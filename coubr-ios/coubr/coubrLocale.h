@@ -18,19 +18,18 @@
 #define LOCALE_REFRESHING NSLocalizedString(@"refreshing", nil)
 
 // Store & Coupons
-#define LOCALE_STORE_NAV_OVERVIEW NSLocalizedString(@"Overview", nil)
-#define LOCALE_STORE_NAV_COUPONS NSLocalizedString(@"Coupons", nil)
-#define LOCALE_STORE_NO_DESCRIPTION NSLocalizedString(@"No description", nil)
-#define LOCALE_STORE_NO_PHONE NSLocalizedString(@"No phone", nil)
-#define LOCALE_STORE_NO_EMAIL NSLocalizedString(@"No email", nil)
-
-#define LOCALE_STORE_COUPON NSLocalizedString(@"coupon", nil)
-#define LOCALE_STORE_COUPONS NSLocalizedString(@"coupons", nil)
+#define LOCALE_STORE_ADDRESS NSLocalizedString(@"Address", nil)
+#define LOCALE_STORE_CONTACT NSLocalizedString(@"Contact", nil)
+#define LOCALE_STORE_DESCRIPTION NSLocalizedString(@"Description", nil)
 
 // Error
 #define LOCALE_INTERNAL_ERROR NSLocalizedString(@"An internal error occurred. Please try again", nil)
 
 // Coupons
+#define LOCALE_COUPON_INFORMATION NSLocalizedString(@"Information", nil)
+#define LOCALE_COUPON_DESCRIPTION NSLocalizedString(@"Description", nil)
+#define LOCALE_COUPON_REDEEM NSLocalizedString(@"Redeem", nil)
+
 #define LOCALE_COUPON_VALID_UNTIL NSLocalizedString(@"Valid until", nil)
 #define LOCALE_COUPON_AVAILABLE NSLocalizedString(@"available", nil)
 #define LOCALE_COUPON_NO_DESCRIPTION NSLocalizedString(@"No description", nil)
@@ -49,3 +48,22 @@
 #define LOCALE_ALERT_OK NSLocalizedString(@"OK", nil)
 
 #define LOCALE_FEEDBACK_SUBJECT NSLocalizedString(@"coubr Feedback", nil)
+
+// Category
+#define LOCALE_STORE_CATEGORY_BAKERY NSLocalizedString(@"Bakery", nil)
+#define LOCALE_STORE_CATEGORY_BAR NSLocalizedString(@"Bar", nil)
+#define LOCALE_STORE_CATEGORY_BREWERY NSLocalizedString(@"Brewery", nil)
+#define LOCALE_STORE_CATEGORY_CAFE NSLocalizedString(@"Cafe", nil)
+#define LOCALE_STORE_CATEGORY_FAST_FOOD NSLocalizedString(@"Fast Food", nil)
+#define LOCALE_STORE_CATEGORY_ICE_CREAM NSLocalizedString(@"Ice Cream Shop", nil)
+#define LOCALE_STORE_CATEGORY_RESTAURANT NSLocalizedString(@"Restaurant", nil)
+#define LOCALE_STORE_CATEGORY_WINERY NSLocalizedString(@"Winery", nil)
+#define LOCALE_STORE_CATEGORY_NONE NSLocalizedString(@"No category", nil)
+
+#define LOCALE_STORE_CATEGORY_RESTAURANT_ASIAN NSLocalizedString(@"Asian Restaurant", nil)
+#define LOCALE_STORE_CATEGORY_RESTAURANT_FRENCH NSLocalizedString(@"French Restaurant", nil)
+#define LOCALE_STORE_CATEGORY_RESTAURANT_GERMAN NSLocalizedString(@"German Restaurant", nil)
+#define LOCALE_STORE_CATEGORY_RESTAURANT_ITALIAN NSLocalizedString(@"Italian Restaurant", nil)
+
+
+

@@ -93,11 +93,11 @@ static int STORE_CODE_NOT_FOUND_ERROR = 10003;
 #define APPSTORE_ID @"00000000"
 #define APPSTORE_LINK @"itms-apps://itunes.apple.com/app/00000000"
 
-#define TWITTER_APP_LINK @"twitter://user?screen_name=coubr"
-#define FACEBOOK_APP_LINK @"facebook://coubr"
+#define TWITTER_APP_LINK @"twitter://user?screen_name=coubrapp"
+#define FACEBOOK_APP_LINK @"fb://profile/301895083335756"
 
-#define TWITTER_LINK @"twitter.com/coubr"
-#define FACEBOOK_LINK @"facebook.com/coubr"
+#define TWITTER_LINK @"twitter.com/coubrapp"
+#define FACEBOOK_LINK @"facebook.com/coubrapp"
 
 
 

@@ -26,6 +26,8 @@
     [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:242 green:120 blue:75 alpha:1]];
     [[UINavigationBar appearance] setTranslucent:NO];
     
+    //[[UITableViewCell appearance] setBackgroundColor:[UIColor clearColor]];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         [[coubrDatabaseManager defaultManager] initDatabase];
     });

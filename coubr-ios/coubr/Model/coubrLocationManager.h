@@ -8,17 +8,17 @@
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
 
-#define Location @"Location"
-#define LocationDidBecomeAvailableNotification @"LocationDidBecomeAvailable"
-#define LocationDidFailNotification @"LocationDidFailNotification"
+#define UserLocation @"Location"
+#define UserLocationDidBecomeAvailableNotification @"LocationDidBecomeAvailable"
+#define UserLocationDidFailNotification @"LocationDidFailNotification"
 
 @interface coubrLocationManager : NSObject <CLLocationManagerDelegate>
 
-@property (strong, atomic, readonly) CLLocation *lastLocation;
+@property (strong, atomic, readonly) CLLocation *userLocation;
 
 + (instancetype)defaultManager;
 
-- (void)updateLocation;
+- (void)updateUserLocation;
 
 - (void)requestAuthorization;
 

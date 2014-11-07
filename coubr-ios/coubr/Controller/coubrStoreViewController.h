@@ -12,14 +12,11 @@
 #define StoreDidBecomeAvailableNotification @"StoreDidBecomeAvailableNotification"
 #define CouponFetchedResultsControllerDidUpdatedNotification @"CouponFetchedResultsControllerDidUpdatedNotification"
 
-@interface coubrStoreViewController : UIViewController <UIScrollViewDelegate>
+@interface coubrStoreViewController : UIViewController
 
 @property (strong, nonatomic, readonly) NSFetchedResultsController *couponFetchedResultsController;
 @property (weak, nonatomic, readonly) Store *store;
 
 @property (nonatomic, strong) NSString *storeId;
-
-- (void)scrollToTop;
-- (void)scrollToBottom;
 
 @end

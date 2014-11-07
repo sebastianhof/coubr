@@ -38,17 +38,16 @@ static coubrLocationManager *locationManagerInstance = nil;
     return _locationManager;
 }
 
-
-- (void)setLastLocation:(CLLocation *)lastLocation
+- (void)setUserLocation:(CLLocation *)userLocation
 {
-    _lastLocation = lastLocation;
+    _userLocation = userLocation;
 }
 
-- (void)updateLocation
+- (void)updateUserLocation
 {
     [self requestAuthorization];
     [self.locationManager startUpdatingLocation];
-    [self setLastLocation:self.locationManager.location];
+    [self setUserLocation:self.locationManager.location];
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -60,7 +59,7 @@ static coubrLocationManager *locationManagerInstance = nil;
     // error handling
     NSLog(@"Location Manager did fail with error: %@", [error localizedDescription]);
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:LocationDidFailNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:UserLocationDidFailNotification object:self];
     
 }
 
@@ -71,17 +70,17 @@ static coubrLocationManager *locationManagerInstance = nil;
     // error handling
     NSLog(@"Location Manager did fail with error: %@", [error localizedDescription]);
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:LocationDidFailNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:UserLocationDidFailNotification object:self];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     [self.locationManager stopUpdatingLocation];
     
-    self.lastLocation = [locations lastObject];
+    self.userLocation = [locations lastObject];
 
-    NSDictionary *userInfo =  @{ Location: self.lastLocation };
-    [[NSNotificationCenter defaultCenter] postNotificationName:LocationDidBecomeAvailableNotification object:self userInfo:userInfo];
+    NSDictionary *userInfo =  @{ UserLocation: self.userLocation };
+    [[NSNotificationCenter defaultCenter] postNotificationName:UserLocationDidBecomeAvailableNotification object:self userInfo:userInfo];
     
 }
 

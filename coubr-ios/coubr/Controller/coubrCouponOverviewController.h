@@ -11,7 +11,7 @@
 
 #define ModalViewDidDismissedNotification @"ModalViewDidDismissedNotification"
 
-@interface coubrCouponOverviewController : UIViewController <UIAlertViewDelegate>
+@interface coubrCouponOverviewController : UIViewController <UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) Coupon *coupon;
 

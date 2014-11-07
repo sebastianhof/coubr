@@ -13,4 +13,6 @@
 
 @property (weak, nonatomic) coubrStoreViewController *parentController;
 
+@property (weak, nonatomic) IBOutlet UIButton *locationButton;
+
 @end

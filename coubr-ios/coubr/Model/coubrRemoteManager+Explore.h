@@ -10,7 +10,7 @@
 
 @interface coubrRemoteManager (Explore)
 
-- (void)loadExploreJSONWithinDistance:(double)distance
+- (void)loadExploreJSONAtLatitude:(double)latitude longitude:(double)longitude distance:(double)distance
                     completionHandler:(void (^)(NSDictionary *))onCompletion
                          errorHandler:(void(^)(NSInteger))onError;
 

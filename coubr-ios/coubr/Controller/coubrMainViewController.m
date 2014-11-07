@@ -5,11 +5,8 @@
 //  Created by Sebastian Hof on 15.10.14.
 //  Copyright (c) 2014 coubr. All rights reserved.
 //
-
 #import "coubrMainViewController.h"
-#import "coubrNavigationViewController.h"
-#import "coubrSettingsTableViewController.h"
-#import "coubrProfileViewController.h"
+#import "coubrNavigationTableViewController.h"
 
 #import "UIImage+ImageEffects.h"
 
@@ -17,17 +14,9 @@
 
 @interface coubrMainViewController()
 
-@property (strong, nonatomic) coubrNavigationViewController *navigationViewController;
+@property (strong, nonatomic) coubrNavigationTableViewController *navigationViewController;
 @property (weak, nonatomic) UIView *navigationView;
-
-@property (strong, nonatomic) coubrExploreViewController *exploreViewController;
-@property (weak, nonatomic) UIView *exploreView;
-
-@property (strong, nonatomic) coubrSettingsTableViewController *settingsViewController;
-@property (weak, nonatomic) UIView *settingsView;
-
-@property (strong, nonatomic) coubrProfileViewController *profileViewController;
-@property (weak, nonatomic) UIView *profileView;
+@property (strong, nonatomic) UIView *navigationBackgroundView;
 
 @end
 
@@ -37,14 +26,17 @@
     [super viewDidLoad];
     
     [self initNavigationBar];
-    [self showExploreViewInMainView];
+    [self initTabBar];
 }
 
-- (coubrNavigationViewController *)navigationViewController
+# pragma mark - Navigation
+
+- (coubrNavigationTableViewController *)navigationViewController
 {
     if (!_navigationViewController) {
-        _navigationViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrNavigationViewController"];
+        _navigationViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrNavigationTableViewController"];
         [self addChildViewController:_navigationViewController];
+        [_navigationViewController setParentController:self];
     }
     return _navigationViewController;
 }
@@ -52,172 +44,65 @@
 - (UIView *)navigationView
 {
     if (!_navigationView) {
-        
         _navigationView = self.navigationViewController.view;
-  
-        CGRect frame = self.view.frame;
-        frame.origin.x = 0;
-        frame.origin.y = 0;
-        frame.size.height = 100;
-        [_navigationView setFrame:frame];
         
+        CGRect superviewFrame = self.view.frame;
+        
+        CGRect frame = _navigationView.frame;
+        frame.size.width = superviewFrame.size.width * 0.70;
+        frame.size.height = superviewFrame.size.height;
+        frame.origin.y = 0;
+        frame.origin.x = 0;
+        [_navigationView setFrame:frame];
     }
     return _navigationView;
 }
 
-- (coubrExploreViewController *)exploreViewController
+- (UIView *)navigationBackgroundView
 {
-    if (!_exploreViewController) {
-        _exploreViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrExploreViewController"];
-        [self addChildViewController:_exploreViewController];
+    if (!_navigationBackgroundView) {
+        CGRect superFrame = self.view.frame;
+        CGRect frame = CGRectMake(0, 0, superFrame.size.width, superFrame.size.height);
+
+        _navigationBackgroundView = [[UIView alloc] initWithFrame:frame];
+        [_navigationBackgroundView setBackgroundColor:[UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:0.1]];
+        [_navigationBackgroundView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeNavigationViewInMainView)]];
     }
-    return _exploreViewController;
+    return _navigationBackgroundView;
 }
 
-- (UIView *)exploreView
+- (IBAction)toggleNavigationViewInMainView:(id)sender
 {
-    if (!_exploreView) {
-        
-        _exploreView  = self.exploreViewController.view;
-        
-        CGRect superviewFrame = self.view.frame;
-        
-        CGRect frame = _exploreView.frame;
-        frame.size.width = superviewFrame.size.width;
-        frame.size.height = superviewFrame.size.height;
-        frame.origin.y = 0;
-        frame.origin.x = 0;
-        [_exploreView setFrame:frame];
-    }
-    return _exploreView;
-}
-
-- (coubrSettingsTableViewController *)settingsViewController
-{
-    if (!_settingsViewController) {
-        _settingsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrSettingsTableViewController"];
-        [self addChildViewController:_settingsViewController];
-    }
-    return _settingsViewController;
-}
-
-- (UIView *)settingsView
-{
-    if (!_settingsView) {
-        _settingsView = self.settingsViewController.view;
-        
-        CGRect superviewFrame = self.view.frame;
-        
-        CGRect frame = _settingsView.frame;
-        frame.size.width = superviewFrame.size.width;
-        frame.size.height = superviewFrame.size.height;
-        frame.origin.y = 0;
-        frame.origin.x = 0;
-        [_settingsView setFrame:frame];
-    }
-    return _settingsView;
-}
-
-- (coubrProfileViewController *)profileViewController
-{
-    if (!_profileViewController) {
-        _profileViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrProfileViewController"];
-        [self addChildViewController:_profileViewController];
-    }
-    return _profileViewController;
-}
-
-- (UIView *)profileView
-{
-    if (!_profileView) {
-        _profileView = self.profileViewController.view;
-        
-        CGRect superviewFrame = self.view.frame;
-        
-        CGRect frame = _profileView.frame;
-        frame.size.width = superviewFrame.size.width;
-        frame.size.height = superviewFrame.size.height;
-        frame.origin.y = 0;
-        frame.origin.x = 0;
-        [_profileView setFrame:frame];
-    }
-    return _profileView;
-}
-
-
-#pragma mark - coubrNavigationView Delegate
-
-- (void)hideNavigationViewInMainView
-{
+    
     if ([self.view.subviews containsObject:_navigationView]) {
-
-        [self.navigationView removeFromSuperview];
-
+        // hide
+        [self removeNavigationViewInMainView];
+    } else {
+        // show
+        [self showNavigationViewInMainView];
     }
 }
 
 - (void)showNavigationViewInMainView
 {
     if (![self.view.subviews containsObject:_navigationView]) {
-
+        [self.view addSubview:self.navigationBackgroundView];
         [self.view addSubview:self.navigationView];
-        
+        [self.navigationItem.leftBarButtonItem setTintColor:[UIColor colorWithRed:242.0/255.0 green:241.0/255.0 blue:239.0/255.0 alpha:1]];
     }
 }
 
-- (void)showViewInMainViewWithIdentifier:(UIView *)view
-{
-    [self hideNavigationViewInMainView];
-
-    if ([[self.view subviews] containsObject:view]) {
-        // currently shown
-        return;
-    }
-    
-    if ([[self.view subviews] containsObject:_settingsView]) {
-        // remove settings view
-        [self.settingsView removeFromSuperview];
-        
-        // set settings view + controller to nil as they are not often used
-        self.settingsView = nil;
-        self.settingsViewController = nil;
-        
-    } else if ([[self.view subviews] containsObject:_exploreView]) {
-        // remove explore view
-        [self.exploreView removeFromSuperview];
-    } else if ([[self.view subviews] containsObject:_profileView]) {
-        [self.profileView removeFromSuperview];
-    }
-        
-    // add to view
-    [self.view addSubview:view];
-}
-
-- (void)showSettingsViewInMainView
-{
-    [self showViewInMainViewWithIdentifier:self.settingsView];
-}
-
-- (void)showProfileViewInMainView
-{
-    [self showViewInMainViewWithIdentifier:self.profileView];
-}
-
-- (void)showExploreViewInMainView
-{
-    [self showViewInMainViewWithIdentifier:self.exploreView];
-}
-
-- (IBAction)toggleNavigationViewInMainView:(id)sender {
-    
+- (void)removeNavigationViewInMainView {
     if ([self.view.subviews containsObject:_navigationView]) {
         // hide
-        [self hideNavigationViewInMainView];
-    } else {
-        // show
-        [self showNavigationViewInMainView];
+        [self.navigationBackgroundView removeFromSuperview];
+        [self.navigationView removeFromSuperview];
+        [self.navigationController removeFromParentViewController];
+        _navigationBackgroundView = nil;
+        _navigationView = nil;
+        _navigationViewController = nil;
+        [self.navigationItem.leftBarButtonItem setTintColor:[UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1]];
     }
-    
 }
 
 # pragma mark - Navigation Bar
@@ -232,6 +117,28 @@
     
     [titleButton setAttributedTitle:title forState:UIControlStateNormal];
     self.navigationItem.titleView = titleButton;
+    
+    [self.navigationItem.leftBarButtonItem setTintColor:[UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1]];
+}
+
+- (void)initTabBar
+{
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1] }
+                                             forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor colorWithRed:242.0/255.0 green:241.0/255.0 blue:239.0/255.0 alpha:1] } forState:UIControlStateSelected];
+
+    [self.tabBar setTintColor:[UIColor colorWithRed:242.0/255.0 green:241.0/255.0 blue:239.0/255.0 alpha:1]];
+    
+    if ([self.tabBar.items objectAtIndex:0]) {
+        UITabBarItem *item = [self.tabBar.items objectAtIndex:0];
+        [item setImage:[[UIImage imageNamed:@"Tab_Bar_Explore"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    }
+    
+    if ([self.tabBar.items objectAtIndex:1]) {
+         UITabBarItem *item = [self.tabBar.items objectAtIndex:1];
+        [item setImage:[[UIImage imageNamed:@"Tab_Bar_Profile"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    }
+
 }
 
 @end

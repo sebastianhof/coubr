@@ -14,13 +14,12 @@
 
 @interface coubrProfileViewController ()
 
-@property (weak, nonatomic) IBOutlet UILabel *previousPageLabel;
-@property (weak, nonatomic) IBOutlet UILabel *currentPageLabel;
-@property (weak, nonatomic) IBOutlet UILabel *nextPageLabel;
-
-
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *foregroundImageView;
+
+@property (weak, nonatomic)UIPageViewController *pageViewController;
+
+@property (weak, nonatomic) IBOutlet UIImageView *navigationImageView;
 
 @property (strong, nonatomic) coubrFavoritesTableViewController *profileFavoritesTableViewController;
 @property (strong, nonatomic) coubrHistoryTableViewController *profileHistoryTableViewController;
@@ -33,11 +32,14 @@
 {
     [super viewDidLoad];
     
-    [self.previousPageLabel setText:@""];
-    [self.currentPageLabel setText:LOCALE_PROFILE_NAV_FAVORITES];
-    [self.nextPageLabel setText:LOCALE_PROFILE_NAV_VISITS];
     [self blurBackgroundImage];
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self blurNavigationImage];
+}
+
 
 #pragma mark - Init controllers
 
@@ -72,6 +74,7 @@
             [pvc setDelegate:self];
             [pvc setDataSource:self];
             [pvc setViewControllers:@[ self.profileFavoritesTableViewController ] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+            self.pageViewController = pvc;
             
         }
         
@@ -107,25 +110,26 @@
     
 }
 
-- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
+- (void)blurNavigationImage
 {
+    UIGraphicsBeginImageContext(self.navigationImageView.bounds.size);
     
-    if ([previousViewControllers containsObject:self.profileHistoryTableViewController] && completed) {
-        
-        [self.previousPageLabel setText:@""];
-        [self.currentPageLabel setText:LOCALE_PROFILE_NAV_FAVORITES];
-        [self.nextPageLabel setText:LOCALE_PROFILE_NAV_VISITS];
-        
-    } else if ([previousViewControllers containsObject:self.profileFavoritesTableViewController] && completed) {
-        
-        [self.previousPageLabel setText:LOCALE_PROFILE_NAV_FAVORITES];
-        [self.currentPageLabel setText:LOCALE_PROFILE_NAV_VISITS];
-        [self.nextPageLabel setText:@""];
-        
-    }
-
+    CGContextRef c = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(c, 0, 0);
+    [self.view.layer renderInContext:c];
     
+    UIImage* blurimage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    blurimage = [blurimage applyExtraLightEffect];
+    
+    UIGraphicsEndImageContext();
+    
+    [self.navigationImageView setImage:blurimage];
+    [self.navigationImageView.layer setShadowOffset:CGSizeMake(-2.0, 2.0)];
+    [self.navigationImageView.layer setShadowRadius:3.0];
+    [self.navigationImageView.layer setShadowOpacity:0.05];
 }
+
 
 - (void)blurBackgroundImage
 {
@@ -136,11 +140,36 @@
     [self.backgroundImageView.layer renderInContext:c];
     
     UIImage* viewImage = UIGraphicsGetImageFromCurrentImageContext();
-    viewImage = [viewImage applyLightEffect];
+    viewImage = [viewImage applyExtraLightEffect];
     
     UIGraphicsEndImageContext();
     
     [self.foregroundImageView setImage:viewImage];
+    [self.foregroundImageView.layer setShadowOffset:CGSizeMake(-2.0, 2.0)];
+    [self.foregroundImageView.layer setShadowRadius:3.0];
+    [self.foregroundImageView.layer setShadowOpacity:0.05];
 }
+
+- (IBAction)showFavorites:(id)sender {
+
+    if (![[self.pageViewController viewControllers] containsObject:self.profileFavoritesTableViewController]) {
+        
+        [self.pageViewController setViewControllers:@[ self.profileFavoritesTableViewController ] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+        
+    }
+
+}
+
+
+- (IBAction)showVisits:(id)sender {
+    
+    if (![[self.pageViewController viewControllers] containsObject:self.profileHistoryTableViewController]) {
+        
+        [self.pageViewController setViewControllers:@[ self.profileHistoryTableViewController ] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+        
+    }
+    
+}
+
 
 @end

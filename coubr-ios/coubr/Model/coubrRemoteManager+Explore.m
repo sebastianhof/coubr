@@ -7,25 +7,19 @@
 //
 
 #import "coubrRemoteManager+Explore.h"
-#import <CoreLocation/CoreLocation.h>
-
 #import "coubrLocationManager.h"
 #import "coubrConstants.h"
 
 @implementation coubrRemoteManager (Explore)
 
-- (void)loadExploreJSONWithinDistance:(double)distance
-                    completionHandler:(void (^)(NSDictionary *))onCompletion
-                         errorHandler:(void(^)(NSInteger))onError
+- (void)loadExploreJSONAtLatitude:(double)latitude longitude:(double)longitude distance:(double)distance
+completionHandler:(void (^)(NSDictionary *))onCompletion
+errorHandler:(void(^)(NSInteger))onError;
 {
-    
+
     // Prepare JSON Data
-    
-    // Assert location did become available
-    CLLocationCoordinate2D coordinate = [[coubrLocationManager defaultManager] lastLocation].coordinate;
-    
-    NSString *lt = [NSString stringWithFormat:@"%f",coordinate.latitude];
-    NSString *lg = [NSString stringWithFormat:@"%f",coordinate.longitude];
+    NSString *lt = [NSString stringWithFormat:@"%f",latitude];
+    NSString *lg = [NSString stringWithFormat:@"%f",longitude];
     NSString *d = [NSString stringWithFormat:@"%f",distance];
     
     NSDictionary *requestData = @{ @"lt": lt , @"lg": lg, @"d": d };

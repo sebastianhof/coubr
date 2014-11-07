@@ -13,16 +13,10 @@
 #define ConnectionDidFailNotification @"ConnectionDidFailNotification"
 #define ConnectionDidBecomeAvailableNotification @"ConnectionDidBecomeAvailableNotification"
 
-@interface coubrExploreViewController : UIViewController <UIScrollViewDelegate>
+@interface coubrExploreViewController : UIViewController
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
-- (void)updateLocationAndFetchedResultsController;
-
-- (void)scrollToTop;
-
-- (void)scrollToBottom;
-
-- (void)scrollToPosition:(CGFloat)position;
+- (void)updateFetchedResultsController;
 
 @end

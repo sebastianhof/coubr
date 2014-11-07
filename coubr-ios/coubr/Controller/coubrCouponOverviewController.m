@@ -8,12 +8,17 @@
 
 #import "coubrCouponOverviewController.h"
 #import "coubrCouponQRScanController.h"
+#import "coubrCouponDescriptionTableViewCell.h"
+
 #import "coubrRemoteManager+Coupon.h"
 #import "coubrDatabaseManager.h"
+
 #import "coubrConstants.h"
 #import "coubrLocale.h"
+
 #import "Store.h"
 #import "History+CRUD.h"
+
 #import "UIImage+ImageEffects.h"
 
 @interface coubrCouponOverviewController ()
@@ -23,7 +28,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *validToLabel;
 @property (weak, nonatomic) IBOutlet UILabel *amountLabel;
-@property (weak, nonatomic) IBOutlet UITextView *descriptionTextView;
+
+@property (weak, nonatomic) IBOutlet UITableView *couponTableView;
 
 @property (weak, nonatomic) IBOutlet UIButton *redeemButton;
 
@@ -45,10 +51,66 @@
     [self.validToLabel setText:[NSString stringWithFormat:@"%@ %@", LOCALE_COUPON_VALID_UNTIL, [dateFormatter stringFromDate:self.coupon.validTo]]];
     
     [self.amountLabel setText:[NSString stringWithFormat:@"%lu %@", ([self.coupon.amount longValue] - [self.coupon.amountRedeemed longValue]), LOCALE_COUPON_AVAILABLE]];
- 
-    [self.descriptionTextView setText: self.coupon.couponDescription ? self.coupon.couponDescription : LOCALE_COUPON_NO_DESCRIPTION];
+    
     
     [self blurBackgroundImage];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self blurTableViewBackground];
+}
+
+#pragma mark - UITableView
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (self.coupon.couponDescription) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (self.coupon.couponDescription) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section ==0) {
+        return LOCALE_COUPON_DESCRIPTION;
+    }
+    return nil;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+     if (indexPath.section == 0) {
+        
+        if (self.coupon.couponDescription) {
+            return [self initializeDescriptionTableViewCell];
+        }
+         
+     }
+    return nil;
+}
+
+- (UITableViewCell *)initializeDescriptionTableViewCell
+{
+    
+    UITableViewCell *cell = [self.couponTableView dequeueReusableCellWithIdentifier:@"coubrCouponDescriptionTableViewCell"];
+    if ([cell isKindOfClass:[coubrCouponDescriptionTableViewCell class]]) {
+        
+        [((coubrCouponDescriptionTableViewCell *)cell).descriptionTextView setText:self.coupon.couponDescription];
+    }
+    return cell;
 }
 
 #pragma mark - Navigation
@@ -106,7 +168,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             
             // update label
-            [self.amountLabel setText:[NSString stringWithFormat:@"%lu %@", ([self.coupon.amount longValue] - [self.coupon.amountRedeemed longValue]), LOCALE_COUPON_AVAILABLE]];
+            //[self.amountLabel setText:[NSString stringWithFormat:@"%lu %@", ([self.coupon.amount longValue] - [self.coupon.amountRedeemed longValue]), LOCALE_COUPON_AVAILABLE]];
             
             // deactivate button
             self.redeemButton.enabled = NO;
@@ -149,6 +211,10 @@
 
 - (void)blurBackgroundImage
 {
+    [self.backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
+    [self.backgroundImageView setClipsToBounds:YES];
+    [self.backgroundImageView setImage:[UIImage imageNamed:@"Coupon-bg"]];
+    
     UIGraphicsBeginImageContext(self.backgroundImageView.bounds.size);
     
     CGContextRef c = UIGraphicsGetCurrentContext();
@@ -156,11 +222,30 @@
     [self.backgroundImageView.layer renderInContext:c];
     
     UIImage* viewImage = UIGraphicsGetImageFromCurrentImageContext();
-    viewImage = [viewImage applyLightEffect];
+    viewImage = [viewImage applyExtraLightEffect];
     
     UIGraphicsEndImageContext();
     
     [self.foregroundImageView setImage:viewImage];
+    [self.foregroundImageView.layer setShadowOffset:CGSizeMake(-2.0, 2.0)];
+    [self.foregroundImageView.layer setShadowRadius:3.0];
+    [self.foregroundImageView.layer setShadowOpacity:0.05];
+}
+
+- (void)blurTableViewBackground
+{
+    UIGraphicsBeginImageContext(self.couponTableView.bounds.size);
+    
+    CGContextRef c = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(c, 0, 0);
+    [self.couponTableView.layer renderInContext:c];
+    
+    UIImage* viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    viewImage = [viewImage applyLightEffect];
+    
+    UIGraphicsEndImageContext();
+    
+    self.couponTableView.backgroundView = [[UIImageView alloc] initWithImage:viewImage];
 }
 
 @end

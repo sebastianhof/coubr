@@ -28,9 +28,8 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    self.storeMapView.showsUserLocation = NO;
 }
+
 
 #define DEFAULT_DISTANCE 200.0
 #define STORE_DISTANCE_ADDITION 100.0
@@ -54,7 +53,7 @@
         }];
         
         CLLocation *storeLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
-        CLLocation *currentLocation = [[coubrLocationManager defaultManager] lastLocation];
+        CLLocation *currentLocation = [[coubrLocationManager defaultManager] userLocation];
         CLLocationDistance distance = [storeLocation distanceFromLocation:currentLocation];
         
         // set annotation
@@ -110,6 +109,11 @@
         return  renderer;
     }
     return nil;
+}
+
+- (IBAction)centerMapToUserLocation:(id)sender {
+    
+    [self.storeMapView setCenterCoordinate:[coubrLocationManager defaultManager].userLocation.coordinate];
 }
 
 @end

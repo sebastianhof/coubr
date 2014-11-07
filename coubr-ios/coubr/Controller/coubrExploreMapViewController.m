@@ -16,7 +16,7 @@
 
 @interface coubrExploreMapViewController ()
 
-@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+
 
 @end
 
@@ -26,44 +26,53 @@
     [super awakeFromNib];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:FetchedResultsControllerDidUpdatedNotification object:self.parentController queue:nil usingBlock:^(NSNotification *note) {
-        
         [self addAnnotations];
-        [self updateMapView];
-        
     }];
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:UserLocationDidBecomeAvailableNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+        [self updateMapViewToLocation:[[coubrLocationManager defaultManager] userLocation]];
+        [self updateLocationLabelWithLocation:[[coubrLocationManager defaultManager] userLocation]];
+    }];
+
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
-    [self addAnnotations];
-    [self updateMapView];
-    
+    [self initUserLocationButton];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)initUserLocationButton
 {
-    [super viewWillDisappear:animated];
-    
-    self.mapView.showsUserLocation = NO;
+
 }
 
 #pragma mark - Init
 
-- (void)updateMapView
+- (void)updateMapViewToLocation:(CLLocation *)location
 {
-    CLLocationCoordinate2D coordinate = [[coubrLocationManager defaultManager] lastLocation].coordinate;
-    
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate, EXPLORE_DEFAULT_DISTANCE * 2, EXPLORE_DEFAULT_DISTANCE *2);
-    [self.mapView setRegion:region];
-    
-    self.mapView.showsUserLocation = YES;
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(location.coordinate, EXPLORE_DEFAULT_DISTANCE * 2, EXPLORE_DEFAULT_DISTANCE *2);
+    [self.mapView setRegion:region animated:NO];
+}
+
+- (void)updateLocationLabelWithLocation:(CLLocation *)location
+{
+    CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
+    [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+        
+        if (placemarks.count > 0) {
+            CLPlacemark *placemark = [placemarks firstObject];
+            [self.locationLabel setText:placemark.locality];
+        }
+        
+    }];
 }
 
 #define PIN_REUSE_IDENTIFIER = @"Pin"
 
 - (void)addAnnotations
-{
+{    
     NSMutableArray *annotations = [[NSMutableArray alloc] init];
     
     for (NSObject *managedObject in [self.parentController.fetchedResultsController fetchedObjects]) {
@@ -88,8 +97,10 @@
 
 #pragma mark - MapView
 
-
-
+- (IBAction)centerMapToUserLocation:(id)sender {
+    
+    [self.mapView setCenterCoordinate:[coubrLocationManager defaultManager].userLocation.coordinate];
+}
 
 #pragma mark - Annotation View
 

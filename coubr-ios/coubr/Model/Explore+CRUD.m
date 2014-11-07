@@ -75,7 +75,7 @@
                 
                 CLLocation *storeLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
                 
-                CLLocationDistance distance = [storeLocation distanceFromLocation:[[coubrLocationManager defaultManager] lastLocation]];
+                CLLocationDistance distance = [storeLocation distanceFromLocation:[[coubrLocationManager defaultManager] userLocation]];
                 explore.distance = [NSNumber numberWithDouble:distance];
             }
             

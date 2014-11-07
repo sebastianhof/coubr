@@ -6,54 +6,56 @@
 //  Copyright (c) 2014 coubr. All rights reserved.
 //
 
-#import "coubrStorePageViewController.h"
-#import "coubrStoreOverviewController.h"
-#import "coubrStoreCouponTableViewController.h"
+#import "coubrStoreInformationTableViewController.h"
+#import "coubrStoreOfferTableViewController.h"
 #import "coubrLocale.h"
+
+#import "UIImage+ImageEffects.h"
 
 @interface coubrStorePageViewController ()
 
-@property (weak, nonatomic) IBOutlet UILabel *leftPageLabel;
+@property (weak, nonatomic) IBOutlet UIButton *ratingsButton;
+@property (weak, nonatomic) IBOutlet UIButton *offersButton;
+@property (weak, nonatomic) IBOutlet UIButton *infoButton;
+@property (weak, nonatomic) IBOutlet UIImageView *navigationImageView;
 
-@property (weak, nonatomic) IBOutlet UILabel *currentPageLabel;
+@property (weak, nonatomic) UIPageViewController *pageViewController;
 
-@property (weak, nonatomic) IBOutlet UILabel *rightPageLabel;
-
-
-@property (strong, nonatomic) coubrStoreOverviewController *storeOverviewController;
-@property (strong, nonatomic) coubrStoreCouponTableViewController *storeCouponTableViewController;
+@property (strong, nonatomic) coubrStoreInformationTableViewController *storeInformationTableViewController;
+@property (strong, nonatomic) coubrStoreOfferTableViewController *storeOfferTableViewController;
 
 @end
 
 @implementation coubrStorePageViewController
 
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     
-    [self.leftPageLabel setText:@""];
-    [self.currentPageLabel setText:LOCALE_STORE_NAV_COUPONS];
-    [self.rightPageLabel setText:LOCALE_STORE_NAV_OVERVIEW];
+    [self blurNavigationView];
 }
 
-- (coubrStoreOverviewController *)storeOverviewController
+- (coubrStoreInformationTableViewController *)storeInformationTableViewController
 {
-    if (!_storeOverviewController) {
-        _storeOverviewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreOverviewController"];
-        [_storeOverviewController setParentController:self];
+    if (!_storeInformationTableViewController) {
+        _storeInformationTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreInformationTableViewController"];
+        [_storeInformationTableViewController setParentController:self];
     }
-    return _storeOverviewController;
+    return _storeInformationTableViewController;
 }
 
-- (coubrStoreCouponTableViewController *)storeCouponTableViewController
+- (coubrStoreOfferTableViewController *)storeOfferTableViewController
 {
-    if (!_storeCouponTableViewController) {
-        _storeCouponTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreCouponTableViewController"];
-        [_storeCouponTableViewController setParentController:self];
+    if (!_storeOfferTableViewController) {
+        _storeOfferTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreOfferTableViewController"];
+        [_storeOfferTableViewController setParentController:self];
     }
-    return _storeCouponTableViewController;
+    return _storeOfferTableViewController;
 }
 
 #pragma mark - Navigation
@@ -68,7 +70,9 @@
             [pvc setDelegate:self];
             [pvc setDataSource:self];
             
-            [pvc setViewControllers:@[ self.storeCouponTableViewController ] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+            [pvc setViewControllers:@[ self.storeOfferTableViewController ] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+            
+            self.pageViewController = pvc;
         }
         
     }
@@ -77,36 +81,12 @@
 
 #pragma mark - Page View Controller Delegate
 
-- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
-{
-    if ([previousViewControllers containsObject:self.storeOverviewController] && completed) {
-
-        [self.leftPageLabel setText:@""];
-        [self.currentPageLabel setText:LOCALE_STORE_NAV_COUPONS];
-        [self.rightPageLabel setText:LOCALE_STORE_NAV_OVERVIEW];
-        
-    } else if ([previousViewControllers containsObject:self.storeCouponTableViewController] && completed) {
-        
-        [self.leftPageLabel setText:LOCALE_STORE_NAV_COUPONS];
-        [self.currentPageLabel setText:LOCALE_STORE_NAV_OVERVIEW];
-        [self.rightPageLabel setText:@""];
-   
-    }
-}
-
-- (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers
-{
- 
-    // TODO
-    
-}
-
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
-    if ([viewController isKindOfClass:[coubrStoreOverviewController class]]) {
-        return self.storeCouponTableViewController;
-    } else if ([viewController isKindOfClass:[coubrStoreCouponTableViewController class]]) {
+    if ([viewController isKindOfClass:[coubrStoreInformationTableViewController class]]) {
         return nil;
+    } else if ([viewController isKindOfClass:[coubrStoreOfferTableViewController class]]) {
+        return self.storeInformationTableViewController;
     }
     
     return nil;
@@ -114,13 +94,72 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
-    if ([viewController isKindOfClass:[coubrStoreOverviewController class]]) {
+
+    if ([viewController isKindOfClass:[coubrStoreInformationTableViewController class]]) {
+        return self.storeOfferTableViewController;
+    } else if ([viewController isKindOfClass:[coubrStoreOfferTableViewController class]]) {
         return nil;
-    } else if ([viewController isKindOfClass:[coubrStoreCouponTableViewController class]]) {
-        return self.storeOverviewController;
     }
     
     return nil;
 }
+
+
+- (IBAction)showRatings:(id)sender {
+    [self resetHighlighted];
+    [self.ratingsButton setHighlighted:YES];
+}
+
+- (IBAction)showInfos:(id)sender {
+    [self resetHighlighted];
+    [self.infoButton setHighlighted:YES];
+    
+    if (![[self.pageViewController viewControllers] containsObject:self.storeInformationTableViewController]) {
+        
+        [self.pageViewController setViewControllers:@[ self.storeInformationTableViewController ] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+        
+    }
+
+}
+
+- (IBAction)showOffers:(id)sender {
+    [self resetHighlighted];
+    [self.offersButton setHighlighted:YES];
+
+    if (![[self.pageViewController viewControllers] containsObject:self.storeOfferTableViewController]) {
+    
+        [self.pageViewController setViewControllers:@[ self.storeOfferTableViewController ] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+        
+    }
+
+    
+}
+
+- (void)resetHighlighted
+{
+    [self.ratingsButton setHighlighted:NO];
+    [self.offersButton setHighlighted:NO];
+    [self.infoButton setHighlighted:NO];
+}
+
+- (void)blurNavigationView {
+    UIGraphicsBeginImageContext(self.navigationImageView.bounds.size);
+    
+    CGContextRef c = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(c, 0, 0);
+    [self.view.layer renderInContext:c];
+    
+    UIImage* blurimage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    blurimage = [blurimage applyExtraLightEffect];
+    
+    UIGraphicsEndImageContext();
+    
+    [self.navigationImageView setImage:blurimage];
+    [self.navigationImageView.layer setShadowOffset:CGSizeMake(-2.0, 2.0)];
+    [self.navigationImageView.layer setShadowRadius:3.0];
+    [self.navigationImageView.layer setShadowOpacity:0.05];
+}
+
 
 @end

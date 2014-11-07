@@ -13,4 +13,10 @@
 
 @property (weak, nonatomic) coubrExploreViewController *parentController;
 
+@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
+@property (weak, nonatomic) IBOutlet UIButton *userLocationButton;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+
+- (void)updateLocationLabelWithLocation:(CLLocation *)location;
+
 @end

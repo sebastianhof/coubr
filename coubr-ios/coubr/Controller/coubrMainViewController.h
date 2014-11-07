@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "coubrNavigationViewDelegate.h"
 
-@interface coubrMainViewController : UIViewController <coubrNavigationViewDelegate>
+@interface coubrMainViewController : UITabBarController
+
+- (void)removeNavigationViewInMainView;
 
 @end

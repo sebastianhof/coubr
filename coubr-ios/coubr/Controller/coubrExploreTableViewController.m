@@ -11,14 +11,13 @@
 #import "coubrExploreTableViewController.h"
 #import "coubrExploreTableViewCell.h"
 
-#import "coubrStoreViewController.h"
 #import "coubrLocationManager.h"
+
+#import "UIImage+ImageEffects.h"
 
 #import "Explore.h"
 
 @interface coubrExploreTableViewController ()
-
-@property (strong, nonatomic) IBOutlet UITableView *exploreTableView;
 
 @property (strong, nonatomic)UIViewController *emptyTableViewController;
 @property (strong, nonatomic)UIViewController *noConnectionViewController;
@@ -38,11 +37,13 @@
     [self initRefreshControl];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:FetchedResultsControllerDidUpdatedNotification object:self.parentController queue:nil usingBlock:^(NSNotification *note) {
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             
+            [self.tableView reloadData];
+            
             if ([[self.parentController.fetchedResultsController fetchedObjects] count] > 0) {
-                [self.exploreTableView reloadData];
+                
                 [self.refreshControl endRefreshing];
                 
                 [self hideEmptyTableView];
@@ -50,7 +51,10 @@
             } else {
                 
                 [self.refreshControl endRefreshing];
+                
                 [self showEmptyTableView];
+                
+                
                 
             }
             
@@ -59,7 +63,7 @@
         
     }];
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:LocationDidFailNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+    [[NSNotificationCenter defaultCenter] addObserverForName:UserLocationDidFailNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.refreshControl endRefreshing];
@@ -68,7 +72,7 @@
         
     }];
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:LocationDidBecomeAvailableNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+    [[NSNotificationCenter defaultCenter] addObserverForName:UserLocationDidBecomeAvailableNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
      
         dispatch_async(dispatch_get_main_queue(), ^{
                 [self locationDidBecomeAvailable];
@@ -122,7 +126,7 @@
 
 - (void)refreshTableView
 {
-    [self.parentController updateLocationAndFetchedResultsController];
+    [self.parentController updateFetchedResultsController];
 }
 
 #pragma mark - Table View Delegate
@@ -149,6 +153,7 @@
     NSManagedObject *managedObject = [self.parentController.fetchedResultsController objectAtIndexPath:indexPath];
     
     if ([managedObject isKindOfClass:[Explore class]]) {
+        [(coubrExploreTableViewCell *) cell setParentController:self];
         [(coubrExploreTableViewCell *) cell initCellWithExplore:(Explore *)managedObject];
     }
     
@@ -174,22 +179,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
     return [self.parentController.fetchedResultsController sectionForSectionIndexTitle:title atIndex:index];
-}
-
-#pragma mark - Navigation
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSManagedObject *managedObject = [self.parentController.fetchedResultsController objectAtIndexPath:indexPath];
-    if ([managedObject isKindOfClass:[Explore class]]) {
-        coubrStoreViewController *spvc = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreViewController"];
-        
-        [spvc setStoreId:((Explore *) managedObject).storeId];
-    
-        [self.parentController.navigationController pushViewController:spvc animated:YES];
-        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-    }
-    
 }
 
 #pragma mark - Empty table view

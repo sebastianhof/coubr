@@ -8,9 +8,12 @@
 
 #import "Explore.h"
 #import <UIKit/UIKit.h>
+#import "coubrExploreTableViewController.h"
 
 @interface coubrExploreTableViewCell : UITableViewCell
 
 - (void)initCellWithExplore:(Explore *)explore;
+
+@property (weak, nonatomic) coubrExploreTableViewController *parentController;
 
 @end

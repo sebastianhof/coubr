@@ -90,8 +90,12 @@
                     NSNumber *amountRedeemed;
                     
                     if (isValidJSONValue(couponJSON[STORE_RESPONSE_COUPON_VALID_TO])) {
-                        NSTimeInterval timeInterval = [couponJSON[STORE_RESPONSE_COUPON_VALID_TO] doubleValue] / 1000.0;
-                        validTo = [NSDate dateWithTimeIntervalSince1970:timeInterval];
+                        
+                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                        [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+                        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSZ"];
+                        validTo = [dateFormatter dateFromString:couponJSON[STORE_RESPONSE_COUPON_VALID_TO]];
+
                     }
                     
                     if (isValidJSONValue(couponJSON[STORE_RESPONSE_COUPON_AMOUNT])) {

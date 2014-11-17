@@ -11,8 +11,7 @@
 
 @interface coubrStoreMapViewController : UIViewController <MKMapViewDelegate>
 
-@property (weak, nonatomic) coubrStoreViewController *parentController;
-
 @property (weak, nonatomic) IBOutlet UIButton *locationButton;
+@property (weak, nonatomic) IBOutlet MKMapView *storeMapView;
 
 @end

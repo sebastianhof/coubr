@@ -7,17 +7,27 @@
 //
 
 #import "coubrFavoritesTableViewCell.h"
-#import "coubrTypesToImage.h"
+#import "coubrStoreViewController.h"
+
+#import "coubrCategoryToText.h"
+
 #import "UIImage+ImageEffects.h"
 
 @interface coubrFavoritesTableViewCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *addressLabel;
+@property (weak, nonatomic) IBOutlet UILabel *categoryLabel;
+@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 
-@property (weak, nonatomic) IBOutlet UIImageView *typeImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *categoryImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *subcategoryImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *offersImageView1;
+@property (weak, nonatomic) IBOutlet UIImageView *offersImageView2;
+@property (weak, nonatomic) IBOutlet UIImageView *offersImageView3;
+
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *foregroundImageView;
+
+@property (weak, nonatomic) NSString *storeId;
+@property (strong, nonatomic) UITapGestureRecognizer *tapRecognizer;
 
 @property (nonatomic) BOOL notInit;
 
@@ -25,32 +35,91 @@
 
 @implementation coubrFavoritesTableViewCell
 
+- (UITapGestureRecognizer *)tapRecognizer
+{
+    if (!_tapRecognizer) {
+        _tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showStore)];
+    }
+    return _tapRecognizer;
+}
+
 - (void)initCellWithStore:(Store *)store
 {
+    self.storeId = store.storeId;
+    
     // name
     [self.nameLabel setText:store.name];
     
-    // type
-    // TODO at the moment we only support food establishments - do not set type - set category instead
-    if (store.category) {
-        [self.typeImageView setImage:[coubrTypesToImage imageForCategory:store.category]];
-    }
+    [self.categoryLabel setText:[coubrCategoryToText textFromCategory:store.category andSubcategory:store.subcategory]];
     
-    if (store.subcategory) {
-        [self.categoryImageView setImage:[coubrTypesToImage imageForSubcategory:store.subcategory]];
-    }
+    [self.locationLabel setText:store.city];
     
-    // address
-    [self.addressLabel setText:[NSString stringWithFormat:@"%@, %@", store.street, store.city]];
+    [self.offersImageView1 setImage:nil];
+    [self.offersImageView2 setImage:nil];
+    [self.offersImageView3 setImage:nil];
+    
+    if (store.coupons.count > 0) {
+        
+        // rightImageView
+        [self.offersImageView1 setImage:[UIImage imageNamed:@"Explore_Coupon"]];
+        
+        if (store.stampCards.count > 0) {
+            
+            [self.offersImageView2 setImage:[UIImage imageNamed:@"Explore_StampCard"]];
+            
+            if (store.specialOffers.count > 0) {
+                [self.offersImageView3 setImage:[UIImage imageNamed:@"Explore_SpecialOffer"]];
+            }
+            
+        }
+        
+    } else if (store.stampCards.count > 0) {
+        
+        [self.offersImageView1 setImage:[UIImage imageNamed:@"Explore_StampCard"]];
+        
+        if (store.specialOffers.count > 0) {
+            [self.offersImageView2 setImage:[UIImage imageNamed:@"Explore_SpecialOffer"]];
+        }
+        
+    } else if (store.specialOffers.count > 0) {
+        [self.offersImageView1 setImage:[UIImage imageNamed:@"Explore_SpecialOffer"]];
+    }
     
     
     if (!self.notInit) {
         [self blurBackgroundImage];
     }
+    
+    [self.foregroundImageView addGestureRecognizer:self.tapRecognizer];
+}
+
+- (void)showStore
+{
+    if (self.storeId) {
+        coubrStoreViewController *svc = [[UIStoryboard storyboardWithName:@"Store" bundle:nil]  instantiateViewControllerWithIdentifier:@"coubrStoreViewController"];
+        [svc setStoreId:self.storeId];
+        [self.parentController.navigationController pushViewController:svc animated:YES];
+    }
 }
 
 - (void)blurBackgroundImage
 {
+    [self.backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
+    [self.backgroundImageView setClipsToBounds:YES];
+    
+    NSInteger randomNumber = arc4random() % 3;
+    UIImage *image;
+    if (randomNumber == 0) {
+        image = [UIImage imageNamed:@"Explore_Image1"];
+    } else if (randomNumber == 1) {
+        image = [UIImage imageNamed:@"Explore_Image2"];
+    } else if (randomNumber == 2) {
+        image = [UIImage imageNamed:@"Explore_Image3"];
+    } else {
+        image = [UIImage imageNamed:@"Explore_Image1"];
+    }
+    [self.backgroundImageView setImage:image];
+    
     UIGraphicsBeginImageContext(self.bounds.size);
     
     CGContextRef c = UIGraphicsGetCurrentContext();
@@ -58,11 +127,20 @@
     [self.layer renderInContext:c];
     
     UIImage* viewImage = UIGraphicsGetImageFromCurrentImageContext();
-    viewImage = [viewImage applyLightEffect];
+    viewImage = [viewImage applyExtraLightEffect];
     
     UIGraphicsEndImageContext();
     
-    self.backgroundView = [[UIImageView alloc] initWithImage:viewImage];
+    [self.foregroundImageView setImage:viewImage];
+    
+    [self.foregroundImageView.layer setBorderColor: [[UIColor whiteColor] CGColor]];
+    [self.foregroundImageView.layer setBorderWidth: 4.0];
+    [self.backgroundImageView.layer setBorderColor: [[UIColor whiteColor] CGColor]];
+    [self.backgroundImageView.layer setBorderWidth: 4.0];
+    
+    [self.foregroundImageView.layer setShadowOffset:CGSizeMake(-2.0, 2.0)];
+    [self.foregroundImageView.layer setShadowRadius:3.0];
+    [self.foregroundImageView.layer setShadowOpacity:0.05];
     
     self.notInit = YES;
 }

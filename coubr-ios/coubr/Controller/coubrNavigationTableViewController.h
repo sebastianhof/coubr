@@ -12,6 +12,6 @@
 
 @interface coubrNavigationTableViewController : UITableViewController <MFMailComposeViewControllerDelegate>
 
-@property (weak, nonatomic) coubrMainViewController *parentController;
+@property (weak, nonatomic) coubrMainViewController *mainViewController;
 
 @end

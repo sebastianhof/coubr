@@ -25,7 +25,7 @@
             
             // Fetch history in near past
             result = [context executeFetchRequest:[self fetchRequestForShorttermHistoryWithStore:coupon.store] error:&error];
-            
+
             History *history;
             if (result.count > 0) {
                 // Store exists already
@@ -33,13 +33,10 @@
             } else {
                 // Insert new store
                 history = (History *) [NSEntityDescription insertNewObjectForEntityForName:@"History" inManagedObjectContext:context];
+                history.store = coupon.store;
             }
 
             history.date = [NSDate date];
-            
-            if (![history.store isEqual:coupon.store]) {
-                history.store = coupon.store;
-            }
             
             if (!history.coupons) {
                 history.coupons = [[NSMutableSet alloc] initWithObjects:coupon, nil];
@@ -54,7 +51,6 @@
             
         }];
         
-        
         return true;
         
     }
@@ -66,8 +62,7 @@
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"History"];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"date"
-                                                              ascending:NO]];
-    
+                                                            ascending:NO]];
     return request;
 }
 

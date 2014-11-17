@@ -55,7 +55,6 @@ module.exports = function(mongoose) {
       amount: { type: Number, min: 1 },
       amountRedeemed: { type: Number, min: 0, default: 0 },
       activated: { type: Boolean, default: true },
-      code : { type: String },
       stores: [ { type : Schema.ObjectId, ref: 'Store' } ],
   });
 

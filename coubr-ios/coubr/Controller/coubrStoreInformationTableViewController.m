@@ -7,26 +7,21 @@
 //
 
 #import "coubrStoreInformationTableViewController.h"
-
-#import <CoreData/CoreData.h>
-
-#import "UIImage+ImageEffects.h"
-
-#import "Store+CRUD.h"
-#import "coubrDatabaseManager.h"
-#import "coubrCouponTableViewCell.h"
-#import "coubrLocale.h"
+#import "coubrStoreViewController.h"
 
 #import "coubrStoreAddressTableViewCell.h"
 #import "coubrStoreDescriptionTableViewCell.h"
 #import "coubrStoreContactTableViewCell.h"
 
+#import "Store+CRUD.h"
+
+#import "coubrLocale.h"
+
+#import <CoreData/CoreData.h>
+#import "UIImage+ImageEffects.h"
 @interface coubrStoreInformationTableViewController ()
 
-@property (weak, nonatomic) IBOutlet UITextView *descriptionTextView;
-
-@property (strong, nonatomic) NSMutableDictionary *storeDictionary;
-@property (nonatomic) int numbersOfSection;
+@property (weak, nonatomic) Store *store;
 
 @property (nonatomic) BOOL notInit;
 
@@ -36,11 +31,15 @@
 
 #pragma mark - init
 
-- (void)viewDidLoad
+- (void)awakeFromNib
 {
-    [super viewDidLoad];
+    [super awakeFromNib];
     
-    [self initView];
+    [[NSNotificationCenter defaultCenter] addObserverForName:StoreDidBecomeAvailableNotification object:self.parentViewController.parentViewController queue:nil usingBlock:^ (NSNotification *note) {
+        
+        self.store = note.userInfo[STORE];
+        [self.tableView reloadData];
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -51,62 +50,10 @@
        [self blurTableViewBackground];
     }
     
-}
-
-- (void)initView
-{
-    NSManagedObjectContext *context = [[coubrDatabaseManager defaultManager] managedObjectContext];
-    [context performBlockAndWait:^{
-        
-        NSError *error;
-        NSArray *results = [context executeFetchRequest:[Store fetchRequestForStoreWithId:self.parentController.parentController.storeId] error:&error];
-        
-        if (results > 0) {
-            Store *store = (Store *) [results firstObject];
-            
-            [self initWithStore:store];
-            
-        }
-        
-    }];
-    
-}
-
-- (void)initWithStore:(Store *)store
-{
-    self.numbersOfSection = 0;
-    
-    self.storeDictionary = [[NSMutableDictionary alloc] init];
-    
-    [self.storeDictionary setObject:@{ @"street" : store.street,
-                                       @"postalCode": store.postalCode,
-                                       @"city": store.city
-                                       
-                                       } forKey:@"address"];
-    
-    if (store.email || store.phone) {
-        
-        NSMutableDictionary *contactDict = [[NSMutableDictionary alloc] init];
-        
-        if (store.email) {
-            [contactDict setObject:store.email forKey:@"email"];
-        }
-        
-        if (store.phone) {
-            [contactDict setObject:store.phone forKey:@"phone"];
-        }
-        
-        [self.storeDictionary setObject:contactDict forKey:@"contact"];
-        
+    if (self.store) {
+        [self.tableView reloadData];
     }
     
-    if (store.storeDescription && store.storeDescription.length > 0) {
-        
-        [self.storeDictionary setObject:store.storeDescription forKey:@"description"];
-        
-    }
-
-    [self.tableView reloadData];
 }
 
 #pragma mark - Table View Delegate
@@ -114,146 +61,214 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 
-    if (self.storeDictionary) {
-        return [self.storeDictionary count];
+    if (self.store.storeDescription && (self.store.phone || self.store.email || self.store.website)) {
+        return 3;
+    } else if (self.store.storeDescription || (self.store.phone || self.store.email || self.store.website)) {
+        return 2;
     } else {
-        return 0;
+        return 1;
     }
     
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.storeDictionary) {
-        if (section == 0) {
-            return 2;
+
+    if (section == 0) {
+        
+        if (self.store.storeDescription) {
+            return 1;
+        } else {
+            return 1;
         }
-        if (section == 1) {
-            if ([self.storeDictionary objectForKey:@"contact"]) {
-                return ((NSMutableDictionary *) [self.storeDictionary objectForKey:@"contact"]).count;
-            } else if ([self.storeDictionary objectForKey:@"description"]) {
-                return 1;
-            }
+
+    } else if (section == 1) {
+        
+        if (self.store.storeDescription) {
+            return 1;
+        } else {
+            return [self numbersOfRowsInContactSection];
         }
-        if (section == 2) {
-            if ([self.storeDictionary objectForKey:@"description"]) {
-                return 1;
-            }
-        }
+        
+    } else if (section == 2) {
+        
+        return [self numbersOfRowsInContactSection];
+    
     }
     return 0;
-    
+
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (self.storeDictionary) {
-        if (section == 0) {
+    if (section == 0) {
+        
+        if (self.store.storeDescription) {
+            return LOCALE_STORE_DESCRIPTION;
+        } else {
             return LOCALE_STORE_ADDRESS;
         }
-        if (section == 1) {
-            if ([self.storeDictionary objectForKey:@"contact"]) {
-                return LOCALE_STORE_CONTACT;
-            } else if ([self.storeDictionary objectForKey:@"description"]) {
-                return LOCALE_STORE_DESCRIPTION;
-            }
+        
+    } else if (section == 1) {
+        
+        if (self.store.storeDescription) {
+            return LOCALE_STORE_ADDRESS;
+        } else if (self.store.phone || self.store.email || self.store.website) {
+            return LOCALE_STORE_CONTACT;
         }
-        if (section == 2) {
-            if ([self.storeDictionary objectForKey:@"description"]) {
-                return LOCALE_STORE_DESCRIPTION;
-            }
+        
+    } else if (section == 2) {
+        
+        if (self.store.phone || self.store.email || self.store.website) {
+            return LOCALE_STORE_CONTACT;
         }
+        
     }
-    return @"";
+    return nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     if (indexPath.section == 0) {
-        // address
-        if (indexPath.row == 0) {
-            return [self initializeStreetTableViewCell];
-        } else if (indexPath.row == 1 ) {
-            return [self initializeCityTableViewCell];
+        
+        if (self.store.storeDescription) {
+            return [self initializeDescriptionTableViewCell];
+        } else {
+            return [self initializeAddressTableViewCell];
         }
         
     } else if (indexPath.section == 1) {
-        // contact or description
         
-        if ([self.storeDictionary objectForKey:@"contact"]) {
-            // contact
-            NSMutableDictionary *contactDict = [(NSMutableDictionary *) self.storeDictionary objectForKey:@"contact"];
-                
-            if (indexPath.row == 0) {
-                    
-                if ([contactDict objectForKey:@"phone"]) {
-                    return [self initializePhoneTableViewCell];
-                } else {
-                    
-                    if ([contactDict objectForKey:@"email"]) {
-                        return [self initializeEmailTableViewCell];
-
-                    }
-                    
-                }
-
-            }
-            
-            if (indexPath.row == 1) {
-                
-                if ([contactDict objectForKey:@"email"]) {
-                    return [self initializeEmailTableViewCell];
-                    
-                }
-                
-            }
-            
-            
-        } else if ([self.storeDictionary objectForKey:@"description"]) {
-            return [self initializeDescriptionTableViewCell];
-
+        if (self.store.storeDescription) {
+            return [self initializeAddressTableViewCell];
+        } else {
+            return [self initializeCellsForContactSectionAtIndexPath:indexPath];
         }
         
     } else if (indexPath.section == 2) {
-        // description
-        
-        if ([self.storeDictionary objectForKey:@"description"]) {
-            return [self initializeDescriptionTableViewCell];
-        }
+    
+        return [self initializeCellsForContactSectionAtIndexPath:indexPath];
         
     }
     
     return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    if (indexPath.section == 0) {
+        
+        if (self.store.storeDescription) {
+            return 44.0;
+        } else {
+            return 66.0;
+        }
+        
+    } else if (indexPath.section == 1) {
+        
+        if (self.store.storeDescription) {
+            return 66.0;
+        } else {
+            return 44.0;
+        }
+        
+    } else if (indexPath.section == 2) {
+        
+        return 44.0;
+        
+    }
+
+    return 44.0;
     
 }
 
-- (UITableViewCell *)initializeStreetTableViewCell
+- (NSInteger)numbersOfRowsInContactSection
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"coubrStoreAddressTableViewCell"];
-    if ([cell isKindOfClass:[coubrStoreAddressTableViewCell class]]) {
-        
-        NSMutableDictionary *addressDict = [(NSMutableDictionary *) self.storeDictionary objectForKey:@"address"];
-        
-        coubrStoreAddressTableViewCell *addressCell = (coubrStoreAddressTableViewCell *)cell;
-        [addressCell.label setText:[addressDict objectForKey:@"street"]];
-        [addressCell.iconImageView setImage:[UIImage imageNamed:@"Store_Street"]];
-        
+    
+    if (self.store.phone && self.store.email && self.store.website) {
+        return 3;
+    } else if (self.store.phone && self.store.email) {
+        return 2;
+    } else if (self.store.email && self.store.website) {
+        return 2;
+    } else if (self.store.phone && self.store.website) {
+        return 2;
+    } else  if (self.store.phone) {
+        return 1;
+    } else if (self.store.email) {
+        return 1;
+    } else if (self.store.website) {
+        return 1;
+    } else {
+        return 0;
     }
-    return cell;
+    
 }
 
-- (UITableViewCell *)initializeCityTableViewCell
+- (UITableViewCell *)initializeCellsForContactSectionAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    if (self.store.phone && self.store.email && self.store.website) {
+        
+        if (indexPath.row == 0) {
+            return [self initializePhoneTableViewCell];
+        } else if (indexPath.row == 1) {
+            return [self initializeEmailTableViewCell];
+        } else if (indexPath.row == 2) {
+            return [self initializeWebsiteTableViewCell];
+        }
+        
+    } else if (self.store.phone && self.store.email) {
+        
+        if (indexPath.row == 0) {
+            return [self initializePhoneTableViewCell];
+        } else if (indexPath.row == 1) {
+            return [self initializeEmailTableViewCell];
+        }
+        
+    } else if (self.store.email && self.store.website) {
+        
+        
+        if (indexPath.row == 0) {
+            return [self initializeEmailTableViewCell];
+        } else if (indexPath.row == 1) {
+            return [self initializeWebsiteTableViewCell];
+        }
+        
+    } else if (self.store.phone && self.store.website) {
+        
+        
+        if (indexPath.row == 0) {
+            return [self initializePhoneTableViewCell];
+        } else if (indexPath.row == 1) {
+            return [self initializeWebsiteTableViewCell];
+        }
+        
+    } else  if (self.store.phone) {
+        
+        return [self initializePhoneTableViewCell];
+        
+    } else if (self.store.email) {
+        
+        return [self initializeEmailTableViewCell];
+        
+    } else if (self.store.website) {
+        
+        return [self initializeWebsiteTableViewCell];
+        
+    }
+
+    return nil;
+}
+
+- (UITableViewCell *)initializeAddressTableViewCell
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"coubrStoreAddressTableViewCell"];
     if ([cell isKindOfClass:[coubrStoreAddressTableViewCell class]]) {
-        
-        NSMutableDictionary *addressDict = [(NSMutableDictionary *) self.storeDictionary objectForKey:@"address"];
-        
         coubrStoreAddressTableViewCell *addressCell = (coubrStoreAddressTableViewCell *)cell;
-        [addressCell.label setText:[NSString stringWithFormat:@"%@ %@", [addressDict objectForKey:@"postalCode"], [addressDict objectForKey:@"city"]]];
-        [addressCell.iconImageView setImage:[UIImage imageNamed:@"Store_City"]];
-        
+        [addressCell.streetLabel setText:self.store.street];
+        [addressCell.cityLabel setText:[NSString stringWithFormat:@"%@ %@", self.store.postalCode, self.store.city]];
     }
     return cell;
 }
@@ -262,11 +277,8 @@
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"coubrStoreContactTableViewCell"];
     if ([cell isKindOfClass:[coubrStoreContactTableViewCell class]]) {
-
-        NSMutableDictionary *contactDict = [(NSMutableDictionary *) self.storeDictionary objectForKey:@"contact"];
-        
         coubrStoreContactTableViewCell *contactCell = (coubrStoreContactTableViewCell *)cell;
-        [contactCell.button setTitle:[contactDict objectForKey:@"email"] forState:UIControlStateNormal];
+        [contactCell.button setTitle:self.store.email forState:UIControlStateNormal];
         [contactCell.button addTarget:self action:@selector(sendEmail:) forControlEvents:UIControlEventTouchUpInside];
         [contactCell.iconImageView setImage:[UIImage imageNamed:@"Store_Email"]];
     }
@@ -277,13 +289,22 @@
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"coubrStoreContactTableViewCell"];
     if ([cell isKindOfClass:[coubrStoreContactTableViewCell class]]) {
-        
-        NSMutableDictionary *contactDict = [(NSMutableDictionary *) self.storeDictionary objectForKey:@"contact"];
-        
         coubrStoreContactTableViewCell *contactCell = (coubrStoreContactTableViewCell *)cell;
-        [contactCell.button setTitle:[contactDict objectForKey:@"phone"] forState:UIControlStateNormal];
+        [contactCell.button setTitle:self.store.phone forState:UIControlStateNormal];
         [contactCell.button addTarget:self action:@selector(call:) forControlEvents:UIControlEventTouchUpInside];
         [contactCell.iconImageView setImage:[UIImage imageNamed:@"Store_Phone"]];
+    }
+    return cell;
+}
+
+- (UITableViewCell *)initializeWebsiteTableViewCell
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"coubrStoreContactTableViewCell"];
+    if ([cell isKindOfClass:[coubrStoreContactTableViewCell class]]) {
+        coubrStoreContactTableViewCell *contactCell = (coubrStoreContactTableViewCell *)cell;
+        [contactCell.button setTitle:self.store.website forState:UIControlStateNormal];
+        [contactCell.button addTarget:self action:@selector(openWebsite:) forControlEvents:UIControlEventTouchUpInside];
+        [contactCell.iconImageView setImage:[UIImage imageNamed:@"Store_Website"]];
     }
     return cell;
 }
@@ -294,44 +315,38 @@
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"coubrStoreDescriptionTableViewCell"];
     if ([cell isKindOfClass:[coubrStoreDescriptionTableViewCell class]]) {
 
-        [((coubrStoreDescriptionTableViewCell *)cell).descriptionTextView setText:[self.storeDictionary objectForKey:@"description"]];
+        [((coubrStoreDescriptionTableViewCell *)cell).descriptionTextView setText:self.store.storeDescription];
     }
     return cell;
 }
 
-
-- (IBAction)sendEmail:(id)sender {
-    
-    NSMutableDictionary *contactDict = [(NSMutableDictionary *) self.storeDictionary objectForKey:@"contact"];
-    
-    if (contactDict && [contactDict objectForKey:@"email"]) {
-        MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
-        [mailController setToRecipients:@[ [contactDict objectForKey:@"email"] ]];
-        
-        mailController.mailComposeDelegate = self;
-
-        if ([MFMailComposeViewController canSendMail]){
-            [self.parentController.parentController.navigationController presentViewController:mailController animated:YES completion:nil];
-        }
-
-    }
-    
+- (void)call:(id)sender {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"telprompt://%@", self.store.phone]]];
 }
 
--(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+- (void)sendEmail:(id)sender {
+
+    MFMailComposeViewController *mailController = [[MFMailComposeViewController alloc] init];
+    [mailController setToRecipients:@[ self.store.email ]];
+    
+    mailController.mailComposeDelegate = self;
+
+    if ([MFMailComposeViewController canSendMail]){
+        [self.navigationController presentViewController:mailController animated:YES completion:nil];
+    }
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
     [controller dismissViewControllerAnimated:YES completion:nil];
 }
-    
-- (IBAction)call:(id)sender {
-    
-    NSMutableDictionary *contactDict = [(NSMutableDictionary *) self.storeDictionary objectForKey:@"contact"];
-    
-    if (contactDict && [contactDict objectForKey:@"phone"]) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"telprompt://%@", [contactDict objectForKey:@"phone"]]]];
-    }
-    
+
+- (void)openWebsite:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.store.website]];
 }
+
+#pragma mark - Blur
 
 - (void)blurTableViewBackground
 {
@@ -339,7 +354,7 @@
     
     CGContextRef c = UIGraphicsGetCurrentContext();
     CGContextTranslateCTM(c, 0, 0);
-    [self.view.layer renderInContext:c];
+    [self.tableView.layer renderInContext:c];
     
     UIImage* viewImage = UIGraphicsGetImageFromCurrentImageContext();
     viewImage = [viewImage applyLightEffect];

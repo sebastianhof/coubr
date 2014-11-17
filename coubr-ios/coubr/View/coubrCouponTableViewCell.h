@@ -8,13 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "Coupon.h"
-#import "coubrStoreOfferTableViewController.h"
+#import "coubrStoreCouponTableViewController.h"
 
 @interface coubrCouponTableViewCell : UITableViewCell
 
-@property (weak, nonatomic) coubrStoreOfferTableViewController *parentController;
+@property (weak, nonatomic) coubrStoreCouponTableViewController *parentController;
 
 - (void)initCellWithCoupon:(Coupon *)coupon;
-
 
 @end

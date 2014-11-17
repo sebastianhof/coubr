@@ -8,11 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
-#import "coubrStorePageViewController.h"
-#import "Store.h"
 
 @interface coubrStoreInformationTableViewController : UITableViewController <MFMailComposeViewControllerDelegate>
-
-@property (weak, nonatomic) coubrStorePageViewController *parentController;
 
 @end

@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "Store.h"
+#import "coubrFavoritesTableViewController.h"
 
 @interface coubrFavoritesTableViewCell : UITableViewCell
 
 - (void)initCellWithStore:(Store *)store;
+
+@property (weak, nonatomic) coubrFavoritesTableViewController *parentController;
 
 @end

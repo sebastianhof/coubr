@@ -24,9 +24,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *offersImageView1;
 @property (weak, nonatomic) IBOutlet UIImageView *offersImageView2;
-
-@property (weak, nonatomic) IBOutlet UILabel *offersLabel1;
-@property (weak, nonatomic) IBOutlet UILabel *offersLabel2;
+@property (weak, nonatomic) IBOutlet UIImageView *offersImageView3;
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *foregroundImageView;
@@ -63,18 +61,36 @@
     [distanceFormatter setUnitStyle:MKDistanceFormatterUnitStyleAbbreviated];
     [self.distanceLabel setText:[distanceFormatter stringFromDistance:distance]];
     
-    // coupons
+    [self.offersImageView1 setImage:nil];
+    [self.offersImageView2 setImage:nil];
+    [self.offersImageView3 setImage:nil];
+    
     if ([explore.coupons integerValue] > 0) {
         
         // rightImageView
         [self.offersImageView1 setImage:[UIImage imageNamed:@"Explore_Coupon"]];
-        [self.offersLabel1 setText:[NSString stringWithFormat:@"%lu", [explore.coupons integerValue]]];
         
-    } else {
-        [self.offersLabel1 setText:@""];
+        if ([explore.stampCards integerValue] > 0) {
+            
+            [self.offersImageView2 setImage:[UIImage imageNamed:@"Explore_StampCard"]];
+            
+            if ([explore.specialOffers integerValue] > 0) {
+                [self.offersImageView3 setImage:[UIImage imageNamed:@"Explore_SpecialOffer"]];
+            }
+            
+        }
+        
+    } else if ([explore.stampCards integerValue] > 0) {
+        
+        [self.offersImageView1 setImage:[UIImage imageNamed:@"Explore_StampCard"]];
+        
+        if ([explore.specialOffers integerValue] > 0) {
+           [self.offersImageView2 setImage:[UIImage imageNamed:@"Explore_SpecialOffer"]];
+        }
+        
+    } else if ([explore.specialOffers integerValue] > 0) {
+        [self.offersImageView1 setImage:[UIImage imageNamed:@"Explore_SpecialOffer"]];
     }
-    
-    [self.offersLabel2 setText:@""];
     
     [self.categoryLabel setText:[coubrCategoryToText textFromCategory:explore.category andSubcategory:explore.subcategory]];
     
@@ -87,9 +103,11 @@
 
 - (void)showStore
 {
-    coubrStoreViewController *spvc = [[UIStoryboard storyboardWithName:@"Store" bundle:nil]  instantiateViewControllerWithIdentifier:@"coubrStoreViewController"];
-    [spvc setStoreId:self.explore.storeId];
-    [self.parentController.navigationController pushViewController:spvc animated:YES];
+    if (self.explore.storeId) {
+        coubrStoreViewController *spvc = [[UIStoryboard storyboardWithName:@"Store" bundle:nil]  instantiateViewControllerWithIdentifier:@"coubrStoreViewController"];
+        [spvc setStoreId:self.explore.storeId];
+        [self.parentController.navigationController pushViewController:spvc animated:YES];
+    }
 }
 
 - (void)blurBackgroundImage

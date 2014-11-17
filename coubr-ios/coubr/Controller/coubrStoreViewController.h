@@ -10,13 +10,11 @@
 #import <CoreData/CoreData.h>
 
 #define StoreDidBecomeAvailableNotification @"StoreDidBecomeAvailableNotification"
-#define CouponFetchedResultsControllerDidUpdatedNotification @"CouponFetchedResultsControllerDidUpdatedNotification"
+#define STORE_ID @"StoreId"
+#define STORE @"Store"
 
-@interface coubrStoreViewController : UIViewController
+@interface coubrStoreViewController : UIViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 
-@property (strong, nonatomic, readonly) NSFetchedResultsController *couponFetchedResultsController;
-@property (weak, nonatomic, readonly) Store *store;
-
-@property (nonatomic, strong) NSString *storeId;
+@property (weak, nonatomic) NSString *storeId;
 
 @end

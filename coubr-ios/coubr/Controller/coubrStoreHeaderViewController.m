@@ -7,90 +7,69 @@
 //
 
 #import "coubrStoreHeaderViewController.h"
+#import "coubrStoreViewController.h"
+
 #import "coubrDatabaseManager.h"
 #import "coubrLocationManager.h"
 #import "coubrLocale.h"
+
 #import "coubrCategoryToText.h"
+
 #import <MapKit/MapKit.h>
 #import "UIImage+ImageEffects.h"
 
 @interface coubrStoreHeaderViewController ()
 
-@property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
-
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *categoryLabel;
 
-@property (weak, nonatomic) IBOutlet UIImageView *offersImageView1;
-@property (weak, nonatomic) IBOutlet UIImageView *offersImageView2;
-
-@property (weak, nonatomic) IBOutlet UILabel *offersLabel1;
-@property (weak, nonatomic) IBOutlet UILabel *offersLabel2;
-
-
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *foregroundImageView;
+
+@property Store *store;
 
 @end
 
 @implementation coubrStoreHeaderViewController
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:StoreDidBecomeAvailableNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+        
+        self.store = note.userInfo[STORE];
+        [self initStoreHeader];
+        
+    }];
+
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:StoreDidBecomeAvailableNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        [self storeDidBecomeAvailable];
-    }];
-    
-    [self storeDidBecomeAvailable];
 }
 
-- (void)storeDidBecomeAvailable
+- (void)initStoreHeader
 {
-    if (self.parentController.store) {
-     
-        __block CLLocation *storeLocation;
-        
-        [[[coubrDatabaseManager defaultManager] managedObjectContext] performBlockAndWait:^{
+    [self.nameLabel setText:self.store.name];
+    
+    CLLocationDegrees latitude = [self.store.latitude doubleValue] ;
+    CLLocationDegrees longitude = [self.store.longitude doubleValue];
+    
+    CLLocation *storeLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
 
-            [self.nameLabel setText:self.parentController.store.name];
-            
-            CLLocationDegrees latitude = [self.parentController.store.latitude doubleValue] ;
-            CLLocationDegrees longitude = [self.parentController.store.longitude doubleValue];
-            
-            storeLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
-
-            CLLocationDistance distance = [storeLocation distanceFromLocation:[[coubrLocationManager defaultManager] userLocation]];
-            
-            // distance
-            MKDistanceFormatter *distanceFormatter = [[MKDistanceFormatter alloc] init];
-            [distanceFormatter setLocale:[NSLocale currentLocale]];
-            [distanceFormatter setUnitStyle:MKDistanceFormatterUnitStyleAbbreviated];
-            [self.distanceLabel setText:[distanceFormatter stringFromDistance:distance]];
-            
-            // coupons
-            if (self.parentController.store.coupons.count > 0) {
-                
-                // rightImageView
-                [self.offersImageView1 setImage:[UIImage imageNamed:@"Explore_Coupon"]];
-                [self.offersLabel1 setText:[NSString stringWithFormat:@"%lu", self.parentController.store.coupons.count]];
-                
-            } else {
-                [self.offersLabel1 setText:@""];
-            }
-            
-            [self.offersLabel2 setText:@""];
-            
-            [self.categoryLabel setText:[coubrCategoryToText textFromCategory:self.parentController.store.category andSubcategory:self.parentController.store.subcategory]];
-            
-        }];
-        
-        [self blurBackgroundImage];
-        
-    }
-
+    CLLocationDistance distance = [storeLocation distanceFromLocation:[[coubrLocationManager defaultManager] userLocation]];
+    
+    // distance
+    MKDistanceFormatter *distanceFormatter = [[MKDistanceFormatter alloc] init];
+    [distanceFormatter setLocale:[NSLocale currentLocale]];
+    [distanceFormatter setUnitStyle:MKDistanceFormatterUnitStyleAbbreviated];
+    [self.distanceLabel setText:[distanceFormatter stringFromDistance:distance]];
+    
+    [self.categoryLabel setText:[coubrCategoryToText textFromCategory:self.store.category andSubcategory:self.store.subcategory]];
+    [self blurBackgroundImage];
 }
 
 - (void)blurBackgroundImage
@@ -128,20 +107,6 @@
     [self.foregroundImageView.layer setShadowOpacity:0.05];
 }
 
-- (IBAction)toggleFavorite:(id)sender {
 
-    [[[coubrDatabaseManager defaultManager] managedObjectContext ] performBlockAndWait:^{
-
-        if ([self.parentController.store.isFavorite boolValue] == YES) {
-            [self.parentController.store setIsFavorite:[NSNumber numberWithBool:NO]];
-            [self.favoriteButton setSelected:NO];
-        } else {
-            [self.parentController.store setIsFavorite:[NSNumber numberWithBool:YES]];
-            [self.favoriteButton setSelected:YES];
-        }
-        
-    }];
-    
-}
 
 @end

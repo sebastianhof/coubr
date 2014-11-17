@@ -8,7 +8,7 @@
 
 #import "Store.h"
 
-@interface Store (CRUD)
+@interface Store(CRUD)
 
 + (BOOL)insertStoreIntoDatabaseFromStoreJSON:(NSDictionary *)storeJSON;
 
@@ -16,8 +16,10 @@
 
 + (NSFetchRequest *)fetchRequestForCouponsOfStoreWithId:(NSString *)storeId;
 
-+ (NSFetchRequest *)fetchRequestForFavoriteStores;
++ (NSFetchRequest *)fetchRequestForStampCardsOfStoreWithId:(NSString *)storeId;
 
-+ (void)deleteStoresInDatabase;
++ (NSFetchRequest *)fetchRequestForSpecialOffersOfStoreWithId:(NSString *)storeId;
+
++ (NSFetchRequest *)fetchRequestForFavoriteStores;
 
 @end

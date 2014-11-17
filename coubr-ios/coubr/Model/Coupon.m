@@ -2,7 +2,7 @@
 //  Coupon.m
 //  coubr
 //
-//  Created by Sebastian Hof on 02/11/14.
+//  Created by Sebastian Hof on 14/11/14.
 //  Copyright (c) 2014 coubr. All rights reserved.
 //
 
@@ -15,12 +15,12 @@
 
 @dynamic amount;
 @dynamic amountRedeemed;
+@dynamic validTo;
 @dynamic category;
 @dynamic couponDescription;
 @dynamic couponId;
 @dynamic title;
-@dynamic validTo;
-@dynamic histories;
 @dynamic store;
+@dynamic histories;
 
 @end

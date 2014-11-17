@@ -59,6 +59,8 @@
     [self.foregroundImageView addGestureRecognizer:self.tapRecognizer];
 }
 
+#pragma mark - Navigation
+
 - (void)showCoupon
 {
     coubrCouponOverviewController *covc = [[UIStoryboard storyboardWithName:@"Store" bundle:nil]  instantiateViewControllerWithIdentifier:@"coubrCouponOverviewViewController"];
@@ -66,11 +68,13 @@
     [self.parentController.navigationController pushViewController:covc animated:YES];
 }
 
+#pragma mark - Blur
+
 - (void)blurBackgroundImage
 {
-    [self.backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
-    [self.backgroundImageView setClipsToBounds:YES];
-    [self.backgroundImageView setImage:[UIImage imageNamed:@"Coupon-bg"]];
+//    [self.backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
+//    [self.backgroundImageView setClipsToBounds:YES];
+//    [self.backgroundImageView setImage:[UIImage imageNamed:@"Coupon_Tile"]];
     
     UIGraphicsBeginImageContext(self.bounds.size);
     
@@ -89,7 +93,6 @@
     [self.foregroundImageView.layer setBorderWidth: 4.0];
     [self.backgroundImageView.layer setBorderColor: [[UIColor whiteColor] CGColor]];
     [self.backgroundImageView.layer setBorderWidth: 4.0];
-    
     
     [self.foregroundImageView.layer setShadowOffset:CGSizeMake(-2.0, 2.0)];
     [self.foregroundImageView.layer setShadowRadius:3.0];

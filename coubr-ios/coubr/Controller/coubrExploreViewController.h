@@ -13,10 +13,12 @@
 #define ConnectionDidFailNotification @"ConnectionDidFailNotification"
 #define ConnectionDidBecomeAvailableNotification @"ConnectionDidBecomeAvailableNotification"
 
-@interface coubrExploreViewController : UIViewController
+@interface coubrExploreViewController : UIViewController <UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
 - (void)updateFetchedResultsController;
+
+- (void)updateFetchedResultsControllerRequest;
 
 @end

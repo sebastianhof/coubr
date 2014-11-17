@@ -7,10 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "coubrStoreViewController.h"
 
 @interface coubrStorePageViewController : UIViewController <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
-
-@property (weak, nonatomic) coubrStoreViewController *parentController;
 
 @end

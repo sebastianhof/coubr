@@ -22,11 +22,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [[UITabBar appearance] setTintColor:[UIColor colorWithRed:242.0/255.0 green:120.0/255.0 blue:75.0/255.0 alpha:1]];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1] } forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor colorWithRed:242.0/255.0 green:120.0/255.0 blue:75.0/255.0 alpha:1] } forState:UIControlStateSelected];
     
-    [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:242 green:120 blue:75 alpha:1]];
-    [[UINavigationBar appearance] setTranslucent:NO];
-    
-    //[[UITableViewCell appearance] setBackgroundColor:[UIColor clearColor]];
+    [[UITableViewCell appearance] setBackgroundColor:[UIColor clearColor]];
+    [[UICollectionView appearance] setBackgroundColor:[UIColor clearColor]];
+    [[UICollectionViewCell appearance] setBackgroundColor:[UIColor clearColor]];
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [[coubrDatabaseManager defaultManager] initDatabase];
@@ -43,6 +45,18 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    NSManagedObjectContext *context = [[coubrDatabaseManager defaultManager] managedObjectContext];
+    
+    [context performBlockAndWait:^{
+        
+        NSError *error;
+        [context save:&error];
+        
+        if (error) {
+            NSLog(@"Could not save database: %@", [error localizedDescription]);
+        }
+        
+    }];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {

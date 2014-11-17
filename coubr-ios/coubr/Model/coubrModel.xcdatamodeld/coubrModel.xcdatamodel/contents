@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="0.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14A389" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="0.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14B17" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Coupon" representedClassName="Coupon" syncable="YES">
         <attribute name="amount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="amountRedeemed" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -18,6 +18,8 @@
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="specialOffers" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="stampCards" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="storeId" attributeType="String" syncable="YES"/>
         <attribute name="subcategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
@@ -25,7 +27,31 @@
     <entity name="History" representedClassName="History" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="coupons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Coupon" inverseName="histories" inverseEntity="Coupon" syncable="YES"/>
+        <relationship name="specialOffers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SpecialOffer" inverseName="histories" inverseEntity="SpecialOffer" syncable="YES"/>
+        <relationship name="stampCards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StampCard" inverseName="histories" inverseEntity="StampCard" syncable="YES"/>
         <relationship name="store" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Store" inverseName="histories" inverseEntity="Store" syncable="YES"/>
+    </entity>
+    <entity name="SpecialOffer" representedClassName="SpecialOffer" syncable="YES">
+        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="specialOfferDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="specialOfferId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="specialOfferShortDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="validFrom" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="validTo" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="histories" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="History" inverseName="specialOffers" inverseEntity="History" syncable="YES"/>
+        <relationship name="store" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Store" inverseName="specialOffers" inverseEntity="Store" syncable="YES"/>
+    </entity>
+    <entity name="StampCard" representedClassName="StampCard" syncable="YES">
+        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stampCardDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stampCardId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stamps" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="stampsCollected" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="validTo" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="histories" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="History" inverseName="stampCards" inverseEntity="History" syncable="YES"/>
+        <relationship name="store" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Store" inverseName="stampCards" inverseEntity="Store" syncable="YES"/>
     </entity>
     <entity name="Store" representedClassName="Store" syncable="YES">
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
@@ -42,13 +68,18 @@
         <attribute name="street" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="subcategory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="coupons" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Coupon" inverseName="store" inverseEntity="Coupon" syncable="YES"/>
+        <attribute name="website" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="coupons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Coupon" inverseName="store" inverseEntity="Coupon" syncable="YES"/>
         <relationship name="histories" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="History" inverseName="store" inverseEntity="History" syncable="YES"/>
+        <relationship name="specialOffers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SpecialOffer" inverseName="store" inverseEntity="SpecialOffer" syncable="YES"/>
+        <relationship name="stampCards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StampCard" inverseName="store" inverseEntity="StampCard" syncable="YES"/>
     </entity>
     <elements>
         <element name="Coupon" positionX="43" positionY="324" width="128" height="178"/>
-        <element name="Explore" positionX="-407" positionY="-12" width="128" height="178"/>
-        <element name="History" positionX="-180" positionY="180" width="128" height="88"/>
-        <element name="Store" positionX="-432" positionY="315" width="128" height="283"/>
+        <element name="Explore" positionX="-407" positionY="-12" width="128" height="208"/>
+        <element name="History" positionX="-180" positionY="180" width="128" height="118"/>
+        <element name="SpecialOffer" positionX="-216" positionY="153" width="128" height="178"/>
+        <element name="StampCard" positionX="-225" positionY="144" width="128" height="178"/>
+        <element name="Store" positionX="-432" positionY="315" width="128" height="328"/>
     </elements>
 </model>

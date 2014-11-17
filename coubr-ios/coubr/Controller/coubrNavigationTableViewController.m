@@ -23,8 +23,19 @@
 {
     [super viewDidLoad];
     
+    [self initTableView];
     [self blurBackground];
 }
+
+#pragma mark - Init
+
+- (void)initTableView
+{
+    CGFloat topBarOffset = self.mainViewController.topLayoutGuide.length;
+    [self.tableView setContentInset:UIEdgeInsetsMake(topBarOffset, 0, 0, 0)];
+}
+
+#pragma mark - TableViewDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
@@ -50,14 +61,6 @@
     
     UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView *)view;
     [headerView.textLabel setTextColor:[UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1]];
-    
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UIColor *transparentColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0];
-    [cell.backgroundView setBackgroundColor:transparentColor];
-    [cell setBackgroundColor:transparentColor];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -72,7 +75,7 @@
             mailController.mailComposeDelegate = self;
             
             if ([MFMailComposeViewController canSendMail]){
-                [self.parentViewController.navigationController presentViewController:mailController animated:YES completion:nil];
+                [self.mainViewController.navigationController presentViewController:mailController animated:YES completion:nil];
             }
         } 
         
@@ -82,7 +85,7 @@
     
 }
 
-#pragma mark - Message Delegate
+#pragma mark - IBAction
 
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
@@ -105,37 +108,25 @@
     }
 }
 
-- (IBAction)openTwitter:(id)sender {
+- (IBAction)openTwitter:(id)sender
+{
     
     if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:TWITTER_APP_LINK]]) {
         
-        // Open Safaro
+        // Open Safari
         if (![[UIApplication sharedApplication] openURL:[NSURL URLWithString:TWITTER_LINK]]) {
 
         }
     }
 }
 
-- (void)blurBackground{
-    CGSize size = CGSizeMake(self.parentController.view.bounds.size.width * 0.7, self.parentController.view.bounds.size.height);
-    
-    UIGraphicsBeginImageContext(size);
-    
-    CGContextRef c = UIGraphicsGetCurrentContext();
-    CGContextTranslateCTM(c, 0, 0);
-    [self.parentController.view.layer renderInContext:c];
-    
-    UIImage* viewImage = UIGraphicsGetImageFromCurrentImageContext();
-    viewImage = [viewImage applyLightEffect];
-    
-    UIGraphicsEndImageContext();
-    
-    [self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:viewImage]];
-}
+#pragma mark - UIPanGestureRecognizer
+
 - (IBAction)pan:(UIPanGestureRecognizer *)sender {
     
     static CGPoint originalPoint;
     CGRect superviewFrame = self.view.frame;
+    
     CGPoint translatedPoint = [sender translationInView:self.view];
     if (sender.state == UIGestureRecognizerStateBegan)
     {
@@ -145,7 +136,7 @@
     {
         if (originalPoint.x < superviewFrame.size.width && translatedPoint.x < 0) {
             
-            [self.view setFrame:CGRectMake(0 + translatedPoint.x, 0, superviewFrame.size.width, superviewFrame.size.height)];
+            [self.view setFrame:CGRectMake(0 + translatedPoint.x, superviewFrame.origin.y, superviewFrame.size.width, superviewFrame.size.height)];
 
         }
         
@@ -154,14 +145,33 @@
         
         
         if (superviewFrame.size.width + translatedPoint.x < (superviewFrame.size.width * 0.50)) {
-            [self.view setFrame:CGRectMake(0 - superviewFrame.size.width, 0, superviewFrame.size.width, superviewFrame.size.height)];
-            [self.parentController removeNavigationViewInMainView];
+            [self.view setFrame:CGRectMake(0 - superviewFrame.size.width, superviewFrame.origin.y, superviewFrame.size.width, superviewFrame.size.height)];
+            [self.mainViewController removeNavigationViewInMainView];
         } else {
-            [self.view setFrame:CGRectMake(0, 0, superviewFrame.size.width, superviewFrame.size.height)];
+            [self.view setFrame:CGRectMake(0, superviewFrame.origin.y, superviewFrame.size.width, superviewFrame.size.height)];
         }
         
     }
     
+}
+
+#pragma mark - Blur
+
+- (void)blurBackground{
+    CGSize size = CGSizeMake(self.mainViewController.view.bounds.size.width * 0.7, self.mainViewController.view.bounds.size.height);
+    
+    UIGraphicsBeginImageContext(size);
+    
+    CGContextRef c = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(c, 0, 0);
+    [self.mainViewController.view.layer renderInContext:c];
+    
+    UIImage* viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    viewImage = [viewImage applyLightEffect];
+    
+    UIGraphicsEndImageContext();
+    
+    [self.tableView setBackgroundView:[[UIImageView alloc] initWithImage:viewImage]];
 }
 
 

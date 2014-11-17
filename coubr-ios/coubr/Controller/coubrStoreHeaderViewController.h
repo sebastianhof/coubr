@@ -7,10 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "coubrStoreViewController.h"
 
 @interface coubrStoreHeaderViewController : UIViewController
-
-@property (weak, nonatomic) coubrStoreViewController *parentController;
 
 @end

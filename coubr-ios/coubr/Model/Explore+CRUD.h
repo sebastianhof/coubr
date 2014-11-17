@@ -12,7 +12,9 @@
 
 + (BOOL)insertExploreIntoDatabaseFromExploreJSON:(NSDictionary *)exploreJSON;
 
-+ (NSFetchRequest *)fetchRequestForExploreWithinDistance:(double)distance;
++ (NSFetchRequest *)fetchRequestForExplore;
+
++ (NSFetchRequest *)fetchRequestForExploreWithShowSpecialOffers:(BOOL)specialOffers showStampCards:(BOOL)stampCards showCoupons:(BOOL)coupons selectedCategories:(NSSet *)selectedCategories;
 
 + (NSFetchRequest *)fetchRequestForExploreStoreWithId:(NSString *)storeId;
 

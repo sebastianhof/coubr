@@ -7,8 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9E1F77B91A066E180034A064 /* Explore.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1F77B81A066E180034A064 /* Explore.m */; };
-		9E1F77BC1A066ED70034A064 /* Coupon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1F77BB1A066ED70034A064 /* Coupon.m */; };
+		9E1D76B61A1A540400EB914B /* coubrCategoryToImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D76B51A1A540400EB914B /* coubrCategoryToImage.m */; };
+		9E1D76B91A1A556700EB914B /* coubrExploreFilterCategoryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1D76B81A1A556700EB914B /* coubrExploreFilterCategoryCollectionViewCell.m */; };
+		9E1FD2411A16656500E9E3F5 /* coubrStoreCouponTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1FD2401A16656500E9E3F5 /* coubrStoreCouponTableViewController.m */; };
+		9E1FD2441A16657F00E9E3F5 /* coubrStoreStampCardTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1FD2431A16657F00E9E3F5 /* coubrStoreStampCardTableViewController.m */; };
+		9E1FD2471A16672F00E9E3F5 /* Coupon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1FD2461A16672F00E9E3F5 /* Coupon.m */; };
+		9E1FD24A1A16673000E9E3F5 /* Explore.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1FD2491A16673000E9E3F5 /* Explore.m */; };
+		9E1FD2501A16673000E9E3F5 /* SpecialOffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1FD24F1A16673000E9E3F5 /* SpecialOffer.m */; };
+		9E1FD2531A16673000E9E3F5 /* StampCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1FD2521A16673000E9E3F5 /* StampCard.m */; };
+		9E1FD2561A16673000E9E3F5 /* Store.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1FD2551A16673000E9E3F5 /* Store.m */; };
+		9E1FD2591A166A7500E9E3F5 /* coubrStoreSpecialOfferTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1FD2581A166A7500E9E3F5 /* coubrStoreSpecialOfferTableViewController.m */; };
+		9E1FD25C1A16700F00E9E3F5 /* History.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1FD25B1A16700F00E9E3F5 /* History.m */; };
+		9E2979C81A0E539700653960 /* coubrStampCardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2979C71A0E539700653960 /* coubrStampCardTableViewCell.m */; };
+		9E2979CB1A0E53CF00653960 /* coubrSpecialOfferTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2979CA1A0E53CF00653960 /* coubrSpecialOfferTableViewCell.m */; };
+		9E2979E31A0E5D0000653960 /* coubrStoreDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2979E21A0E5D0000653960 /* coubrStoreDescriptionTableViewCell.m */; };
+		9E2979E61A0E5D1500653960 /* coubrStoreContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2979E51A0E5D1500653960 /* coubrStoreContactTableViewCell.m */; };
 		9E2A3A0019EFF90600310F25 /* coubrExploreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2A39FF19EFF90600310F25 /* coubrExploreTableViewCell.m */; };
 		9E2EBFAA19F2E92D009985A7 /* coubrLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFA919F2E92D009985A7 /* coubrLocationManager.m */; };
 		9E2EBFB619F2EE52009985A7 /* coubrRemoteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFB519F2EE52009985A7 /* coubrRemoteManager.m */; };
@@ -17,6 +30,7 @@
 		9E2EBFC519F32569009985A7 /* coubrStoreInformationTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFC419F32569009985A7 /* coubrStoreInformationTableViewController.m */; };
 		9E2EBFC819F32651009985A7 /* coubrCouponOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFC719F32651009985A7 /* coubrCouponOverviewController.m */; };
 		9E2EBFCB19F32AB9009985A7 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E2EBFCA19F32AB9009985A7 /* UIImage+ImageEffects.m */; };
+		9E31AC961A16BCD30061BE15 /* coubrSpecialOfferDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E31AC951A16BCD30061BE15 /* coubrSpecialOfferDescriptionTableViewCell.m */; };
 		9E4401D619EEFA9A006B36E0 /* Courgette-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E6FDE4019EEC843002642C1 /* Courgette-Regular.ttf */; };
 		9E4401D719EEFA9A006B36E0 /* Raleway-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E6FDE4119EEC843002642C1 /* Raleway-Bold.ttf */; };
 		9E4401D819EEFA9A006B36E0 /* Raleway-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E6FDE4219EEC843002642C1 /* Raleway-Light.ttf */; };
@@ -28,6 +42,8 @@
 		9E480E5219F6F0B900C9D508 /* coubrStoreMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E480E5119F6F0B900C9D508 /* coubrStoreMapViewController.m */; };
 		9E480E5519F6F0D500C9D508 /* coubrStoreHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E480E5419F6F0D500C9D508 /* coubrStoreHeaderViewController.m */; };
 		9E4FE3FC19F074400018ACE7 /* coubrDatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E4FE3FB19F074400018ACE7 /* coubrDatabaseManager.m */; };
+		9E59C4511A0E9FE100E272F9 /* StampCard+CRUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E59C4501A0E9FE100E272F9 /* StampCard+CRUD.m */; };
+		9E59C4571A0EA02D00E272F9 /* SpecialOffer+CRUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E59C4561A0EA02D00E272F9 /* SpecialOffer+CRUD.m */; };
 		9E6FDE1A19EEC4D6002642C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6FDE1919EEC4D6002642C1 /* main.m */; };
 		9E6FDE1D19EEC4D6002642C1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E6FDE1C19EEC4D6002642C1 /* AppDelegate.m */; };
 		9E6FDE2819EEC4D6002642C1 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E6FDE2619EEC4D6002642C1 /* LaunchScreen.xib */; };
@@ -38,7 +54,6 @@
 		9E84CD7719F829E500B8D409 /* coubrRemoteManager+Coupon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E84CD7619F829E500B8D409 /* coubrRemoteManager+Coupon.m */; };
 		9E8DE6151A0D616200B59ADC /* coubrCouponDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E8DE6141A0D616200B59ADC /* coubrCouponDescriptionTableViewCell.m */; };
 		9E8DE6181A0D617A00B59ADC /* coubrCouponTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E8DE6171A0D617A00B59ADC /* coubrCouponTableViewCell.m */; };
-		9EA3E7E519F51F5D0014D0F9 /* coubrTypesToImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA3E7E419F51F5D0014D0F9 /* coubrTypesToImage.m */; };
 		9EA3E7E819F52AAA0014D0F9 /* coubrStoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA3E7E719F52AAA0014D0F9 /* coubrStoreViewController.m */; };
 		9EA3E7EB19F56FF10014D0F9 /* coubrCouponQRScanController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA3E7EA19F56FF10014D0F9 /* coubrCouponQRScanController.m */; };
 		9EA3E7EF19F571E00014D0F9 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EA3E7EE19F571E00014D0F9 /* AVFoundation.framework */; };
@@ -48,12 +63,10 @@
 		9EA9E87319EECBEC00CE407E /* coubrMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA9E87219EECBEC00CE407E /* coubrMainViewController.m */; };
 		9EA9E87919EECD7E00CE407E /* coubrExploreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EA9E87819EECD7E00CE407E /* coubrExploreViewController.m */; };
 		9EC2F5F319F3EDC80004D051 /* coubrRemoteManager+Store.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC2F5F219F3EDC80004D051 /* coubrRemoteManager+Store.m */; };
-		9EC2F60E19F46FC80004D051 /* coubrStoreOfferTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EC2F60D19F46FC80004D051 /* coubrStoreOfferTableViewController.m */; };
+		9ED7FCCB1A13FB61008D88B7 /* coubrStampCardOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ED7FCCA1A13FB61008D88B7 /* coubrStampCardOverviewController.m */; };
+		9ED7FCCE1A13FB7F008D88B7 /* coubrSpecialOfferOverviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ED7FCCD1A13FB7F008D88B7 /* coubrSpecialOfferOverviewController.m */; };
+		9ED7FCD11A13FFB4008D88B7 /* coubrStampCardDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ED7FCD01A13FFB4008D88B7 /* coubrStampCardDescriptionTableViewCell.m */; };
 		9ED91DDB1A0B9F70008FAA53 /* coubrStoreAddressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ED91DDA1A0B9F70008FAA53 /* coubrStoreAddressTableViewCell.m */; };
-		9ED91DDE1A0B9F82008FAA53 /* coubrStoreDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ED91DDD1A0B9F82008FAA53 /* coubrStoreDescriptionTableViewCell.m */; };
-		9ED91DE11A0B9F92008FAA53 /* coubrStoreContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9ED91DE01A0B9F92008FAA53 /* coubrStoreContactTableViewCell.m */; };
-		9EEE882919F9581C00740CFA /* History.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE882819F9581C00740CFA /* History.m */; };
-		9EEE882C19F9581C00740CFA /* Store.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE882B19F9581C00740CFA /* Store.m */; };
 		9EEE883019F9589D00740CFA /* Store+CRUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE882F19F9589D00740CFA /* Store+CRUD.m */; };
 		9EEE883319F9594300740CFA /* Explore+CRUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE883219F9594300740CFA /* Explore+CRUD.m */; };
 		9EEE883619F959A200740CFA /* Coupon+CRUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9EEE883519F959A200740CFA /* Coupon+CRUD.m */; };
@@ -82,10 +95,36 @@
 
 /* Begin PBXFileReference section */
 		9E046DBE19FA754A00799422 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
-		9E1F77B71A066E180034A064 /* Explore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Explore.h; path = Model/Explore.h; sourceTree = "<group>"; };
-		9E1F77B81A066E180034A064 /* Explore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Explore.m; path = Model/Explore.m; sourceTree = "<group>"; };
-		9E1F77BA1A066ED70034A064 /* Coupon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Coupon.h; path = Model/Coupon.h; sourceTree = "<group>"; };
-		9E1F77BB1A066ED70034A064 /* Coupon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Coupon.m; path = Model/Coupon.m; sourceTree = "<group>"; };
+		9E1D76B41A1A540400EB914B /* coubrCategoryToImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrCategoryToImage.h; path = View/coubrCategoryToImage.h; sourceTree = "<group>"; };
+		9E1D76B51A1A540400EB914B /* coubrCategoryToImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrCategoryToImage.m; path = View/coubrCategoryToImage.m; sourceTree = "<group>"; };
+		9E1D76B71A1A556700EB914B /* coubrExploreFilterCategoryCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrExploreFilterCategoryCollectionViewCell.h; path = View/coubrExploreFilterCategoryCollectionViewCell.h; sourceTree = "<group>"; };
+		9E1D76B81A1A556700EB914B /* coubrExploreFilterCategoryCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrExploreFilterCategoryCollectionViewCell.m; path = View/coubrExploreFilterCategoryCollectionViewCell.m; sourceTree = "<group>"; };
+		9E1FD23F1A16656500E9E3F5 /* coubrStoreCouponTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStoreCouponTableViewController.h; path = Controller/coubrStoreCouponTableViewController.h; sourceTree = "<group>"; };
+		9E1FD2401A16656500E9E3F5 /* coubrStoreCouponTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreCouponTableViewController.m; path = Controller/coubrStoreCouponTableViewController.m; sourceTree = "<group>"; };
+		9E1FD2421A16657F00E9E3F5 /* coubrStoreStampCardTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStoreStampCardTableViewController.h; path = Controller/coubrStoreStampCardTableViewController.h; sourceTree = "<group>"; };
+		9E1FD2431A16657F00E9E3F5 /* coubrStoreStampCardTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreStampCardTableViewController.m; path = Controller/coubrStoreStampCardTableViewController.m; sourceTree = "<group>"; };
+		9E1FD2451A16672F00E9E3F5 /* Coupon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Coupon.h; path = Model/Coupon.h; sourceTree = "<group>"; };
+		9E1FD2461A16672F00E9E3F5 /* Coupon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Coupon.m; path = Model/Coupon.m; sourceTree = "<group>"; };
+		9E1FD2481A16673000E9E3F5 /* Explore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Explore.h; path = Model/Explore.h; sourceTree = "<group>"; };
+		9E1FD2491A16673000E9E3F5 /* Explore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Explore.m; path = Model/Explore.m; sourceTree = "<group>"; };
+		9E1FD24E1A16673000E9E3F5 /* SpecialOffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpecialOffer.h; path = Model/SpecialOffer.h; sourceTree = "<group>"; };
+		9E1FD24F1A16673000E9E3F5 /* SpecialOffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpecialOffer.m; path = Model/SpecialOffer.m; sourceTree = "<group>"; };
+		9E1FD2511A16673000E9E3F5 /* StampCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StampCard.h; path = Model/StampCard.h; sourceTree = "<group>"; };
+		9E1FD2521A16673000E9E3F5 /* StampCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StampCard.m; path = Model/StampCard.m; sourceTree = "<group>"; };
+		9E1FD2541A16673000E9E3F5 /* Store.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Store.h; path = Model/Store.h; sourceTree = "<group>"; };
+		9E1FD2551A16673000E9E3F5 /* Store.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Store.m; path = Model/Store.m; sourceTree = "<group>"; };
+		9E1FD2571A166A7500E9E3F5 /* coubrStoreSpecialOfferTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStoreSpecialOfferTableViewController.h; path = Controller/coubrStoreSpecialOfferTableViewController.h; sourceTree = "<group>"; };
+		9E1FD2581A166A7500E9E3F5 /* coubrStoreSpecialOfferTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreSpecialOfferTableViewController.m; path = Controller/coubrStoreSpecialOfferTableViewController.m; sourceTree = "<group>"; };
+		9E1FD25A1A16700F00E9E3F5 /* History.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = History.h; path = Model/History.h; sourceTree = "<group>"; };
+		9E1FD25B1A16700F00E9E3F5 /* History.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = History.m; path = Model/History.m; sourceTree = "<group>"; };
+		9E2979C61A0E539700653960 /* coubrStampCardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStampCardTableViewCell.h; path = View/coubrStampCardTableViewCell.h; sourceTree = "<group>"; };
+		9E2979C71A0E539700653960 /* coubrStampCardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStampCardTableViewCell.m; path = View/coubrStampCardTableViewCell.m; sourceTree = "<group>"; };
+		9E2979C91A0E53CF00653960 /* coubrSpecialOfferTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrSpecialOfferTableViewCell.h; path = View/coubrSpecialOfferTableViewCell.h; sourceTree = "<group>"; };
+		9E2979CA1A0E53CF00653960 /* coubrSpecialOfferTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrSpecialOfferTableViewCell.m; path = View/coubrSpecialOfferTableViewCell.m; sourceTree = "<group>"; };
+		9E2979E11A0E5D0000653960 /* coubrStoreDescriptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStoreDescriptionTableViewCell.h; path = View/coubrStoreDescriptionTableViewCell.h; sourceTree = "<group>"; };
+		9E2979E21A0E5D0000653960 /* coubrStoreDescriptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreDescriptionTableViewCell.m; path = View/coubrStoreDescriptionTableViewCell.m; sourceTree = "<group>"; };
+		9E2979E41A0E5D1500653960 /* coubrStoreContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStoreContactTableViewCell.h; path = View/coubrStoreContactTableViewCell.h; sourceTree = "<group>"; };
+		9E2979E51A0E5D1500653960 /* coubrStoreContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreContactTableViewCell.m; path = View/coubrStoreContactTableViewCell.m; sourceTree = "<group>"; };
 		9E2A39FE19EFF90600310F25 /* coubrExploreTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrExploreTableViewCell.h; path = View/coubrExploreTableViewCell.h; sourceTree = "<group>"; };
 		9E2A39FF19EFF90600310F25 /* coubrExploreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrExploreTableViewCell.m; path = View/coubrExploreTableViewCell.m; sourceTree = "<group>"; };
 		9E2EBFA819F2E92D009985A7 /* coubrLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrLocationManager.h; path = Model/coubrLocationManager.h; sourceTree = "<group>"; };
@@ -102,6 +141,8 @@
 		9E2EBFC719F32651009985A7 /* coubrCouponOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrCouponOverviewController.m; path = Controller/coubrCouponOverviewController.m; sourceTree = "<group>"; };
 		9E2EBFC919F32AB9009985A7 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+ImageEffects.h"; path = "View/UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		9E2EBFCA19F32AB9009985A7 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ImageEffects.m"; path = "View/UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		9E31AC941A16BCD30061BE15 /* coubrSpecialOfferDescriptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrSpecialOfferDescriptionTableViewCell.h; path = View/coubrSpecialOfferDescriptionTableViewCell.h; sourceTree = "<group>"; };
+		9E31AC951A16BCD30061BE15 /* coubrSpecialOfferDescriptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrSpecialOfferDescriptionTableViewCell.m; path = View/coubrSpecialOfferDescriptionTableViewCell.m; sourceTree = "<group>"; };
 		9E4401E319EF06AC006B36E0 /* coubrExploreMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrExploreMapViewController.h; path = Controller/coubrExploreMapViewController.h; sourceTree = "<group>"; };
 		9E4401E419EF06AC006B36E0 /* coubrExploreMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrExploreMapViewController.m; path = Controller/coubrExploreMapViewController.m; sourceTree = "<group>"; };
 		9E4401EF19EF1196006B36E0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -113,6 +154,10 @@
 		9E480E5419F6F0D500C9D508 /* coubrStoreHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreHeaderViewController.m; path = Controller/coubrStoreHeaderViewController.m; sourceTree = "<group>"; };
 		9E4FE3FA19F074400018ACE7 /* coubrDatabaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrDatabaseManager.h; path = Model/coubrDatabaseManager.h; sourceTree = "<group>"; };
 		9E4FE3FB19F074400018ACE7 /* coubrDatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrDatabaseManager.m; path = Model/coubrDatabaseManager.m; sourceTree = "<group>"; };
+		9E59C44F1A0E9FE100E272F9 /* StampCard+CRUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "StampCard+CRUD.h"; path = "Model/StampCard+CRUD.h"; sourceTree = "<group>"; };
+		9E59C4501A0E9FE100E272F9 /* StampCard+CRUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "StampCard+CRUD.m"; path = "Model/StampCard+CRUD.m"; sourceTree = "<group>"; };
+		9E59C4551A0EA02D00E272F9 /* SpecialOffer+CRUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SpecialOffer+CRUD.h"; path = "Model/SpecialOffer+CRUD.h"; sourceTree = "<group>"; };
+		9E59C4561A0EA02D00E272F9 /* SpecialOffer+CRUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SpecialOffer+CRUD.m"; path = "Model/SpecialOffer+CRUD.m"; sourceTree = "<group>"; };
 		9E6FDE1419EEC4D6002642C1 /* coubr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = coubr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E6FDE1819EEC4D6002642C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9E6FDE1919EEC4D6002642C1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -139,8 +184,6 @@
 		9E8DE6141A0D616200B59ADC /* coubrCouponDescriptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrCouponDescriptionTableViewCell.m; path = View/coubrCouponDescriptionTableViewCell.m; sourceTree = "<group>"; };
 		9E8DE6161A0D617A00B59ADC /* coubrCouponTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrCouponTableViewCell.h; path = View/coubrCouponTableViewCell.h; sourceTree = "<group>"; };
 		9E8DE6171A0D617A00B59ADC /* coubrCouponTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrCouponTableViewCell.m; path = View/coubrCouponTableViewCell.m; sourceTree = "<group>"; };
-		9EA3E7E319F51F5D0014D0F9 /* coubrTypesToImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrTypesToImage.h; path = View/coubrTypesToImage.h; sourceTree = "<group>"; };
-		9EA3E7E419F51F5D0014D0F9 /* coubrTypesToImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrTypesToImage.m; path = View/coubrTypesToImage.m; sourceTree = "<group>"; };
 		9EA3E7E619F52AAA0014D0F9 /* coubrStoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStoreViewController.h; path = Controller/coubrStoreViewController.h; sourceTree = "<group>"; };
 		9EA3E7E719F52AAA0014D0F9 /* coubrStoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreViewController.m; path = Controller/coubrStoreViewController.m; sourceTree = "<group>"; };
 		9EA3E7E919F56FF10014D0F9 /* coubrCouponQRScanController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrCouponQRScanController.h; path = Controller/coubrCouponQRScanController.h; sourceTree = "<group>"; };
@@ -160,18 +203,14 @@
 		9EC2F5F019F3DC050004D051 /* coubrUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = coubrUtil.h; sourceTree = "<group>"; };
 		9EC2F5F119F3EDC80004D051 /* coubrRemoteManager+Store.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "coubrRemoteManager+Store.h"; path = "Model/coubrRemoteManager+Store.h"; sourceTree = "<group>"; };
 		9EC2F5F219F3EDC80004D051 /* coubrRemoteManager+Store.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "coubrRemoteManager+Store.m"; path = "Model/coubrRemoteManager+Store.m"; sourceTree = "<group>"; };
-		9EC2F60C19F46FC80004D051 /* coubrStoreOfferTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStoreOfferTableViewController.h; path = Controller/coubrStoreOfferTableViewController.h; sourceTree = "<group>"; };
-		9EC2F60D19F46FC80004D051 /* coubrStoreOfferTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreOfferTableViewController.m; path = Controller/coubrStoreOfferTableViewController.m; sourceTree = "<group>"; };
+		9ED7FCC91A13FB61008D88B7 /* coubrStampCardOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStampCardOverviewController.h; path = Controller/coubrStampCardOverviewController.h; sourceTree = "<group>"; };
+		9ED7FCCA1A13FB61008D88B7 /* coubrStampCardOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStampCardOverviewController.m; path = Controller/coubrStampCardOverviewController.m; sourceTree = "<group>"; };
+		9ED7FCCC1A13FB7F008D88B7 /* coubrSpecialOfferOverviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrSpecialOfferOverviewController.h; path = Controller/coubrSpecialOfferOverviewController.h; sourceTree = "<group>"; };
+		9ED7FCCD1A13FB7F008D88B7 /* coubrSpecialOfferOverviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrSpecialOfferOverviewController.m; path = Controller/coubrSpecialOfferOverviewController.m; sourceTree = "<group>"; };
+		9ED7FCCF1A13FFB4008D88B7 /* coubrStampCardDescriptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStampCardDescriptionTableViewCell.h; path = View/coubrStampCardDescriptionTableViewCell.h; sourceTree = "<group>"; };
+		9ED7FCD01A13FFB4008D88B7 /* coubrStampCardDescriptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStampCardDescriptionTableViewCell.m; path = View/coubrStampCardDescriptionTableViewCell.m; sourceTree = "<group>"; };
 		9ED91DD91A0B9F70008FAA53 /* coubrStoreAddressTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = coubrStoreAddressTableViewCell.h; path = View/coubrStoreAddressTableViewCell.h; sourceTree = "<group>"; };
 		9ED91DDA1A0B9F70008FAA53 /* coubrStoreAddressTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = coubrStoreAddressTableViewCell.m; path = View/coubrStoreAddressTableViewCell.m; sourceTree = "<group>"; };
-		9ED91DDC1A0B9F82008FAA53 /* coubrStoreDescriptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coubrStoreDescriptionTableViewCell.h; sourceTree = "<group>"; };
-		9ED91DDD1A0B9F82008FAA53 /* coubrStoreDescriptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = coubrStoreDescriptionTableViewCell.m; sourceTree = "<group>"; };
-		9ED91DDF1A0B9F92008FAA53 /* coubrStoreContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coubrStoreContactTableViewCell.h; sourceTree = "<group>"; };
-		9ED91DE01A0B9F92008FAA53 /* coubrStoreContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = coubrStoreContactTableViewCell.m; sourceTree = "<group>"; };
-		9EEE882719F9581C00740CFA /* History.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = History.h; path = Model/History.h; sourceTree = "<group>"; };
-		9EEE882819F9581C00740CFA /* History.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = History.m; path = Model/History.m; sourceTree = "<group>"; };
-		9EEE882A19F9581C00740CFA /* Store.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Store.h; path = Model/Store.h; sourceTree = "<group>"; };
-		9EEE882B19F9581C00740CFA /* Store.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Store.m; path = Model/Store.m; sourceTree = "<group>"; };
 		9EEE882E19F9589D00740CFA /* Store+CRUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Store+CRUD.h"; path = "Model/Store+CRUD.h"; sourceTree = "<group>"; };
 		9EEE882F19F9589D00740CFA /* Store+CRUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "Store+CRUD.m"; path = "Model/Store+CRUD.m"; sourceTree = "<group>"; };
 		9EEE883119F9594300740CFA /* Explore+CRUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Explore+CRUD.h"; path = "Model/Explore+CRUD.h"; sourceTree = "<group>"; };
@@ -224,6 +263,74 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9E1D76A81A1A251800EB914B /* Explore */ = {
+			isa = PBXGroup;
+			children = (
+				9E2A39FE19EFF90600310F25 /* coubrExploreTableViewCell.h */,
+				9E2A39FF19EFF90600310F25 /* coubrExploreTableViewCell.m */,
+				9E1D76B71A1A556700EB914B /* coubrExploreFilterCategoryCollectionViewCell.h */,
+				9E1D76B81A1A556700EB914B /* coubrExploreFilterCategoryCollectionViewCell.m */,
+			);
+			name = Explore;
+			sourceTree = "<group>";
+		};
+		9E1D76A91A1A252500EB914B /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				9EEE883A19F97B9A00740CFA /* coubrFavoritesTableViewCell.h */,
+				9EEE883B19F97B9A00740CFA /* coubrFavoritesTableViewCell.m */,
+				9EEE884019F992FB00740CFA /* coubrHistoryTableViewCell.h */,
+				9EEE884119F992FB00740CFA /* coubrHistoryTableViewCell.m */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
+		9E1D76AA1A1A254200EB914B /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				9E2979E11A0E5D0000653960 /* coubrStoreDescriptionTableViewCell.h */,
+				9E2979E21A0E5D0000653960 /* coubrStoreDescriptionTableViewCell.m */,
+				9ED91DD91A0B9F70008FAA53 /* coubrStoreAddressTableViewCell.h */,
+				9ED91DDA1A0B9F70008FAA53 /* coubrStoreAddressTableViewCell.m */,
+				9E2979E41A0E5D1500653960 /* coubrStoreContactTableViewCell.h */,
+				9E2979E51A0E5D1500653960 /* coubrStoreContactTableViewCell.m */,
+			);
+			name = Store;
+			sourceTree = "<group>";
+		};
+		9E1D76AB1A1A255C00EB914B /* Coupon */ = {
+			isa = PBXGroup;
+			children = (
+				9E8DE6131A0D616200B59ADC /* coubrCouponDescriptionTableViewCell.h */,
+				9E8DE6141A0D616200B59ADC /* coubrCouponDescriptionTableViewCell.m */,
+				9E8DE6161A0D617A00B59ADC /* coubrCouponTableViewCell.h */,
+				9E8DE6171A0D617A00B59ADC /* coubrCouponTableViewCell.m */,
+			);
+			name = Coupon;
+			sourceTree = "<group>";
+		};
+		9E1D76AC1A1A256700EB914B /* StampCard */ = {
+			isa = PBXGroup;
+			children = (
+				9E2979C61A0E539700653960 /* coubrStampCardTableViewCell.h */,
+				9E2979C71A0E539700653960 /* coubrStampCardTableViewCell.m */,
+				9ED7FCCF1A13FFB4008D88B7 /* coubrStampCardDescriptionTableViewCell.h */,
+				9ED7FCD01A13FFB4008D88B7 /* coubrStampCardDescriptionTableViewCell.m */,
+			);
+			name = StampCard;
+			sourceTree = "<group>";
+		};
+		9E1D76AD1A1A257600EB914B /* SpecialOffer */ = {
+			isa = PBXGroup;
+			children = (
+				9E2979C91A0E53CF00653960 /* coubrSpecialOfferTableViewCell.h */,
+				9E2979CA1A0E53CF00653960 /* coubrSpecialOfferTableViewCell.m */,
+				9E31AC941A16BCD30061BE15 /* coubrSpecialOfferDescriptionTableViewCell.h */,
+				9E31AC951A16BCD30061BE15 /* coubrSpecialOfferDescriptionTableViewCell.m */,
+			);
+			name = SpecialOffer;
+			sourceTree = "<group>";
+		};
 		9E6FDE0B19EEC4D6002642C1 = {
 			isa = PBXGroup;
 			children = (
@@ -314,34 +421,24 @@
 		9E6FDE4419EECA4A002642C1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				9E1D76A81A1A251800EB914B /* Explore */,
+				9E1D76AA1A1A254200EB914B /* Store */,
+				9E1D76AB1A1A255C00EB914B /* Coupon */,
+				9E1D76AC1A1A256700EB914B /* StampCard */,
+				9E1D76AD1A1A257600EB914B /* SpecialOffer */,
+				9E1D76A91A1A252500EB914B /* Profile */,
 				9E7056B519F862DB007C5107 /* Localizable.strings */,
 				9E84CD7219F8243F00B8D409 /* Main.storyboard */,
 				9EF7B22B1A0A0DA100FC43ED /* Store.storyboard */,
 				9E6FDE2619EEC4D6002642C1 /* LaunchScreen.xib */,
 				9E2EBFC919F32AB9009985A7 /* UIImage+ImageEffects.h */,
 				9E2EBFCA19F32AB9009985A7 /* UIImage+ImageEffects.m */,
-				9E2A39FE19EFF90600310F25 /* coubrExploreTableViewCell.h */,
-				9E2A39FF19EFF90600310F25 /* coubrExploreTableViewCell.m */,
-				9EEE883A19F97B9A00740CFA /* coubrFavoritesTableViewCell.h */,
-				9EEE883B19F97B9A00740CFA /* coubrFavoritesTableViewCell.m */,
-				9EEE884019F992FB00740CFA /* coubrHistoryTableViewCell.h */,
-				9EEE884119F992FB00740CFA /* coubrHistoryTableViewCell.m */,
 				9EFC11AF19F1D923004FC513 /* coubrMapViewAnnotation.h */,
 				9EFC11B019F1D923004FC513 /* coubrMapViewAnnotation.m */,
-				9EA3E7E319F51F5D0014D0F9 /* coubrTypesToImage.h */,
-				9EA3E7E419F51F5D0014D0F9 /* coubrTypesToImage.m */,
+				9E1D76B41A1A540400EB914B /* coubrCategoryToImage.h */,
+				9E1D76B51A1A540400EB914B /* coubrCategoryToImage.m */,
 				9EF7B22E1A0A21BF00FC43ED /* coubrCategoryToText.h */,
 				9EF7B22F1A0A21BF00FC43ED /* coubrCategoryToText.m */,
-				9ED91DD91A0B9F70008FAA53 /* coubrStoreAddressTableViewCell.h */,
-				9ED91DDA1A0B9F70008FAA53 /* coubrStoreAddressTableViewCell.m */,
-				9ED91DDC1A0B9F82008FAA53 /* coubrStoreDescriptionTableViewCell.h */,
-				9ED91DDD1A0B9F82008FAA53 /* coubrStoreDescriptionTableViewCell.m */,
-				9ED91DDF1A0B9F92008FAA53 /* coubrStoreContactTableViewCell.h */,
-				9ED91DE01A0B9F92008FAA53 /* coubrStoreContactTableViewCell.m */,
-				9E8DE6131A0D616200B59ADC /* coubrCouponDescriptionTableViewCell.h */,
-				9E8DE6141A0D616200B59ADC /* coubrCouponDescriptionTableViewCell.m */,
-				9E8DE6161A0D617A00B59ADC /* coubrCouponTableViewCell.h */,
-				9E8DE6171A0D617A00B59ADC /* coubrCouponTableViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -349,10 +446,12 @@
 		9E6FDE4519EECA50002642C1 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				9EA3E7F719F5A9110014D0F9 /* Profile */,
-				9EA3E7F619F5A8FE0014D0F9 /* Coupon */,
-				9EA3E7F519F5A8B50014D0F9 /* Store */,
 				9EA3E7F419F5A8930014D0F9 /* Explore */,
+				9EA3E7F519F5A8B50014D0F9 /* Store */,
+				9EA3E7F619F5A8FE0014D0F9 /* Coupon */,
+				9ED7FCC71A13FB30008D88B7 /* StampCard */,
+				9ED7FCC81A13FB39008D88B7 /* SpecialOffer */,
+				9EA3E7F719F5A9110014D0F9 /* Profile */,
 				9EA3E7F319F5A8440014D0F9 /* Settings */,
 				9EA9E87119EECBEC00CE407E /* coubrMainViewController.h */,
 				9EA9E87219EECBEC00CE407E /* coubrMainViewController.m */,
@@ -422,8 +521,12 @@
 				9E84CD7019F7D6B700B8D409 /* coubrStorePageViewController.m */,
 				9E2EBFC319F32569009985A7 /* coubrStoreInformationTableViewController.h */,
 				9E2EBFC419F32569009985A7 /* coubrStoreInformationTableViewController.m */,
-				9EC2F60C19F46FC80004D051 /* coubrStoreOfferTableViewController.h */,
-				9EC2F60D19F46FC80004D051 /* coubrStoreOfferTableViewController.m */,
+				9E1FD23F1A16656500E9E3F5 /* coubrStoreCouponTableViewController.h */,
+				9E1FD2401A16656500E9E3F5 /* coubrStoreCouponTableViewController.m */,
+				9E1FD2421A16657F00E9E3F5 /* coubrStoreStampCardTableViewController.h */,
+				9E1FD2431A16657F00E9E3F5 /* coubrStoreStampCardTableViewController.m */,
+				9E1FD2571A166A7500E9E3F5 /* coubrStoreSpecialOfferTableViewController.h */,
+				9E1FD2581A166A7500E9E3F5 /* coubrStoreSpecialOfferTableViewController.m */,
 			);
 			name = Store;
 			sourceTree = "<group>";
@@ -452,21 +555,47 @@
 			name = Profile;
 			sourceTree = "<group>";
 		};
+		9ED7FCC71A13FB30008D88B7 /* StampCard */ = {
+			isa = PBXGroup;
+			children = (
+				9ED7FCC91A13FB61008D88B7 /* coubrStampCardOverviewController.h */,
+				9ED7FCCA1A13FB61008D88B7 /* coubrStampCardOverviewController.m */,
+			);
+			name = StampCard;
+			sourceTree = "<group>";
+		};
+		9ED7FCC81A13FB39008D88B7 /* SpecialOffer */ = {
+			isa = PBXGroup;
+			children = (
+				9ED7FCCC1A13FB7F008D88B7 /* coubrSpecialOfferOverviewController.h */,
+				9ED7FCCD1A13FB7F008D88B7 /* coubrSpecialOfferOverviewController.m */,
+			);
+			name = SpecialOffer;
+			sourceTree = "<group>";
+		};
 		9EEE882D19F9582600740CFA /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				9EEE882A19F9581C00740CFA /* Store.h */,
-				9EEE882B19F9581C00740CFA /* Store.m */,
-				9E1F77BA1A066ED70034A064 /* Coupon.h */,
-				9E1F77BB1A066ED70034A064 /* Coupon.m */,
-				9E1F77B71A066E180034A064 /* Explore.h */,
-				9E1F77B81A066E180034A064 /* Explore.m */,
-				9EEE882719F9581C00740CFA /* History.h */,
-				9EEE882819F9581C00740CFA /* History.m */,
+				9E1FD2541A16673000E9E3F5 /* Store.h */,
+				9E1FD2551A16673000E9E3F5 /* Store.m */,
+				9E1FD2451A16672F00E9E3F5 /* Coupon.h */,
+				9E1FD2461A16672F00E9E3F5 /* Coupon.m */,
+				9E1FD2511A16673000E9E3F5 /* StampCard.h */,
+				9E1FD2521A16673000E9E3F5 /* StampCard.m */,
+				9E1FD24E1A16673000E9E3F5 /* SpecialOffer.h */,
+				9E1FD24F1A16673000E9E3F5 /* SpecialOffer.m */,
+				9E1FD2481A16673000E9E3F5 /* Explore.h */,
+				9E1FD2491A16673000E9E3F5 /* Explore.m */,
+				9E1FD25A1A16700F00E9E3F5 /* History.h */,
+				9E1FD25B1A16700F00E9E3F5 /* History.m */,
 				9EEE882E19F9589D00740CFA /* Store+CRUD.h */,
 				9EEE882F19F9589D00740CFA /* Store+CRUD.m */,
 				9EEE883419F959A200740CFA /* Coupon+CRUD.h */,
 				9EEE883519F959A200740CFA /* Coupon+CRUD.m */,
+				9E59C4551A0EA02D00E272F9 /* SpecialOffer+CRUD.h */,
+				9E59C4561A0EA02D00E272F9 /* SpecialOffer+CRUD.m */,
+				9E59C44F1A0E9FE100E272F9 /* StampCard+CRUD.h */,
+				9E59C4501A0E9FE100E272F9 /* StampCard+CRUD.m */,
 				9EEE883119F9594300740CFA /* Explore+CRUD.h */,
 				9EEE883219F9594300740CFA /* Explore+CRUD.m */,
 				9EEE884319F9973000740CFA /* History+CRUD.h */,
@@ -589,53 +718,66 @@
 			buildActionMask = 2147483647;
 			files = (
 				9EEE884219F992FB00740CFA /* coubrHistoryTableViewCell.m in Sources */,
+				9E1FD2441A16657F00E9E3F5 /* coubrStoreStampCardTableViewController.m in Sources */,
 				9EA3E7EB19F56FF10014D0F9 /* coubrCouponQRScanController.m in Sources */,
+				9E1FD2531A16673000E9E3F5 /* StampCard.m in Sources */,
 				9EA3E7FA19F5B5120014D0F9 /* coubrFavoritesTableViewController.m in Sources */,
-				9E1F77B91A066E180034A064 /* Explore.m in Sources */,
+				9E59C4511A0E9FE100E272F9 /* StampCard+CRUD.m in Sources */,
+				9E1FD2591A166A7500E9E3F5 /* coubrStoreSpecialOfferTableViewController.m in Sources */,
 				9E2EBFAA19F2E92D009985A7 /* coubrLocationManager.m in Sources */,
 				9E84CD7719F829E500B8D409 /* coubrRemoteManager+Coupon.m in Sources */,
 				9E8DE6151A0D616200B59ADC /* coubrCouponDescriptionTableViewCell.m in Sources */,
+				9E1FD25C1A16700F00E9E3F5 /* History.m in Sources */,
 				9E2EBFBF19F31FC5009985A7 /* coubrHistoryTableViewController.m in Sources */,
-				9EEE882919F9581C00740CFA /* History.m in Sources */,
 				9EEE883019F9589D00740CFA /* Store+CRUD.m in Sources */,
+				9ED7FCCB1A13FB61008D88B7 /* coubrStampCardOverviewController.m in Sources */,
+				9E2979CB1A0E53CF00653960 /* coubrSpecialOfferTableViewCell.m in Sources */,
 				9E480E5219F6F0B900C9D508 /* coubrStoreMapViewController.m in Sources */,
 				9E84CD7119F7D6B700B8D409 /* coubrStorePageViewController.m in Sources */,
 				9E2EBFB919F2EEAE009985A7 /* coubrRemoteManager+Explore.m in Sources */,
+				9E1FD2411A16656500E9E3F5 /* coubrStoreCouponTableViewController.m in Sources */,
+				9E2979C81A0E539700653960 /* coubrStampCardTableViewCell.m in Sources */,
 				9EA3E7FD19F5B65C0014D0F9 /* coubrExploreFilterViewController.m in Sources */,
 				9E2A3A0019EFF90600310F25 /* coubrExploreTableViewCell.m in Sources */,
-				9E1F77BC1A066ED70034A064 /* Coupon.m in Sources */,
 				9EF6909719F2C5B6008350C9 /* coubrLegalViewController.m in Sources */,
 				9EEE883C19F97B9A00740CFA /* coubrFavoritesTableViewCell.m in Sources */,
 				9EF7B2301A0A21BF00FC43ED /* coubrCategoryToText.m in Sources */,
 				9EC2F5F319F3EDC80004D051 /* coubrRemoteManager+Store.m in Sources */,
 				9EA3E7F219F5A8320014D0F9 /* coubrProfileViewController.m in Sources */,
 				9E2EBFC519F32569009985A7 /* coubrStoreInformationTableViewController.m in Sources */,
-				9ED91DDE1A0B9F82008FAA53 /* coubrStoreDescriptionTableViewCell.m in Sources */,
+				9E2979E61A0E5D1500653960 /* coubrStoreContactTableViewCell.m in Sources */,
+				9E2979E31A0E5D0000653960 /* coubrStoreDescriptionTableViewCell.m in Sources */,
+				9E1FD24A1A16673000E9E3F5 /* Explore.m in Sources */,
+				9E31AC961A16BCD30061BE15 /* coubrSpecialOfferDescriptionTableViewCell.m in Sources */,
 				9E2EBFC819F32651009985A7 /* coubrCouponOverviewController.m in Sources */,
+				9E1FD2561A16673000E9E3F5 /* Store.m in Sources */,
 				9EA9E87919EECD7E00CE407E /* coubrExploreViewController.m in Sources */,
 				9E4FE3FC19F074400018ACE7 /* coubrDatabaseManager.m in Sources */,
-				9EEE882C19F9581C00740CFA /* Store.m in Sources */,
 				9EF6909D19F2C866008350C9 /* coubrHelpViewController.m in Sources */,
 				9E2EBFCB19F32AB9009985A7 /* UIImage+ImageEffects.m in Sources */,
+				9E1D76B61A1A540400EB914B /* coubrCategoryToImage.m in Sources */,
 				9EF6909319F2A5C8008350C9 /* coubrNavigationTableViewController.m in Sources */,
+				9E1D76B91A1A556700EB914B /* coubrExploreFilterCategoryCollectionViewCell.m in Sources */,
+				9E1FD2471A16672F00E9E3F5 /* Coupon.m in Sources */,
 				9EFC11AE19F197F0004FC513 /* coubrExploreTableViewController.m in Sources */,
 				9EA9E87319EECBEC00CE407E /* coubrMainViewController.m in Sources */,
+				9ED7FCCE1A13FB7F008D88B7 /* coubrSpecialOfferOverviewController.m in Sources */,
 				9E4401E519EF06AC006B36E0 /* coubrExploreMapViewController.m in Sources */,
 				9EA3E7E819F52AAA0014D0F9 /* coubrStoreViewController.m in Sources */,
 				9E4401FF19EF257C006B36E0 /* coubrModel.xcdatamodeld in Sources */,
+				9E1FD2501A16673000E9E3F5 /* SpecialOffer.m in Sources */,
 				9E480E5519F6F0D500C9D508 /* coubrStoreHeaderViewController.m in Sources */,
+				9E59C4571A0EA02D00E272F9 /* SpecialOffer+CRUD.m in Sources */,
 				9EEE884519F9973000740CFA /* History+CRUD.m in Sources */,
 				9EEE883619F959A200740CFA /* Coupon+CRUD.m in Sources */,
 				9E6FDE1D19EEC4D6002642C1 /* AppDelegate.m in Sources */,
 				9E8DE6181A0D617A00B59ADC /* coubrCouponTableViewCell.m in Sources */,
-				9EC2F60E19F46FC80004D051 /* coubrStoreOfferTableViewController.m in Sources */,
-				9ED91DE11A0B9F92008FAA53 /* coubrStoreContactTableViewCell.m in Sources */,
 				9EEE883319F9594300740CFA /* Explore+CRUD.m in Sources */,
+				9ED7FCD11A13FFB4008D88B7 /* coubrStampCardDescriptionTableViewCell.m in Sources */,
 				9EFC11B119F1D923004FC513 /* coubrMapViewAnnotation.m in Sources */,
 				9E2EBFB619F2EE52009985A7 /* coubrRemoteManager.m in Sources */,
 				9E6FDE1A19EEC4D6002642C1 /* main.m in Sources */,
 				9ED91DDB1A0B9F70008FAA53 /* coubrStoreAddressTableViewCell.m in Sources */,
-				9EA3E7E519F51F5D0014D0F9 /* coubrTypesToImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

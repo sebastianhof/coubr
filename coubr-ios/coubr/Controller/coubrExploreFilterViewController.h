@@ -9,8 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "coubrExploreViewController.h"
 
-@interface coubrExploreFilterViewController : UIViewController
+@interface coubrExploreFilterViewController : UITableViewController <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (weak, nonatomic) coubrExploreViewController *parentController;
+
+@property (nonatomic, readonly) float currentDistance;
+
+@property (nonatomic, readonly) BOOL showSpecialOffers;
+@property (nonatomic, readonly) BOOL showStampCards;
+@property (nonatomic, readonly) BOOL showCoupons;
+
+@property (strong, nonatomic, readonly) NSMutableSet *selectedCategories;
+@property (strong, nonatomic, readonly) NSMutableSet *selectedSubcategories;
+
+- (void)addCategory:(NSString *)category;
+- (void)removeCategory:(NSString *)category;
 
 @end

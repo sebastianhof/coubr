@@ -12,6 +12,7 @@
 #import "coubrStoreViewController.h"
 #import "coubrFavoritesTableViewCell.h"
 #import "Store+CRUD.h"
+#import "UIImage+ImageEffects.h"
 
 @interface coubrFavoritesTableViewController ()
 
@@ -41,10 +42,11 @@
         } else {
         
             [self showEmptyTableView];
-            
+
         }
         
     }
+
 }
 
 - (NSFetchedResultsController *)favoritesFetchedResultsController
@@ -79,7 +81,9 @@
     NSManagedObject *managedObject = [self.favoritesFetchedResultsController objectAtIndexPath:indexPath];
     
     if ([managedObject isKindOfClass:[Store class]]) {
-        [(coubrFavoritesTableViewCell *) cell initCellWithStore:(Store *)managedObject];
+        coubrFavoritesTableViewCell *favoritesCell = (coubrFavoritesTableViewCell *) cell;
+        [favoritesCell setParentController:self];
+        [favoritesCell initCellWithStore:(Store *)managedObject];
     }
     
     return cell;
@@ -104,20 +108,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
     return [self.favoritesFetchedResultsController sectionForSectionIndexTitle:title atIndex:index];
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSManagedObject *managedObject = [self.favoritesFetchedResultsController objectAtIndexPath:indexPath];
-    if ([managedObject isKindOfClass:[Store class]]) {
-        coubrStoreViewController *spvc = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreViewController"];
-        
-        [spvc setStoreId:((Store *) managedObject).storeId];
-        
-        [self.parentController.navigationController pushViewController:spvc animated:YES];
-        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-    }
-    
 }
 
 #pragma mark - Empty table view
@@ -154,6 +144,5 @@
     }
     
 }
-
 
 @end

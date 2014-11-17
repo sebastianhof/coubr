@@ -2,7 +2,7 @@
 //  Coupon.h
 //  coubr
 //
-//  Created by Sebastian Hof on 02/11/14.
+//  Created by Sebastian Hof on 14/11/14.
 //  Copyright (c) 2014 coubr. All rights reserved.
 //
 
@@ -15,13 +15,13 @@
 
 @property (nonatomic, retain) NSNumber * amount;
 @property (nonatomic, retain) NSNumber * amountRedeemed;
+@property (nonatomic, retain) NSDate * validTo;
 @property (nonatomic, retain) NSString * category;
 @property (nonatomic, retain) NSString * couponDescription;
 @property (nonatomic, retain) NSString * couponId;
 @property (nonatomic, retain) NSString * title;
-@property (nonatomic, retain) NSDate * validTo;
-@property (nonatomic, retain) NSSet *histories;
 @property (nonatomic, retain) Store *store;
+@property (nonatomic, retain) NSSet *histories;
 @end
 
 @interface Coupon (CoreDataGeneratedAccessors)

@@ -11,13 +11,13 @@
 #import "coubrDatabaseManager.h"
 #import <CoreData/CoreData.h>
 #import "History+CRUD.h"
+#import "UIImage+ImageEffects.h"
 
 @interface coubrHistoryTableViewController ()
 
 @property (strong, nonatomic) IBOutlet UITableView *profileHistoryTableView;
 @property (strong, nonatomic) NSFetchedResultsController *historyFetchedResultsController;
 @property (weak, nonatomic) UIView* emptyTableView;
-
 
 @end
 
@@ -41,10 +41,11 @@
         } else {
             
             [self showEmptyTableView];
-            
+
         }
         
     }
+
 }
 
 - (NSFetchedResultsController *)historyFetchedResultsController
@@ -106,17 +107,6 @@
     return [self.historyFetchedResultsController sectionForSectionIndexTitle:title atIndex:index];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSManagedObject *managedObject = [self.historyFetchedResultsController objectAtIndexPath:indexPath];
-    if ([managedObject isKindOfClass:[History class]]) {
-        // TODO
-        //[self.parentController.navigationController pushViewController:nil animated:YES];
-        //[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-    }
-    
-}
-
 #pragma mark - Empty table view
 
 - (UIView *)emptyTableView
@@ -151,6 +141,5 @@
     }
     
 }
-
 
 @end

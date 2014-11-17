@@ -21,6 +21,10 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *navigationImageView;
 
+@property (weak, nonatomic) IBOutlet UIButton *favoritesButton;
+@property (weak, nonatomic) IBOutlet UIButton *historyButton;
+
+
 @property (strong, nonatomic) coubrFavoritesTableViewController *profileFavoritesTableViewController;
 @property (strong, nonatomic) coubrHistoryTableViewController *profileHistoryTableViewController;
 
@@ -32,14 +36,27 @@
 {
     [super viewDidLoad];
     
-    [self blurBackgroundImage];
+    [self initNavigationView];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [self blurNavigationImage];
+    [super viewWillAppear:animated];
+    
+    [self initNavigationBar];
 }
 
+- (void)initNavigationView
+{
+    [self.navigationImageView.layer setShadowOffset:CGSizeMake(-2.0, 2.0)];
+    [self.navigationImageView.layer setShadowRadius:3.0];
+    [self.navigationImageView.layer setShadowOpacity:0.05];
+}
+
+- (void)initNavigationBar
+{
+    [self.parentViewController.navigationItem setRightBarButtonItems:@[  ] animated:NO];
+}
 
 #pragma mark - Init controllers
 
@@ -74,6 +91,8 @@
             [pvc setDelegate:self];
             [pvc setDataSource:self];
             [pvc setViewControllers:@[ self.profileFavoritesTableViewController ] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+            [self.favoritesButton setSelected:YES];
+            
             self.pageViewController = pvc;
             
         }
@@ -110,26 +129,55 @@
     
 }
 
-- (void)blurNavigationImage
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
 {
-    UIGraphicsBeginImageContext(self.navigationImageView.bounds.size);
+    if (completed) {
+        [self resetButtons];
+        
+        if ([[self.pageViewController viewControllers] containsObject:self.profileFavoritesTableViewController]) {
+            [self.favoritesButton setSelected:YES];
+        } else if ([[self.pageViewController viewControllers] containsObject:self.profileHistoryTableViewController]) {
+            [self.historyButton setSelected:YES];
+        }
+    }
     
-    CGContextRef c = UIGraphicsGetCurrentContext();
-    CGContextTranslateCTM(c, 0, 0);
-    [self.view.layer renderInContext:c];
-    
-    UIImage* blurimage = UIGraphicsGetImageFromCurrentImageContext();
-    
-    blurimage = [blurimage applyExtraLightEffect];
-    
-    UIGraphicsEndImageContext();
-    
-    [self.navigationImageView setImage:blurimage];
-    [self.navigationImageView.layer setShadowOffset:CGSizeMake(-2.0, 2.0)];
-    [self.navigationImageView.layer setShadowRadius:3.0];
-    [self.navigationImageView.layer setShadowOpacity:0.05];
 }
 
+
+#pragma mark - IBAction
+
+- (IBAction)showFavorites:(id)sender {
+    [self resetButtons];
+    [self.favoritesButton setSelected:YES];
+
+    if (![[self.pageViewController viewControllers] containsObject:self.profileFavoritesTableViewController]) {
+        
+        [self.pageViewController setViewControllers:@[ self.profileFavoritesTableViewController ] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+        
+    }
+
+}
+
+
+- (IBAction)showVisits:(id)sender {
+    [self resetButtons];
+    [self.historyButton setSelected:YES];
+    
+    if (![[self.pageViewController viewControllers] containsObject:self.profileHistoryTableViewController]) {
+        
+        [self.pageViewController setViewControllers:@[ self.profileHistoryTableViewController ] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+        
+    }
+    
+}
+
+- (void)resetButtons
+{
+    [self.favoritesButton setSelected:NO];
+    [self.historyButton setSelected:NO];
+}
+
+#pragma mark - Blur
 
 - (void)blurBackgroundImage
 {
@@ -148,27 +196,6 @@
     [self.foregroundImageView.layer setShadowOffset:CGSizeMake(-2.0, 2.0)];
     [self.foregroundImageView.layer setShadowRadius:3.0];
     [self.foregroundImageView.layer setShadowOpacity:0.05];
-}
-
-- (IBAction)showFavorites:(id)sender {
-
-    if (![[self.pageViewController viewControllers] containsObject:self.profileFavoritesTableViewController]) {
-        
-        [self.pageViewController setViewControllers:@[ self.profileFavoritesTableViewController ] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-        
-    }
-
-}
-
-
-- (IBAction)showVisits:(id)sender {
-    
-    if (![[self.pageViewController viewControllers] containsObject:self.profileHistoryTableViewController]) {
-        
-        [self.pageViewController setViewControllers:@[ self.profileHistoryTableViewController ] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
-        
-    }
-    
 }
 
 

@@ -12,6 +12,4 @@
 
 + (NSFetchRequest *)fetchRequestForCouponWithId:(NSString *)couponId;
 
-+ (void)deleteCouponsInDatabase;
-
 @end

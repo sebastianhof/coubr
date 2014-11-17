@@ -45,7 +45,11 @@
 
 - (void)initUserLocationButton
 {
-
+    [self.userLocationButton setImage:[[UIImage imageNamed:@"Map_View_Location"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    
+    [self.userLocationButton.layer setCornerRadius:20.0];
+    [self.userLocationButton.layer setBorderColor:[UIColor whiteColor].CGColor];
+    [self.userLocationButton.layer setBorderWidth:2.0];
 }
 
 #pragma mark - Init

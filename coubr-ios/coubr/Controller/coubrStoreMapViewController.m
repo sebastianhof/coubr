@@ -7,27 +7,52 @@
 //
 
 #import "coubrStoreMapViewController.h"
-#import "coubrDatabaseManager.h"
 #import "coubrLocationManager.h"
 
 @interface coubrStoreMapViewController ()
 
-@property (weak, nonatomic) IBOutlet MKMapView *storeMapView;
+
+
+@property (weak, nonatomic) Store *store;
 
 @end
 
 @implementation coubrStoreMapViewController
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:StoreDidBecomeAvailableNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+        
+        self.store = note.userInfo[STORE];
+        [self initStoreMap];
+        
+    }];
+
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    [self storeLocationDidBecomeAvailable];
+    [self initUserLocationButton];
+    
+    if (self.store) {
+        [self initStoreMap];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.storeMapView.showsUserLocation = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    self.storeMapView.showsUserLocation = NO;
 }
 
 
@@ -35,68 +60,64 @@
 #define STORE_DISTANCE_ADDITION 100.0
 #define STORE_ANNOTATION_IDENTIFIER @"StoreAnnotation";
 
-- (void)storeLocationDidBecomeAvailable
+- (void)initUserLocationButton
 {
+    [self.locationButton setImage:[[UIImage imageNamed:@"Map_View_Location"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     
-    if (self.parentController.store) {
-        
-        __block NSString *name;
-        __block double latitude;
-        __block double longitude;
-        
-        [[[coubrDatabaseManager defaultManager] managedObjectContext] performBlockAndWait:^{
-            
-            latitude = [self.parentController.store.latitude doubleValue] ;
-            longitude = [self.parentController.store.longitude doubleValue];
-            name = [NSString stringWithString:self.parentController.store.name];
-            
-        }];
-        
-        CLLocation *storeLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
-        CLLocation *currentLocation = [[coubrLocationManager defaultManager] userLocation];
-        CLLocationDistance distance = [storeLocation distanceFromLocation:currentLocation];
-        
-        // set annotation
-        MKPointAnnotation *storeAnnotation = [[MKPointAnnotation alloc] init];
-        [self.storeMapView addAnnotation:storeAnnotation];
-        [storeAnnotation setCoordinate:storeLocation.coordinate];
-        [storeAnnotation setTitle:name];
-        
-        // set region
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(currentLocation.coordinate,distance, distance);
-        region = [self.storeMapView regionThatFits:region];
-        [self.storeMapView setRegion:region];
-        
-        // show user location
-        self.storeMapView.showsUserLocation = YES;
-        
-        // setup navigation
+    [self.locationButton.layer setCornerRadius:20.0];
+    [self.locationButton.layer setBorderColor:[UIColor whiteColor].CGColor];
+    [self.locationButton.layer setBorderWidth:2.0];
+}
 
-        MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:storeLocation.coordinate addressDictionary:nil];
-        MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
+- (void)initStoreMap
+{
 
-        MKDirectionsRequest *request = [[MKDirectionsRequest alloc] init];
-        [request setSource:[MKMapItem mapItemForCurrentLocation]];
-        [request setDestination:mapItem];
-        [request setTransportType:MKDirectionsTransportTypeWalking];
-        [request setRequestsAlternateRoutes:YES];
+    NSString *name = [NSString stringWithString:self.store.name];
+    double latitude = latitude = [self.store.latitude doubleValue];
+    double longitude = [self.store.longitude doubleValue];
+    
+    CLLocation *storeLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+    CLLocation *currentLocation = [[coubrLocationManager defaultManager] userLocation];
+    CLLocationDistance distance = [storeLocation distanceFromLocation:currentLocation];
+    
+    // set annotation
+    MKPointAnnotation *storeAnnotation = [[MKPointAnnotation alloc] init];
+    [self.storeMapView addAnnotation:storeAnnotation];
+    [storeAnnotation setCoordinate:storeLocation.coordinate];
+    [storeAnnotation setTitle:name];
+    
+    // set region
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(currentLocation.coordinate,distance, distance);
+    region = [self.storeMapView regionThatFits:region];
+    [self.storeMapView setRegion:region];
+    
+    // setup navigation
+
+    MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:storeLocation.coordinate addressDictionary:nil];
+    MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
+
+    MKDirectionsRequest *request = [[MKDirectionsRequest alloc] init];
+    [request setSource:[MKMapItem mapItemForCurrentLocation]];
+    [request setDestination:mapItem];
+    [request setTransportType:MKDirectionsTransportTypeWalking];
+    [request setRequestsAlternateRoutes:YES];
+    
+    MKDirections *directions = [[MKDirections alloc] initWithRequest:request];
+    [directions calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse *response, NSError *error) {
         
-        MKDirections *directions = [[MKDirections alloc] initWithRequest:request];
-        [directions calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse *response, NSError *error) {
+        if (error) {
+            NSLog(@"Could not calculate directions: %@", [error localizedDescription]);
+        } else {
             
-            if (error) {
-                NSLog(@"Could not calculate directions: %@", [error localizedDescription]);
-            } else {
-                
-                for (MKRoute *route in [response routes]) {
-                    [self.storeMapView addOverlay:[route polyline] level:MKOverlayLevelAboveRoads];
-                }
-                
+            for (MKRoute *route in [response routes]) {
+                [self.storeMapView addOverlay:[route polyline] level:MKOverlayLevelAboveRoads];
             }
             
-        }];
+        }
+        
+    }];
 
-    }
+
       
 }
 

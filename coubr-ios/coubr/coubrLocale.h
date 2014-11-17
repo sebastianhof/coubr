@@ -16,8 +16,9 @@
 
 // Explore
 #define LOCALE_REFRESHING NSLocalizedString(@"refreshing", nil)
+#define LOCALE_SEARCH_LOCATION_HEADER NSLocalizedString(@"Location", nil)
 
-// Store & Coupons
+// Store
 #define LOCALE_STORE_ADDRESS NSLocalizedString(@"Address", nil)
 #define LOCALE_STORE_CONTACT NSLocalizedString(@"Contact", nil)
 #define LOCALE_STORE_DESCRIPTION NSLocalizedString(@"Description", nil)
@@ -25,19 +26,34 @@
 // Error
 #define LOCALE_INTERNAL_ERROR NSLocalizedString(@"An internal error occurred. Please try again", nil)
 
+// Offers
+#define LOCALE_OFFER_COUPON NSLocalizedString(@"Coupons", nil)
+#define LOCALE_OFFER_STAMP_CARD NSLocalizedString(@"Stamp Cards", nil)
+#define LOCALE_OFFER_SPECIAL_OFFERS NSLocalizedString(@"Special Offers", nil)
+
 // Coupons
-#define LOCALE_COUPON_INFORMATION NSLocalizedString(@"Information", nil)
 #define LOCALE_COUPON_DESCRIPTION NSLocalizedString(@"Description", nil)
-#define LOCALE_COUPON_REDEEM NSLocalizedString(@"Redeem", nil)
 
 #define LOCALE_COUPON_VALID_UNTIL NSLocalizedString(@"Valid until", nil)
 #define LOCALE_COUPON_AVAILABLE NSLocalizedString(@"available", nil)
-#define LOCALE_COUPON_NO_DESCRIPTION NSLocalizedString(@"No description", nil)
 
 #define LOCALE_COUPON_ALERT_OOPS NSLocalizedString(@"Oops", nil)
 #define LOCALE_COUPON_ALERT_CODE_ERROR NSLocalizedString(@"Seems like that the code is not correct", nil)
 #define LOCALE_COUPON_ALERT_CONGRATULATIONS NSLocalizedString(@"Congratulations", nil)
 #define LOCALE_COUPON_ALERT_REDEMPTION_SUCCESS NSLocalizedString(@"Your redemption was successful", nil)
+
+// Stamp Card
+#define LOCALE_STAMP_CARD_DESCRIPTION NSLocalizedString(@"Description", nil)
+
+#define LOCALE_STAMP_CARD_VALID_UNTIL NSLocalizedString(@"Valid until", nil)
+#define LOCALE_STAMP_CARD_COLLECTED_OF NSLocalizedString(@"of", nil)
+#define LOCALE_STAMP_CARD_COLLECTED NSLocalizedString(@"collected", nil)
+
+// Special Offers
+#define LOCALE_SPECIAL_OFFER_DESCRIPTION NSLocalizedString(@"Description", nil)
+
+#define LOCALE_SPECIAL_OFFER_VALID_FROM NSLocalizedString(@"Valid from", nil)
+#define LOCALE_SPECIAL_OFFER_VALID_UNTIL NSLocalizedString(@"until", nil)
 
 // Profile
 

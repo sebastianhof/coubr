@@ -33,8 +33,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-        
-    [self initRefreshControl];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:FetchedResultsControllerDidUpdatedNotification object:self.parentController queue:nil usingBlock:^(NSNotification *note) {
 
@@ -54,10 +52,7 @@
                 
                 [self showEmptyTableView];
                 
-                
-                
             }
-            
             
         });
         
@@ -96,6 +91,8 @@
         });    
             
     }];
+    
+    [self initRefreshControl];
     
 }
 

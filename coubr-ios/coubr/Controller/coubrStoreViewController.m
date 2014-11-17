@@ -20,17 +20,22 @@
 #import "Coupon+CRUD.h"
 #import "coubrDatabaseManager.h"
 
-#import "coubrTypesToImage.h"
-
 @interface coubrStoreViewController ()
 
 @property (strong, nonatomic) coubrStoreMapViewController *storeMapViewController;
+@property (strong, nonatomic) UIPageViewController *pageViewController;
+
+
 @property (strong, nonatomic) coubrStoreHeaderViewController *storeHeaderViewController;
 @property (strong, nonatomic) coubrStorePageViewController *storePageViewController;
 
 @property (weak, nonatomic) UIView *storeMapView;
 @property (weak, nonatomic) UIView *storeHeaderView;
 @property (weak, nonatomic) UIView *storePageView;
+
+@property (weak, nonatomic) Store *store;
+
+@property (strong, nonatomic) UIBarButtonItem *favoritesBarButtonItem;
 
 @property (strong, nonatomic) UIPanGestureRecognizer *headerPanGestureRecognizer;
 
@@ -42,12 +47,19 @@
 
 #pragma mark - view lifecycle
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.storeMapViewController;
+    self.storeHeaderViewController;
+    self.storePageViewController;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
- 
-    [self.navigationController.navigationBar setTranslucent:NO];
-    
+
     [self loadStoreItem];
 }
 
@@ -63,23 +75,34 @@
 #pragma mark - init controllers
 
 #define HEADER_HEIGHT 99
+#define TOPBAR_HEIGHT 64
 
 - (coubrStoreMapViewController *)storeMapViewController
 {
     if (!_storeMapViewController) {
         _storeMapViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreMapViewController"];
         [self addChildViewController:_storeMapViewController];
-        [_storeMapViewController setParentController:self];
     }
     return _storeMapViewController;
 }
+
+- (UIPageViewController *)pageViewController
+{
+    if (!_pageViewController) {
+        _pageViewController = [[UIPageViewController alloc] init];
+        [_pageViewController setDataSource:self];
+        [_pageViewController setDelegate:self];
+    }
+    return _pageViewController;
+}
+
+
 
 - (coubrStoreHeaderViewController *)storeHeaderViewController
 {
     if (!_storeHeaderViewController) {
         _storeHeaderViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreHeaderViewController"];
-        [self addChildViewController:_storeHeaderViewController];
-        [_storeHeaderViewController setParentController:self];
+//        [self addChildViewController:_storeHeaderViewController];
     }
     return _storeHeaderViewController;
 }
@@ -88,8 +111,7 @@
 {
     if (!_storePageViewController) {
         _storePageViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStorePageViewController"];
-        [self addChildViewController:_storePageViewController];
-        [_storePageViewController setParentController:self];
+//        [self addChildViewController:_storePageViewController];
     }
     return _storePageViewController;
 }
@@ -111,11 +133,7 @@
         
         CGRect superviewFrame = self.view.frame;
         
-        CGRect frame = _storeMapView.frame;
-        frame.size.width = superviewFrame.size.width;
-        frame.size.height = 0;
-        frame.origin.y = 0;
-        frame.origin.x = 0;
+        CGRect frame = CGRectMake(0, 0, superviewFrame.size.width, TOPBAR_HEIGHT);
         [_storeMapView setFrame:frame];
     }
     return _storeMapView;
@@ -128,11 +146,7 @@
         
         CGRect superviewFrame = self.view.frame;
         
-        CGRect frame = _storeHeaderView.frame;
-        frame.size.width = superviewFrame.size.width;
-        frame.size.height = HEADER_HEIGHT;
-        frame.origin.y = 0;
-        frame.origin.x = 0;
+        CGRect frame = CGRectMake(0, 0, superviewFrame.size.width, HEADER_HEIGHT + TOPBAR_HEIGHT);
         [_storeHeaderView setFrame:frame];
         [_storeHeaderView addGestureRecognizer:self.headerPanGestureRecognizer];
     }
@@ -146,27 +160,13 @@
         
         CGRect superviewFrame = self.view.frame;
         
-        CGRect frame = _storePageView.frame;
-        frame.size.width = superviewFrame.size.width;
-        frame.size.height = superviewFrame.size.height - HEADER_HEIGHT;
-        frame.origin.y = HEADER_HEIGHT;
-        frame.origin.x = 0;
+        CGRect frame = CGRectMake(0, HEADER_HEIGHT + TOPBAR_HEIGHT, superviewFrame.size.width, superviewFrame.size.height - HEADER_HEIGHT);
         [_storePageView setFrame:frame];
     }
     return _storePageView;
 }
 
 #pragma mark - initial load
-
-@synthesize couponFetchedResultsController = _couponFetchedResultsController;
-
-- (NSFetchedResultsController *)couponFetchedResultsController
-{
-    if (!_couponFetchedResultsController) {
-        _couponFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[Store fetchRequestForCouponsOfStoreWithId:self.storeId]managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
-    }
-    return _couponFetchedResultsController;
-}
 
 - (void)loadStoreItem
 {
@@ -175,8 +175,6 @@
         
         if ([Store insertStoreIntoDatabaseFromStoreJSON:storeJSON]) {
    
-            [self refreshCouponFetchedResultsController];
-            
             NSManagedObjectContext *context = [[coubrDatabaseManager defaultManager] managedObjectContext];
             [context performBlockAndWait:^{
                 
@@ -184,8 +182,15 @@
                 NSArray *results = [context executeFetchRequest:[Store fetchRequestForStoreWithId:self.storeId] error:&error];
                 
                 if (results > 0) {
-                    _store = (Store *) [results firstObject];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:StoreDidBecomeAvailableNotification object:self];
+                    Store *store = (Store *) [results firstObject];
+                    NSDictionary *userInfo = @{ STORE: store, STORE_ID: store.storeId };
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:StoreDidBecomeAvailableNotification object:self userInfo:userInfo];
+                    
+                    [self.navigationItem setTitle:store.name];
+                    [self setFavoritesBarButtonItemSelected:store.isFavorite];
+                    self.store  = store;
+                    
                 }
                 
             }];
@@ -204,16 +209,9 @@
 
 }
 
-- (void)refreshCouponFetchedResultsController
-{
- 
-    NSError *error;
-    [self.couponFetchedResultsController performFetch:&error];
-    if (!error) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:CouponFetchedResultsControllerDidUpdatedNotification object:self];
-    }
-    
-}
+#pragma mark - Page View Controller
+
+
 
 #pragma mark - Panning
 
@@ -251,7 +249,7 @@
 {
     CGRect superviewFrame = self.view.frame;
     
-    if (location.y < superviewFrame.size.height * 0.5) {
+    if (location.y < (superviewFrame.size.height * 0.5 + HEADER_HEIGHT)) {
         // init map view
         [self.view addSubview:self.storeMapView];
     }
@@ -265,39 +263,31 @@
     if (translation.y > 0) {
         // move down
         
-        if (origin.y < superviewFrame.size.height * 0.5 && destination.y < (superviewFrame.size.height - HEADER_HEIGHT)) {
+        if (origin.y < (superviewFrame.size.height * 0.5 + TOPBAR_HEIGHT) && destination.y < (superviewFrame.size.height - HEADER_HEIGHT)) {
             // shows map view
-            [self.storeMapView setFrame:CGRectMake(0, 0, superviewFrame.size.width, translation.y)];
-            [self.storeHeaderView setFrame:CGRectMake(0, translation.y, superviewFrame.size.width, HEADER_HEIGHT)];
-            [self.storePageView setFrame:CGRectMake(0, HEADER_HEIGHT + translation.y, superviewFrame.size.width, superviewFrame.size.height - HEADER_HEIGHT)];
-            
-            if (destination.y > HEADER_HEIGHT && destination.y < (superviewFrame.size.height - HEADER_HEIGHT)) {
-                [self.storeMapViewController.locationButton setAlpha:destination.y / (superviewFrame.size.height - HEADER_HEIGHT)];
-            } else if (destination.y > (superviewFrame.size.height - HEADER_HEIGHT)) {
-                [self.storeMapViewController.locationButton setAlpha:1];
-            }
-            
+            [self.storeMapView setFrame:CGRectMake(0, 0, superviewFrame.size.width, TOPBAR_HEIGHT + translation.y)];
+            [self.storeHeaderView setFrame:CGRectMake(0, TOPBAR_HEIGHT + translation.y, superviewFrame.size.width, HEADER_HEIGHT)];
+            [self.storePageView setFrame:CGRectMake(0, HEADER_HEIGHT + TOPBAR_HEIGHT + translation.y, self.storePageView.bounds.size.width, self.storePageView.bounds.size.height)];
         }
         
     } else {
         // move up
         
-        if (origin.y >= superviewFrame.size.height * 0.5 && destination.y > HEADER_HEIGHT) {
+        if (origin.y >= (superviewFrame.size.height * 0.5 + TOPBAR_HEIGHT) && destination.y > (HEADER_HEIGHT + TOPBAR_HEIGHT)) {
             // shows table view
             [self.storeMapView setFrame:CGRectMake(0, 0, superviewFrame.size.width, superviewFrame.size.height - HEADER_HEIGHT + translation.y)];
             [self.storeHeaderView setFrame:CGRectMake(0, superviewFrame.size.height - HEADER_HEIGHT + translation.y, superviewFrame.size.width, HEADER_HEIGHT)];
-            [self.storePageView setFrame:CGRectMake(0, superviewFrame.size.height + translation.y, superviewFrame.size.width, HEADER_HEIGHT - translation.y)];
-            
-            if (destination.y > HEADER_HEIGHT && destination.y < (superviewFrame.size.height - HEADER_HEIGHT)) {
-                [self.storeMapViewController.locationButton setAlpha:destination.y / (superviewFrame.size.height - HEADER_HEIGHT)];
-            } else if (destination.y < HEADER_HEIGHT) {
-                [self.storeMapViewController.locationButton setAlpha:0];
-            }
-            
-
-            
+            [self.storePageView setFrame:CGRectMake(0, superviewFrame.size.height + translation.y, self.storePageView.bounds.size.width, self.storePageView.bounds.size.height)];
         }
         
+    }
+    
+    if (destination.y < (HEADER_HEIGHT + TOPBAR_HEIGHT)) {
+        [self.storeMapViewController.locationButton setAlpha:0];
+    } else if (destination.y > (superviewFrame.size.height - HEADER_HEIGHT)) {
+        [self.storeMapViewController.locationButton setAlpha:1];
+    } else {
+        [self.storeMapViewController.locationButton setAlpha:destination.y / (superviewFrame.size.height - HEADER_HEIGHT - TOPBAR_HEIGHT)];
     }
     
 }
@@ -305,14 +295,14 @@
 - (void)userDidFinishPanningFromLocation:(CGPoint)origin toLocation:(CGPoint)destination
 {
     CGRect superviewFrame = self.view.frame;
-    if (destination.y < superviewFrame.size.height * 0.5) {
+    if (destination.y < (superviewFrame.size.height * 0.5 + TOPBAR_HEIGHT)) {
         // shows table view
         
         // moved from bottom to top
         // moved from top to top
-        [self.storeMapView setFrame:CGRectMake(0, 0, superviewFrame.size.width, 0)];
-        [self.storeHeaderView setFrame:CGRectMake(0, 0, superviewFrame.size.width, HEADER_HEIGHT)];
-        [self.storePageView setFrame:CGRectMake(0, HEADER_HEIGHT, superviewFrame.size.width, superviewFrame.size.height - HEADER_HEIGHT) ];
+        [self.storeMapView setFrame:CGRectMake(0, 0, superviewFrame.size.width, TOPBAR_HEIGHT)];
+        [self.storeHeaderView setFrame:CGRectMake(0, 0, superviewFrame.size.width, HEADER_HEIGHT + TOPBAR_HEIGHT)];
+        [self.storePageView setFrame:CGRectMake(0, HEADER_HEIGHT + TOPBAR_HEIGHT, self.storePageView.bounds.size.width, self.storePageView.bounds.size.height) ];
 
         [self.storeMapViewController.locationButton setAlpha:0];
         
@@ -323,11 +313,48 @@
         // moved from bottom to bottom
         [self.storeMapView setFrame:CGRectMake(0, 0, superviewFrame.size.width, superviewFrame.size.height - HEADER_HEIGHT)];
         [self.storeHeaderView setFrame:CGRectMake(0, superviewFrame.size.height - HEADER_HEIGHT, superviewFrame.size.width, HEADER_HEIGHT)];
-        [self.storePageView setFrame:CGRectMake(0, superviewFrame.size.height, superviewFrame.size.width, superviewFrame.size.height - HEADER_HEIGHT)];
+        [self.storePageView setFrame:CGRectMake(0, superviewFrame.size.height, self.storePageView.bounds.size.width, self.storePageView.bounds.size.height)];
         
         [self.storeMapViewController.locationButton setAlpha:1];
         
     }
+    
+}
+
+#pragma mark - Favorites
+
+- (void)setFavoritesBarButtonItemSelected:(BOOL)selected
+{
+    if (selected) {
+        [self.favoritesBarButtonItem setImage:[[UIImage imageNamed:@"Nav_Bar_Favorites"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    } else {
+        [self.favoritesBarButtonItem setImage:[[UIImage imageNamed:@"Nav_Bar_Favorites_None"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+    }
+}
+
+
+- (UIBarButtonItem *)favoritesBarButtonItem
+{
+    if (!_favoritesBarButtonItem) {
+        _favoritesBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[[UIImage imageNamed:@"Nav_Bar_Favorites_None"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(toggleFavorite:)];
+        [self.navigationItem setRightBarButtonItems:@[_favoritesBarButtonItem]];
+    }
+    return _favoritesBarButtonItem;
+}
+
+- (IBAction)toggleFavorite:(id)sender {
+    
+    [[[coubrDatabaseManager defaultManager] managedObjectContext ] performBlockAndWait:^{
+
+        if ([self.store.isFavorite boolValue] == YES) {
+            [self.store setIsFavorite:[NSNumber numberWithBool:NO]];
+            [self setFavoritesBarButtonItemSelected:NO];
+        } else {
+            [self.store setIsFavorite:[NSNumber numberWithBool:YES]];
+            [self setFavoritesBarButtonItemSelected:YES];
+        }
+        
+    }];
     
 }
 

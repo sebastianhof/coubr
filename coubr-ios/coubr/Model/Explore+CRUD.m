@@ -80,7 +80,8 @@
             }
             
             explore.coupons = isValidJSONValue(store[EXPLORE_RESPONSE_STORE_COUPONS]) ? store[EXPLORE_RESPONSE_STORE_COUPONS] : nil;
-            
+            explore.stampCards = isValidJSONValue(store[EXPLORE_RESPONSE_STORE_STAMPCARDS]) ? store[EXPLORE_RESPONSE_STORE_STAMPCARDS] : nil;
+            explore.specialOffers = isValidJSONValue(store[EXPLORE_RESPONSE_STORE_SPECIALOFFERS]) ? store[EXPLORE_RESPONSE_STORE_SPECIALOFFERS] : nil;
         }
         
     }];
@@ -88,13 +89,46 @@
     return true;
 }
 
-+ (NSFetchRequest *)fetchRequestForExploreWithinDistance:(double)distance
-{
++ (NSFetchRequest *)fetchRequestForExplore {
     
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Explore"];
-    //request.predicate = [NSPredicate predicateWithFormat:@"(distance < %@)", [NSNumber numberWithDouble:distance]];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"distance"
                                                               ascending:YES]];
+    return request;
+}
+
++ (NSFetchRequest *)fetchRequestForExploreWithShowSpecialOffers:(BOOL)specialOffers showStampCards:(BOOL)stampCards showCoupons:(BOOL)coupons selectedCategories:(NSSet *)selectedCategories
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Explore"];
+    
+    if (specialOffers && stampCards && coupons) {
+        request.predicate = [NSPredicate predicateWithFormat:
+                             @"((specialOffers > 0) OR (stampCards > 0) OR (coupons > 0)) AND (category IN %@)", selectedCategories];
+    } else if (specialOffers && stampCards) {
+        request.predicate = [NSPredicate predicateWithFormat:
+                             @"((specialOffers > 0) OR (stampCards > 0)) AND (category IN %@)", selectedCategories];
+    } else if (specialOffers && coupons) {
+        request.predicate = [NSPredicate predicateWithFormat:
+                             @"((specialOffers > 0) OR (coupons > 0)) AND (category IN %@)", selectedCategories];
+    } else if (stampCards && coupons) {
+        request.predicate = [NSPredicate predicateWithFormat:
+                             @"((stampCards > 0) OR (coupons > 0)) AND (category IN %@)", selectedCategories];
+    } else if (specialOffers) {
+        request.predicate = [NSPredicate predicateWithFormat:
+                             @"(specialOffers > 0) AND (category IN %@)", selectedCategories];
+    } else if (stampCards) {
+        request.predicate = [NSPredicate predicateWithFormat:
+                             @"(stampCards > 0) AND (category IN %@)", selectedCategories];
+    } else if (coupons) {
+        request.predicate = [NSPredicate predicateWithFormat:
+                             @"(coupons > 0) AND (category IN %@)", selectedCategories];
+    } else {
+        request.predicate = [NSPredicate predicateWithFormat:
+                             @"(category IN %@)", selectedCategories];
+    }
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"distance"
+                                                              ascending:YES]];
+    
     return request;
 }
 

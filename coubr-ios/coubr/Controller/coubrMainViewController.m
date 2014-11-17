@@ -36,7 +36,7 @@
     if (!_navigationViewController) {
         _navigationViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrNavigationTableViewController"];
         [self addChildViewController:_navigationViewController];
-        [_navigationViewController setParentController:self];
+        [_navigationViewController setMainViewController:self];
     }
     return _navigationViewController;
 }
@@ -45,14 +45,9 @@
 {
     if (!_navigationView) {
         _navigationView = self.navigationViewController.view;
-        
         CGRect superviewFrame = self.view.frame;
-        
-        CGRect frame = _navigationView.frame;
-        frame.size.width = superviewFrame.size.width * 0.70;
-        frame.size.height = superviewFrame.size.height;
-        frame.origin.y = 0;
-        frame.origin.x = 0;
+
+        CGRect frame = CGRectMake(0, 0, superviewFrame.size.width * 0.70, superviewFrame.size.height);
         [_navigationView setFrame:frame];
     }
     return _navigationView;
@@ -88,7 +83,7 @@
     if (![self.view.subviews containsObject:_navigationView]) {
         [self.view addSubview:self.navigationBackgroundView];
         [self.view addSubview:self.navigationView];
-        [self.navigationItem.leftBarButtonItem setTintColor:[UIColor colorWithRed:242.0/255.0 green:241.0/255.0 blue:239.0/255.0 alpha:1]];
+        [self.navigationItem.leftBarButtonItem setTintColor:[UIColor colorWithRed:242.0/255.0 green:120.0/255.0 blue:75.0/255.0 alpha:1]];
     }
 }
 
@@ -101,6 +96,7 @@
         _navigationBackgroundView = nil;
         _navigationView = nil;
         _navigationViewController = nil;
+        
         [self.navigationItem.leftBarButtonItem setTintColor:[UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1]];
     }
 }
@@ -113,9 +109,10 @@
     [titleButton addTarget:self action:@selector(toggleNavigationViewInMainView:) forControlEvents:UIControlEventTouchUpInside];
 
     NSAttributedString *title = [[NSAttributedString alloc] initWithString:@"coubr" attributes:@{
-                NSFontAttributeName: [UIFont fontWithName:@"Courgette" size:24]}];
-    
+                NSFontAttributeName: [UIFont fontWithName:@"Courgette" size:24],
+                NSForegroundColorAttributeName: [UIColor colorWithRed:242.0/255.0 green:120.0/255.0 blue:75.0/255.0 alpha:1]}];
     [titleButton setAttributedTitle:title forState:UIControlStateNormal];
+    
     self.navigationItem.titleView = titleButton;
     
     [self.navigationItem.leftBarButtonItem setTintColor:[UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1]];
@@ -123,12 +120,6 @@
 
 - (void)initTabBar
 {
-    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1] }
-                                             forState:UIControlStateNormal];
-    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor colorWithRed:242.0/255.0 green:241.0/255.0 blue:239.0/255.0 alpha:1] } forState:UIControlStateSelected];
-
-    [self.tabBar setTintColor:[UIColor colorWithRed:242.0/255.0 green:241.0/255.0 blue:239.0/255.0 alpha:1]];
-    
     if ([self.tabBar.items objectAtIndex:0]) {
         UITabBarItem *item = [self.tabBar.items objectAtIndex:0];
         [item setImage:[[UIImage imageNamed:@"Tab_Bar_Explore"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];

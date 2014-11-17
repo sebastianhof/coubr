@@ -185,9 +185,6 @@ module.exports = function(model) {
       coupon.activated = data.activated;
       coupon.amount = data.amount;
 
-      var randomString = require('random-string');
-      coupon.code = randomString({length: 128});
-
       // stores
       var storeIds = [];
       var base64url = require('base64-url');

@@ -1,0 +1,34 @@
+<ng-include src="'/static/pages/navigation.html'"></ng-include>
+
+<div class="content col-lg-10">
+
+    <div class="container">
+
+        <ng-include src="'/static/pages/store/navigation.html'"></ng-include>
+
+        <div class="jumbotron">
+
+            <cbrerror class="label label-danger error">Error!</cbrerror>
+
+            <div class="text-center">
+
+                <img ng-src="store/{{ route.storeId }}/code/qr.svg" alt="QR code could not be loaded." width="384" height="384"/>
+
+                <div class="placeholder-2"></div>
+
+                <div>
+
+                    <a class="btn btn-lg btn-coubr" ng-href="#store/{{ route.storeId }}/code/print">Print QR Code</a>
+
+                </div>
+
+                <br />
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+

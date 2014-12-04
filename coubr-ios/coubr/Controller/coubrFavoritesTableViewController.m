@@ -12,11 +12,16 @@
 #import "coubrStoreViewController.h"
 #import "coubrFavoritesTableViewCell.h"
 #import "Store+CRUD.h"
+#import "Store+Distance.h"
+
+#import "coubrLocationManager.h"
+#import <CoreLocation/CoreLocation.h>
+
 #import "UIImage+ImageEffects.h"
 
 @interface coubrFavoritesTableViewController ()
 
-@property (strong, nonatomic) NSFetchedResultsController *favoritesFetchedResultsController;
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) IBOutlet UITableView *profileFavoritesTableView;
 @property (weak, nonatomic) UIView* emptyTableView;
 
@@ -28,33 +33,80 @@
 {
     [super viewWillAppear:animated];
     
+    
+    NSManagedObjectContext *context = [[coubrDatabaseManager defaultManager] managedObjectContext];
+    [context performBlockAndWait:^{
+        
+        NSError* error;
+        NSArray *favoriteStores = [context executeFetchRequest:[Store fetchRequestForFavoriteStores] error:&error];
+        
+        if (!error) {
+            
+            for (NSManagedObject *managedObject in favoriteStores) {
+                
+                if ([managedObject isKindOfClass:[Store class]]) {
+                    
+                    Store *store = (Store *)managedObject;
+                    
+                    CLLocationDegrees latitude = [store.latitude doubleValue] ;
+                    CLLocationDegrees longitude = [store.longitude doubleValue];
+                    CLLocation *storeLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+                    store.distance = [NSNumber numberWithDouble:[storeLocation distanceFromLocation:[[coubrLocationManager defaultManager] userLocation]]];
+                    
+                }
+                
+            }
+            
+        } else {
+            NSLog(@"Could not set distance of favorites: %@", [error localizedDescription]);
+        }
+        
+    }];
+    
     NSError* error;
-    [self.favoritesFetchedResultsController performFetch:&error];
+    [self.fetchedResultsController performFetch:&error];
     if (error) {
         NSLog(@"Could not fetch favorites: %@", [error localizedDescription]);
     } else {
         
-        if ([[self.favoritesFetchedResultsController fetchedObjects] count] > 0) {
-            [self.profileFavoritesTableView reloadData];
-            
-            [self hideEmptyTableView];
-            
-        } else {
+        [self.storeIds removeAllObjects];
         
+        for (NSManagedObject *managedObject in [self.fetchedResultsController fetchedObjects]) {
+            
+            if ([managedObject isKindOfClass:[Store class]]) {
+                [self.storeIds addObject:((Store *) managedObject).storeId];
+            }
+            
+        }
+        
+        [self.profileFavoritesTableView reloadData];
+        
+        if ([[self.fetchedResultsController fetchedObjects] count] > 0) {
+            [self hideEmptyTableView];
+        } else {
             [self showEmptyTableView];
-
         }
         
     }
 
 }
 
+@synthesize storeIds = _storeIds;
+
+- (NSMutableArray *)storeIds
+{
+    if (!_storeIds) {
+        _storeIds = [[NSMutableArray alloc] init];
+    }
+    return _storeIds;
+}
+
 - (NSFetchedResultsController *)favoritesFetchedResultsController
 {
-    if (!_favoritesFetchedResultsController) {
-        _favoritesFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[Store fetchRequestForFavoriteStores] managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
+    if (!_fetchedResultsController) {
+        _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[Store fetchRequestForFavoriteStores] managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:@"distanceSection" cacheName:nil];
     }
-    return _favoritesFetchedResultsController;
+    return _fetchedResultsController;
 }
 
 #pragma mark - Table View Delegate
@@ -101,15 +153,6 @@
     
 }
 
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-{
-    return [self.favoritesFetchedResultsController sectionIndexTitles];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-    return [self.favoritesFetchedResultsController sectionForSectionIndexTitle:title atIndex:index];
-}
-
 #pragma mark - Empty table view
 
 - (UIView *)emptyTableView
@@ -132,7 +175,6 @@
     if (![[self.view subviews] containsObject:_emptyTableView]) {
         [self.view addSubview:self.emptyTableView];
     }
-    
     
 }
 

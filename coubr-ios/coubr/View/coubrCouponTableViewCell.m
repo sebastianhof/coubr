@@ -63,7 +63,7 @@
 
 - (void)showCoupon
 {
-    coubrCouponOverviewController *covc = [[UIStoryboard storyboardWithName:@"Store" bundle:nil]  instantiateViewControllerWithIdentifier:@"coubrCouponOverviewViewController"];
+    coubrCouponOverviewController *covc = [[UIStoryboard storyboardWithName:@"Store" bundle:nil]  instantiateViewControllerWithIdentifier:@"coubrCouponOverviewController"];
     [covc setCoupon:self.coupon];
     [self.parentController.navigationController pushViewController:covc animated:YES];
 }

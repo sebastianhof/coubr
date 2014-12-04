@@ -7,6 +7,7 @@
 //
 #import <CoreData/CoreData.h>
 #import <UIKit/UIKit.h>
+#import "coubrStoreViewDelegate.h"
 
 #define FetchedResultsControllerDidUpdatedNotification @"FetchedResultsControllerDidUpdatedNotification"
 
@@ -15,10 +16,15 @@
 
 @interface coubrExploreViewController : UIViewController <UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDelegate, UITableViewDataSource>
 
+@property (strong, nonatomic) UISearchDisplayController *searchController;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
 - (void)updateFetchedResultsController;
 
 - (void)updateFetchedResultsControllerRequest;
+
+- (void)setSelectedStoreToIndex:(NSInteger)index;
+
+@property (nonatomic, readonly) BOOL showsMapInFullscreen;
 
 @end

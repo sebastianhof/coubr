@@ -7,11 +7,12 @@
 //
 #import <CoreData/CoreData.h>
 
-#import "coubrLocale.h"
 #import "coubrExploreTableViewController.h"
+#import "coubrNoStoreController.h"
 #import "coubrExploreTableViewCell.h"
 
 #import "coubrLocationManager.h"
+#import "coubrLocale.h"
 
 #import "UIImage+ImageEffects.h"
 
@@ -19,11 +20,11 @@
 
 @interface coubrExploreTableViewController ()
 
-@property (strong, nonatomic)UIViewController *emptyTableViewController;
-@property (strong, nonatomic)UIViewController *noConnectionViewController;
-@property (strong, nonatomic)UIViewController *noLocationViewController;
+@property (strong, nonatomic)coubrNoStoreController *noStoreController;
+@property (strong, nonatomic)UIViewController *noConnectionController;
+@property (strong, nonatomic)UIViewController *noLocationController;
 
-@property (weak, nonatomic) UIView *emptyTableView;
+@property (weak, nonatomic) UIView *noStoreView;
 @property (weak, nonatomic) UIView *noConnectionView;
 @property (weak, nonatomic) UIView *noLocationView;
 
@@ -31,46 +32,23 @@
 
 @implementation coubrExploreTableViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:FetchedResultsControllerDidUpdatedNotification object:self.parentController queue:nil usingBlock:^(NSNotification *note) {
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [self.tableView reloadData];
-            
-            if ([[self.parentController.fetchedResultsController fetchedObjects] count] > 0) {
-                
-                [self.refreshControl endRefreshing];
-                
-                [self hideEmptyTableView];
-                
-            } else {
-                
-                [self.refreshControl endRefreshing];
-                
-                [self showEmptyTableView];
-                
-            }
-            
-        });
-        
-    }];
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:UserLocationDidFailNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.refreshControl endRefreshing];
-            [self locationDidFail];
+            [self showNoLocationView];
         });
         
     }];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:UserLocationDidBecomeAvailableNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-     
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-                [self locationDidBecomeAvailable];
+            [self hideNoLocationView];
         });
         
     }];
@@ -79,7 +57,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.refreshControl endRefreshing];
-            [self connectionDidFail];
+            [self showNoConnectionView];
         });
         
     }];
@@ -87,9 +65,53 @@
     [[NSNotificationCenter defaultCenter] addObserverForName:ConnectionDidBecomeAvailableNotification object:self.parentController queue:nil usingBlock:^(NSNotification *note) {
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self connectionDidBecomeAvailable];
-        });    
+            [self hideNoConnectionView];
+        });
+        
+    }];
+
+    
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:FetchedResultsControllerDidUpdatedNotification object:self.parentController queue:nil usingBlock:^(NSNotification *note) {
+
+        dispatch_async(dispatch_get_main_queue(), ^{
             
+            [self.storeIds removeAllObjects];
+                
+            for (NSManagedObject *managedObject in [self.parentController.fetchedResultsController fetchedObjects]) {
+                
+                if ([managedObject isKindOfClass:[Explore class]]) {
+                    [self.storeIds addObject:((Explore *) managedObject).storeId];
+                }
+                
+            }
+
+            [self.tableView reloadData];
+            
+            if ([[self.parentController.fetchedResultsController fetchedObjects] count] > 0) {
+                [self.refreshControl endRefreshing];
+                [self hideNoStoreView];
+                [self hideNoConnectionView];
+                [self hideNoLocationView];
+                
+                // map view
+                if ([self.parentController showsMapInFullscreen]) {
+                    [self scrollToOffset];
+                }
+                
+            } else {
+                [self.refreshControl endRefreshing];
+                [self showNoStoreView];
+                [self hideNoConnectionView];
+                [self hideNoLocationView];
+            }
+            
+        });
+        
     }];
     
     [self initRefreshControl];
@@ -117,6 +139,16 @@
     
     [self.refreshControl addTarget:self action:@selector(refreshTableView) forControlEvents:UIControlEventValueChanged];
     [self.refreshControl beginRefreshing];
+}
+
+@synthesize storeIds = _storeIds;
+
+- (NSMutableArray *)storeIds
+{
+    if (!_storeIds) {
+        _storeIds = [[NSMutableArray alloc] init];
+    }
+    return _storeIds;
 }
 
 #pragma mark - Refresh
@@ -159,63 +191,52 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    
     if ([[self.parentController.fetchedResultsController sections] count] > 0) {
         id <NSFetchedResultsSectionInfo> sectionInfo = [[self.parentController.fetchedResultsController sections] objectAtIndex:section];
         return [sectionInfo name];
     } else {
         return nil;
     }
-    
-}
-
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-{
-    return [self.parentController.fetchedResultsController sectionIndexTitles];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-    return [self.parentController.fetchedResultsController sectionForSectionIndexTitle:title atIndex:index];
 }
 
 #pragma mark - Empty table view
 
-- (UIViewController *)emptyTableViewController
+- (coubrNoStoreController *)noStoreController
 {
-    if (!_emptyTableViewController) {
-        _emptyTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrExploreTableViewEmptyViewController"];
+    if (!_noStoreController) {
+        _noStoreController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrNoStoreController"];
+        [_noStoreController setParentController:self];
     }
-    return _emptyTableViewController;
+    return _noStoreController;
 }
 
-- (UIView *)emptyTableView
+- (UIView *)noStoreView
 {
-    if (!_emptyTableView) {
-        _emptyTableView = self.emptyTableViewController.view;
+    if (!_noStoreView) {
+        _noStoreView = self.noStoreController.view;
         
         CGRect superviewFrame = self.tableView.frame;
         CGRect frame = CGRectMake(0, 0, superviewFrame.size.width, superviewFrame.size.height);
-        [_emptyTableView setFrame:frame];
+        [_noStoreView setFrame:frame];
     }
-    return _emptyTableView;
+    return _noStoreView;
 }
 
-- (void)showEmptyTableView
+- (void)showNoStoreView
 {
-    
-    if (![[self.tableView subviews] containsObject:_emptyTableView]) {
-        [self.tableView addSubview:self.emptyTableView];
+    if (![[self.tableView subviews] containsObject:_noStoreView]) {
+        [self.tableView addSubview:self.noStoreView];
     }
-    
+
 }
 
-- (void)hideEmptyTableView
+- (void)hideNoStoreView
 {
     
-    if ([[self.tableView subviews] containsObject:_emptyTableView]) {
-        [self.emptyTableView removeFromSuperview];
-        _emptyTableView = nil;
-        _emptyTableViewController = nil;
+    if ([[self.tableView subviews] containsObject:_noStoreView]) {
+        [self.noStoreView removeFromSuperview];
+        _noStoreView = nil;
+        _noStoreController = nil;
     }
     
 }
@@ -224,18 +245,18 @@
 
 #pragma mark - location
 
-- (UIViewController *)noLocationViewController
+- (UIViewController *)noLocationController
 {
-    if (!_noLocationViewController) {
-        _noLocationViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrErrorNoLocationViewController"];
+    if (!_noLocationController) {
+        _noLocationController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrNoLocationController"];
     }
-    return _noLocationViewController;
+    return _noLocationController;
 }
 
 - (UIView *)noLocationView
 {
     if (!_noLocationView) {
-        _noLocationView = self.noLocationViewController.view;
+        _noLocationView = self.noLocationController.view;
         
         CGRect superviewFrame = self.tableView.frame;
         CGRect frame = CGRectMake(0, 0, superviewFrame.size.width, superviewFrame.size.height);
@@ -245,69 +266,91 @@
     return _noLocationView;
 }
 
-- (void)locationDidBecomeAvailable
+- (void)hideNoLocationView
 {
     
     if ([[self.tableView subviews] containsObject:_noLocationView]) {
         [self.noLocationView removeFromSuperview];
         _noLocationView = nil;
-        _noLocationViewController = nil;
+        _noLocationController = nil;
     }
     
 }
 
-- (void)locationDidFail
+- (void)showNoLocationView
 {
     
     if (![[self.tableView subviews] containsObject:_noLocationView]) {
         [self.tableView addSubview:self.noLocationView];
     }
     
-    
+    [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(updateLocation) userInfo:nil repeats:NO];
+
 }
 
 #pragma mark - No connection view
 
-- (UIViewController *)noConnectionViewController
+- (UIViewController *)noConnectionController
 {
-    if (!_noConnectionViewController) {
-        _noConnectionViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrErrorNoConnectionViewController"];
+    if (!_noConnectionController) {
+        _noConnectionController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrNoConnectionController"];
     }
-    return _noConnectionViewController;
+    return _noConnectionController;
 }
 
 - (UIView *)noConnectionView
 {
     if (!_noConnectionView) {
-        _noConnectionView = self.noConnectionViewController.view;
+        _noConnectionView = self.noConnectionController.view;
         
         CGRect superviewFrame = self.tableView.frame;
         CGRect frame = CGRectMake(0, 0, superviewFrame.size.width, superviewFrame.size.height);
         
         [_noConnectionView setFrame:frame];
-
     }
     return _noConnectionView;
 }
 
-- (void)connectionDidBecomeAvailable
+- (void)hideNoConnectionView
 {
  
     if ([[self.tableView subviews] containsObject:_noConnectionView]) {
         [self.noConnectionView removeFromSuperview];
         _noConnectionView = nil;
-        _noConnectionViewController = nil;
+        _noConnectionController = nil;
     }
     
 }
 
-- (void)connectionDidFail
+- (void)showNoConnectionView
 {
-    
     if (![[self.tableView subviews] containsObject:_noConnectionView]) {
         [self.tableView addSubview:self.noConnectionView];
     }
     
+    [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(reconnect) userInfo:nil repeats:NO];
+}
+
+- (void)reconnect
+{
+    [self.parentController updateFetchedResultsController];
+}
+
+- (void)updateLocation
+{
+    [[coubrLocationManager defaultManager] updateUserLocation];
+}
+
+#define TABLE_VIEW_TOP_OFFSET 56.0
+
+- (void)scrollToTop
+{
+    [self.tableView setContentOffset:CGPointZero animated:NO];
+}
+
+- (void)scrollToOffset
+{
+    [self.tableView setContentOffset:CGPointMake(0, TABLE_VIEW_TOP_OFFSET) animated:NO];
 }
 
 @end

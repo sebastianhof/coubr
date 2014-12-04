@@ -11,17 +11,16 @@
 
 #import "coubrDatabaseManager.h"
 #import "coubrLocale.h"
+#import "coubrCategoryToText.h"
 
-#import "Store+CRUD.h"
+#import "SpecialOffer+CRUD.h"
 
 #import "coubrSpecialOfferTableViewCell.h"
 
 @interface coubrStoreSpecialOfferTableViewController ()
 
 @property (strong, nonatomic) NSFetchedResultsController *specialOfferFetchedResultsController;
-
 @property (weak, nonatomic) UIView* emptyTableView;
-
 @property (weak, nonatomic) NSString *storeId;
 
 @end
@@ -39,12 +38,21 @@
     }];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (self.storeId) {
+        [self refreshSpecialOfferFetchedResultsController];
+    }
+}
+
 #pragma mark - NSFetchedResults
 
 - (void)refreshSpecialOfferFetchedResultsController
 {
     
-    self.specialOfferFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[Store fetchRequestForSpecialOffersOfStoreWithId:self.storeId] managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:@"category" cacheName:nil];
+    self.specialOfferFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[SpecialOffer fetchRequestForSpecialOffersOfStoreWithId:self.storeId] managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:@"category" cacheName:nil];
     
     NSError *error;
     [self.specialOfferFetchedResultsController performFetch:&error];
@@ -93,6 +101,12 @@
     }
         
     return nil;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[[self specialOfferFetchedResultsController] sections] objectAtIndex:section];
+    return [coubrCategoryToText textFromSpecialOfferCategory:[sectionInfo name]];
 }
 
 #pragma mark - Empty table view

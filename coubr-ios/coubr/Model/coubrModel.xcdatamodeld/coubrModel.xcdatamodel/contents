@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="0.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6252" systemVersion="14B17" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="0.1" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6735" systemVersion="14B25" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Coupon" representedClassName="Coupon" syncable="YES">
         <attribute name="amount" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="amountRedeemed" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -56,6 +56,7 @@
     <entity name="Store" representedClassName="Store" syncable="YES">
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="distance" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isFavorite" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
@@ -71,8 +72,25 @@
         <attribute name="website" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="coupons" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Coupon" inverseName="store" inverseEntity="Coupon" syncable="YES"/>
         <relationship name="histories" optional="YES" toMany="YES" deletionRule="Deny" destinationEntity="History" inverseName="store" inverseEntity="History" syncable="YES"/>
+        <relationship name="menuItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StoreMenuItem" inverseName="store" inverseEntity="StoreMenuItem" syncable="YES"/>
+        <relationship name="openingTimes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="StoreOpeningTime" inverseName="store" inverseEntity="StoreOpeningTime" syncable="YES"/>
         <relationship name="specialOffers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SpecialOffer" inverseName="store" inverseEntity="SpecialOffer" syncable="YES"/>
         <relationship name="stampCards" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="StampCard" inverseName="store" inverseEntity="StampCard" syncable="YES"/>
+    </entity>
+    <entity name="StoreMenuItem" representedClassName="StoreMenuItem" syncable="YES">
+        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="rank" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="store" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Store" inverseName="menuItems" inverseEntity="Store" syncable="YES"/>
+    </entity>
+    <entity name="StoreOpeningTime" representedClassName="StoreOpeningTime" syncable="YES">
+        <attribute name="beginHour" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="beginMinute" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="endHour" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="endMinute" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="weekDay" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="store" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Store" inverseName="openingTimes" inverseEntity="Store" syncable="YES"/>
     </entity>
     <elements>
         <element name="Coupon" positionX="43" positionY="324" width="128" height="178"/>
@@ -80,6 +98,8 @@
         <element name="History" positionX="-180" positionY="180" width="128" height="118"/>
         <element name="SpecialOffer" positionX="-216" positionY="153" width="128" height="178"/>
         <element name="StampCard" positionX="-225" positionY="144" width="128" height="178"/>
-        <element name="Store" positionX="-432" positionY="315" width="128" height="328"/>
+        <element name="Store" positionX="-432" positionY="315" width="128" height="373"/>
+        <element name="StoreOpeningTime" positionX="-225" positionY="144" width="128" height="133"/>
+        <element name="StoreMenuItem" positionX="-225" positionY="144" width="128" height="118"/>
     </elements>
 </model>

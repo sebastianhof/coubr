@@ -14,12 +14,6 @@
 
 + (NSFetchRequest *)fetchRequestForStoreWithId:(NSString *)storeId;
 
-+ (NSFetchRequest *)fetchRequestForCouponsOfStoreWithId:(NSString *)storeId;
-
-+ (NSFetchRequest *)fetchRequestForStampCardsOfStoreWithId:(NSString *)storeId;
-
-+ (NSFetchRequest *)fetchRequestForSpecialOffersOfStoreWithId:(NSString *)storeId;
-
 + (NSFetchRequest *)fetchRequestForFavoriteStores;
 
 @end

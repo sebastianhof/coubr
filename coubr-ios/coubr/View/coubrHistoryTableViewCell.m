@@ -47,7 +47,7 @@
 {
     [self.nameLabel setText:history.store.name];
     
-    [self.categoryLabel setText:[coubrCategoryToText textFromCategory:history.store.category andSubcategory:history.store.subcategory]];
+    [self.categoryLabel setText:[coubrCategoryToText textFromStoreCategory:history.store.category andStoreSubcategory:history.store.subcategory]];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setTimeStyle:NSDateFormatterNoStyle];

@@ -7,9 +7,20 @@
 //
 
 #import "coubrStampCardOverviewController.h"
-#import "coubrStampCardDescriptionTableViewCell.h"
+#import "coubrQRScanController.h"
+
+
+#import "Store.h"
+#import "History+CRUD.h"
+
 #import "coubrLocale.h"
+#import "coubrConstants.h"
+#import "coubrDatabaseManager.h"
+#import "coubrRemoteManager+StampCard.h"
+
 #import "UIImage+ImageEffects.h"
+
+#import <AudioToolbox/AudioToolbox.h>
 
 @interface coubrStampCardOverviewController ()
 
@@ -19,14 +30,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *validToLabel;
 @property (weak, nonatomic) IBOutlet UILabel *stampsCollectedLabel;
-
-@property (weak, nonatomic) IBOutlet UITableView *stampCardTableView;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *redeemButton;
 
+@property (weak, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UIImageView *footerBackgroundImageView;
-
-@property (nonatomic) BOOL notInit;
+@property (weak, nonatomic) IBOutlet UIView *footerView;
 
 @end
 
@@ -36,6 +46,15 @@
 {
     [super viewDidLoad];
     
+    [self initTableView];
+    [self blurBackgroundImage];
+}
+
+#pragma mark - Init
+
+- (void)initTableView
+{
+    // Header
     [self.titleLabel setText:self.stampCard.title];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -47,24 +66,13 @@
     
     [self.stampsCollectedLabel setText:[NSString stringWithFormat:@"%lu %@ %lu %@", [self.stampCard.stampsCollected longValue], LOCALE_STAMP_CARD_COLLECTED_OF,  [self.stampCard.stamps longValue], LOCALE_STAMP_CARD_COLLECTED]];
     
-    [self initButton];
-    [self blurBackgroundImage];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
+    // Description
+    [self.descriptionLabel setText:self.stampCard.stampCardDescription];
     
-    if (!_notInit) {
-        [self blurTableViewBackground];
-        [self initFooterBackgroundView];
-    }
-}
-
-#pragma mark - Init
-
-- (void)initButton
-{
+    // Footer
+    [self.footerBackgroundImageView.layer setShadowOffset:CGSizeMake(-2.0, -2.0)];
+    [self.footerBackgroundImageView.layer setShadowRadius:3.0];
+    [self.footerBackgroundImageView.layer setShadowOpacity:0.05];
     
     [self.redeemButton setImage:[[UIImage imageNamed:@"StampCard_Scan"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     
@@ -72,161 +80,175 @@
     [self.redeemButton.layer setBorderColor:[UIColor whiteColor].CGColor];
     [self.redeemButton.layer setBorderWidth:4.0];
     
+    [self.tableView reloadData];
+    [self scrollToOffset];
+}
+
+#define TABLE_VIEW_TOP_OFFSET 36.0
+
+- (void)scrollToOffset
+{
+    [self.tableView setContentOffset:CGPointMake(0, TABLE_VIEW_TOP_OFFSET) animated:NO];
 }
 
 #pragma mark - UITableView
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.stampCard.stampCardDescription) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    if (self.stampCard.stampCardDescription) {
-        return 1;
-    } else {
-        return 0;
+    if (indexPath.section == 1) {
+       self.stampCard.stampCardDescription.length > 0 ? [cell setHidden:NO] : [cell setHidden:YES];
     }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (section ==0) {
+    if (section == 1 && self.stampCard.stampCardDescription.length > 0) {
         return LOCALE_STAMP_CARD_DESCRIPTION;
     }
     return nil;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+#define DEFAULT_HEADER_HEIGHT 150.0
+#define DEFAULT_FOOTER_HEIGHT 99.0
+
+#define DESCRIPTION_ROW_HEIGHT_MARGIN 16.0
+#define DESCRIPTION_ROW_WIDTH_MARGIN 32.0
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
+        return DEFAULT_HEADER_HEIGHT;
+    } else if (indexPath.section == 1) {
         
-        if (self.stampCard.stampCardDescription) {
-            return [self initializeDescriptionTableViewCell];
+        if (self.stampCard.stampCardDescription.length > 0) {
+            UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+            CGRect rect = [self.stampCard.stampCardDescription boundingRectWithSize:CGSizeMake(cell.frame.size.width - DESCRIPTION_ROW_WIDTH_MARGIN, CGFLOAT_MAX)
+                                                                      options:NSStringDrawingUsesLineFragmentOrigin
+                                                                   attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleBody]}
+                                                                      context:nil];
+            return rect.size.height + DESCRIPTION_ROW_HEIGHT_MARGIN;
         }
         
+    } else if (indexPath.section == 2) {
+        return DEFAULT_FOOTER_HEIGHT;
     }
-    return nil;
+    
+    return 0;
 }
 
-- (UITableViewCell *)initializeDescriptionTableViewCell
+#pragma mark - Navigation
+
+#pragma mark - QRScan Delegate
+
+- (void)didFailScanning
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self showFailAlert];
+    });
+}
+
+- (void)didScanQRCode:(NSString *)storeCode
 {
     
-    UITableViewCell *cell = [self.stampCardTableView dequeueReusableCellWithIdentifier:@"coubrStampCardDescriptionTableViewCell"];
-    if ([cell isKindOfClass:[coubrStampCardDescriptionTableViewCell class]]) {
-        
-        [((coubrStampCardDescriptionTableViewCell *)cell).descriptionTextView setText:self.stampCard.stampCardDescription];
-    }
-    return cell;
+    [[coubrRemoteManager defaultManager]
+     stampStampCardWithStampCardId:self.stampCard.stampCardId storeId:self.stampCard.store.storeId andStoreCode:storeCode
+     completionHandler:^{
+         
+         if (![History insertHistoryIntoDatabaseFromStampCard:self.stampCard]) {
+             NSLog(@"Could not add stamp to history");
+         }
+         
+         // decrement in database until new fetch
+         NSManagedObjectContext *context = [[coubrDatabaseManager defaultManager] managedObjectContext];
+         [context performBlockAndWait:^{
+             self.stampCard.stampsCollected = [NSNumber numberWithInteger:[self.stampCard.stampsCollected integerValue] + 1];
+         }];
+         
+         // show success alert
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [self.stampsCollectedLabel setText:[NSString stringWithFormat:@"%lu %@ %lu %@", [self.stampCard.stampsCollected longValue], LOCALE_STAMP_CARD_COLLECTED_OF,  [self.stampCard.stamps longValue], LOCALE_STAMP_CARD_COLLECTED]];
+             [self showSuccessAlert];
+         });
+         
+     } errorHandler:^(NSInteger errorCode) {
+         
+         if (errorCode == STORE_CODE_NOT_FOUND_ERROR) {
+             
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [self showFailAlert];
+             });
+             
+         } else if (errorCode == SERVER_ERROR || errorCode == STORE_NOT_FOUND_ERROR || errorCode == 1000) {
+             
+             // show internal error alert
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [self showInternalErrorAlert];
+             });
+             
+         }
+         
+     }];
+    
 }
 
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-//    if ([segue.identifier isEqualToString:@"showQRCodeScan"]) {
-//        
-//        if ([segue.destinationViewController isKindOfClass:[coubrCouponQRScanController class]]) {
-//            
-//            coubrCouponQRScanController *qr = (coubrCouponQRScanController *) segue.destinationViewController;
-//            [qr setParentController: self];
-//        }
-//        
-//    }
+    if ([segue.identifier isEqualToString:@"showStampCardQRScan"]) {
+        
+        if ([segue.destinationViewController isKindOfClass:[coubrQRScanController class]]) {
+            coubrQRScanController *qr = (coubrQRScanController *) segue.destinationViewController;
+            [qr setDelegate: self];
+        }
+        
+    }
     
 }
 
-#pragma mark - Redeem
+#pragma mark - Alert
 
-//- (void)didFailToRedeem
-//{
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:LOCALE_COUPON_ALERT_OOPS message:LOCALE_COUPON_ALERT_CODE_ERROR delegate:self cancelButtonTitle:LOCALE_ALERT_OK otherButtonTitles: nil];
-//        [alert show];
-//    });
-//    
-//}
+#define SIMToolKitNegative 1053
+#define CALYPSO 1022
 
-//- (void)willRedeemWithCode:(NSString *)code
-//{
-//    
-//    [[coubrRemoteManager defaultManager] redeemCouponWithCouponId:self.coupon.offerId storeId:self.coupon.store.storeId andStoreCode:code
-//                                                completionHandler:^{
-//                                                    
-//                                                    if (![History insertHistoryIntoDatabaseFromCoupon:self.coupon]) {
-//                                                        
-//                                                        NSLog(@"Could not add coupon to history");
-//                                                        
-//                                                        // TODO inform server;
-//                                                        return;
-//                                                        
-//                                                    }
-//                                                    
-//                                                    // decrement in database until new fetch
-//                                                    NSManagedObjectContext *context = [[coubrDatabaseManager defaultManager] managedObjectContext];
-//                                                    
-//                                                    [context performBlockAndWait:^{
-//                                                        
-//                                                        self.coupon.amountRedeemed = [NSNumber numberWithInteger:[self.coupon.amountRedeemed integerValue] + 1];
-//                                                        
-//                                                    }];
-//                                                    
-//                                                    // show success alert
-//                                                    dispatch_async(dispatch_get_main_queue(), ^{
-//                                                        
-//                                                        // update label
-//                                                        //[self.amountLabel setText:[NSString stringWithFormat:@"%lu %@", ([self.coupon.amount longValue] - [self.coupon.amountRedeemed longValue]), LOCALE_COUPON_AVAILABLE]];
-//                                                        
-//                                                        // deactivate button
-//                                                        self.redeemButton.enabled = NO;
-//                                                        
-//                                                        UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:LOCALE_COUPON_ALERT_CONGRATULATIONS message:LOCALE_COUPON_ALERT_REDEMPTION_SUCCESS delegate:self cancelButtonTitle:LOCALE_ALERT_OK otherButtonTitles: nil];
-//                                                        [alert show];
-//                                                        
-//                                                        
-//                                                    });
-//                                                    
-//                                                } errorHandler:^(NSInteger errorCode) {
-//                                                    
-//                                                    if (errorCode == STORE_CODE_NOT_FOUND_ERROR) {
-//                                                        
-//                                                        [self didFailToRedeem];
-//                                                        
-//                                                    } else if (errorCode == SERVER_ERROR || errorCode == STORE_NOT_FOUND_ERROR || errorCode == STORE_CODE_NOT_FOUND_ERROR) {
-//                                                        
-//                                                        dispatch_async(dispatch_get_main_queue(), ^{
-//                                                            
-//                                                            UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:LOCALE_COUPON_ALERT_OOPS message:LOCALE_INTERNAL_ERROR delegate:self cancelButtonTitle:LOCALE_ALERT_OK otherButtonTitles: nil];
-//                                                            [alert show];
-//                                                            
-//                                                        });
-//                                                        
-//                                                    }
-//                                                    
-//                                                }];
-//    
-//}
+- (void)showSuccessAlert
+{
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    AudioServicesPlaySystemSound(CALYPSO);
+    
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:LOCALE_STAMP_CARD_ALERT_CONGRATULATIONS message:LOCALE_STAMP_CARD_ALERT_REDEMPTION_SUCCESS delegate:self cancelButtonTitle:LOCALE_ALERT_OK otherButtonTitles: nil];
+    [alert show];
+}
 
-#pragma mark - Alert View
+- (void)showFailAlert
+{
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    AudioServicesPlaySystemSound(SIMToolKitNegative);
+    
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:LOCALE_STAMP_CARD_ALERT_OOPS message:LOCALE_STAMP_CARD_ALERT_CODE_ERROR delegate:self cancelButtonTitle:LOCALE_ALERT_OK otherButtonTitles: nil];
+    [alert show];
+}
 
-//- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    if (buttonIndex == 0) {
-//        [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
-//    }
-//}
+- (void)showInternalErrorAlert
+{
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    AudioServicesPlaySystemSound(SIMToolKitNegative);
+    
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:LOCALE_STAMP_CARD_ALERT_OOPS message:LOCALE_INTERNAL_ERROR delegate:self cancelButtonTitle:LOCALE_ALERT_OK otherButtonTitles: nil];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    }
+}
+
+#pragma mark - Blur
 
 - (void)blurBackgroundImage
 {
-//    [self.backgroundImageView setContentMode:UIViewContentModeScaleAspectFill];
-//    [self.backgroundImageView setClipsToBounds:YES];
-//    [self.backgroundImageView setImage:[UIImage imageNamed:@"Coupon_Tile"]];
-    
     UIGraphicsBeginImageContext(self.backgroundImageView.bounds.size);
     
     CGContextRef c = UIGraphicsGetCurrentContext();
@@ -243,32 +265,5 @@
     [self.foregroundImageView.layer setShadowRadius:3.0];
     [self.foregroundImageView.layer setShadowOpacity:0.05];
 }
-
-- (void)initFooterBackgroundView
-{
-    [self.footerBackgroundImageView.layer setShadowOffset:CGSizeMake(-2.0, -2.0)];
-    [self.footerBackgroundImageView.layer setShadowRadius:3.0];
-    [self.footerBackgroundImageView.layer setShadowOpacity:0.05];
-    
-}
-
-- (void)blurTableViewBackground
-{
-    UIGraphicsBeginImageContext(self.stampCardTableView.bounds.size);
-    
-    CGContextRef c = UIGraphicsGetCurrentContext();
-    CGContextTranslateCTM(c, 0, 0);
-    [self.stampCardTableView.layer renderInContext:c];
-    
-    UIImage* viewImage = UIGraphicsGetImageFromCurrentImageContext();
-    viewImage = [viewImage applyLightEffect];
-    
-    UIGraphicsEndImageContext();
-    
-    self.stampCardTableView.backgroundView = [[UIImageView alloc] initWithImage:viewImage];
-    self.notInit = YES;
-}
-
-
 
 @end

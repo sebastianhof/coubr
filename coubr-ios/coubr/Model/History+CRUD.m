@@ -14,7 +14,6 @@
 
 + (BOOL)insertHistoryIntoDatabaseFromCoupon:(Coupon *)coupon
 {
-    
     NSManagedObjectContext *context = [[coubrDatabaseManager defaultManager] managedObjectContext];
     
     if (context) {
@@ -42,6 +41,51 @@
                 history.coupons = [[NSMutableSet alloc] initWithObjects:coupon, nil];
             } else {
                 [((NSMutableSet *) history.coupons) addObject:coupon];
+            }
+            
+            [context save:&error];
+            if (error) {
+                NSLog(@"Could not save context: %@", error);
+            }
+            
+        }];
+        
+        return true;
+        
+    }
+    
+    return false;
+}
+
++ (BOOL)insertHistoryIntoDatabaseFromStampCard:(StampCard *)stampCard
+{
+    NSManagedObjectContext *context = [[coubrDatabaseManager defaultManager] managedObjectContext];
+    
+    if (context) {
+        
+        [context performBlockAndWait:^{
+            NSError *error;
+            NSArray *result;
+            
+            // Fetch history in near past
+            result = [context executeFetchRequest:[self fetchRequestForShorttermHistoryWithStore:stampCard.store] error:&error];
+            
+            History *history;
+            if (result.count > 0) {
+                // Store exists already
+                history = (History *) [result firstObject];
+            } else {
+                // Insert new store
+                history = (History *) [NSEntityDescription insertNewObjectForEntityForName:@"History" inManagedObjectContext:context];
+                history.store = stampCard.store;
+            }
+            
+            history.date = [NSDate date];
+            
+            if (!history.stampCards) {
+                history.stampCards = [[NSMutableSet alloc] initWithObjects:stampCard, nil];
+            } else {
+                [((NSMutableSet *) history.stampCards) addObject:stampCard];
             }
             
             [context save:&error];

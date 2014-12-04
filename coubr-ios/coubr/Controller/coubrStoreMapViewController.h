@@ -14,4 +14,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *locationButton;
 @property (weak, nonatomic) IBOutlet MKMapView *storeMapView;
 
+- (void)showMapViewInFullscreen:(BOOL)show;
+
 @end

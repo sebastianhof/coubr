@@ -11,6 +11,7 @@
 #import "coubrDatabaseManager.h"
 #import <CoreData/CoreData.h>
 #import "History+CRUD.h"
+#import "History+Date.h"
 #import "UIImage+ImageEffects.h"
 
 @interface coubrHistoryTableViewController ()
@@ -51,7 +52,7 @@
 - (NSFetchedResultsController *)historyFetchedResultsController
 {
     if (!_historyFetchedResultsController) {
-        _historyFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[History fetchRequestForHistory] managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
+        _historyFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[History fetchRequestForHistory] managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:@"dateSection" cacheName:nil];
     }
     return _historyFetchedResultsController;
 }
@@ -96,15 +97,6 @@
         return nil;
     }
     
-}
-
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-{
-    return [self.historyFetchedResultsController sectionIndexTitles];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-    return [self.historyFetchedResultsController sectionForSectionIndexTitle:title atIndex:index];
 }
 
 #pragma mark - Empty table view

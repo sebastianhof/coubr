@@ -1,0 +1,65 @@
+<!doctype html>
+<html class="no-js" ng-app>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="/styles/app.css">
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/coubr.css -->
+  <link rel="stylesheet" href="/styles/coubr.css">
+  <!-- endbuild -->
+</head>
+<body ng-app="coubr">
+  <!--[if lt IE 7]>
+  <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+  <div class="coubr-header">
+
+    <div class="container">
+
+      <div class="navbar" role="navigation">
+
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#/"><span class="coubr">coubr</span> Business</a>
+        </div>
+
+        <div class="pull-right">
+
+          <ul class="nav nav-pills" ng-controller="FeedbackController">
+            <li><a ng-click="open()">Feedback</a></li>
+            <li><a ng-href="#/konto">Konto</a></li>
+            <li><a href="/b/logout">Ausloggen</a></li>
+          </ul>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="coubr-body" ng-view=""></div>
+
+  <!-- build:js(.) scripts/oldieshim.js -->
+  <!--[if lt IE 9]>
+  <script src="../../www/bower_components/es5-shim/es5-shim.js"></script>
+  <script src="../bower_components/json3/lib/json3.js"></script>
+  <![endif]-->
+  <!-- endbuild -->
+
+  <script src="/bower_components/requirejs/require.js" data-main="/scripts/app.js"></script>
+</body>
+</html>

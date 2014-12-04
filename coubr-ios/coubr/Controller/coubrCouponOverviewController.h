@@ -8,15 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "Coupon.h"
+#import "coubrQRScanDelegate.h"
 
-#define ModalViewDidDismissedNotification @"ModalViewDidDismissedNotification"
-
-@interface coubrCouponOverviewController : UIViewController <UIAlertViewDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface coubrCouponOverviewController : UITableViewController <UIAlertViewDelegate, coubrQRScanDelegate>
 
 @property (nonatomic, weak) Coupon *coupon;
-
-- (void)willRedeemWithCode:(NSString *)code;
-
-- (void)didFailToRedeem;
 
 @end

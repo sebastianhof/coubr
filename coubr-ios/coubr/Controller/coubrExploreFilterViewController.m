@@ -190,7 +190,7 @@
         _categories = @[ @"bakery", @"bar", @"brewery", @"cafe", @"fastfood", @"ice", @"restaurant", @"winery" ];
         _categories = [_categories sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 
-            return [[coubrCategoryToText textFromCategory:obj1 andSubcategory:nil] compare:[coubrCategoryToText textFromCategory:obj2 andSubcategory:nil]];
+            return [[coubrCategoryToText textFromStoreCategory:obj1 andStoreSubcategory:nil] compare:[coubrCategoryToText textFromStoreCategory:obj2 andStoreSubcategory:nil]];
             
         }];
     }

@@ -7,9 +7,14 @@
 //
 
 #import "SpecialOffer.h"
+#import "Store.h"
 
 @interface SpecialOffer (CRUD)
 
 + (NSFetchRequest *)fetchRequestForSpecialOfferWithId:(NSString *)specialOfferId;
+
++ (NSFetchRequest *)fetchRequestForSpecialOffersOfStoreWithId:(NSString *)storeId;
+
++ (void)insertSpecialOffersToStore:(Store *)store andSpecialOffersJSONs:(NSArray *)specialOffersJSONs;
 
 @end

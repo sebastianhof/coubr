@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>coubr Watch App.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>coubr.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -18,6 +23,21 @@
 			<true/>
 		</dict>
 		<key>9E6FDE2C19EEC4D6002642C1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9E963F581A1C251A008FE399</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9E963F641A1C251B008FE399</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9EF82D061A1C2083006C1DFD</key>
 		<dict>
 			<key>primary</key>
 			<true/>

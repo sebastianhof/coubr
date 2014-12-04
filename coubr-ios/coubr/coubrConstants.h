@@ -20,6 +20,7 @@
 #define COUBR_BASE_URL @"https://api.coubr.de"
 #define TIMEOUT_INTERVAL_FOR_REQUEST (10) // seconds
 
+#define STATUS_URL @"http://coubr.de/static/pages/status-ios.html"
 #define LEGAL_URL @"http://coubr.de/static/pages/legal/legal-ios.html"
 #define HELP_URL @"http://coubr.de/static/pages/help/help-ios.html"
 
@@ -52,9 +53,10 @@ static int STORE_CODE_NOT_FOUND_ERROR = 10003;
 #define EXPLORE_RESPONSE_STORE_SUBCATEGORY @"ss"
 #define EXPLORE_RESPONSE_STORE_LATITUDE @"lt"
 #define EXPLORE_RESPONSE_STORE_LONGITUDE @"lg"
-#define EXPLORE_RESPONSE_STORE_COUPONS @"oc"
-#define EXPLORE_RESPONSE_STORE_STAMPCARDS @"oc"
-#define EXPLORE_RESPONSE_STORE_SPECIALOFFERS @"oc"
+
+#define EXPLORE_RESPONSE_STORE_COUPONS @"co"
+#define EXPLORE_RESPONSE_STORE_STAMPCARDS @"sc"
+#define EXPLORE_RESPONSE_STORE_SPECIALOFFERS @"so"
 
 // Store
 
@@ -75,8 +77,10 @@ static int STORE_CODE_NOT_FOUND_ERROR = 10003;
 #define STORE_RESPONSE_STORE_EMAIL @"ce"
 #define STORE_RESPONSE_STORE_WEBSITE @"cw"
 #define STORE_RESPONSE_STORE_COUPONS @"co"
-#define STORE_RESPONSE_STORE_STAMP_CARDS @"co"
-#define STORE_RESPONSE_STORE_SPECIAL_OFFERS @"co"
+#define STORE_RESPONSE_STORE_STAMP_CARDS @"sc"
+#define STORE_RESPONSE_STORE_SPECIAL_OFFERS @"so"
+#define STORE_RESPONSE_STORE_OPENING_TIMES @"ot"
+#define STORE_RESPONSE_STORE_MENU @"m"
 
 #define STORE_RESPONSE_COUPON_ID @"i"
 #define STORE_RESPONSE_COUPON_TITLE @"t"
@@ -101,10 +105,30 @@ static int STORE_CODE_NOT_FOUND_ERROR = 10003;
 #define STORE_RESPONSE_SPECIAL_OFFER_VALID_TO @"vt"
 #define STORE_RESPONSE_SPECIAL_OFFER_SHORT_DESCRIPTION @"sd"
 
-// Redeem
+#define STORE_RESPONSE_OPENING_TIME_WEEKDAY @"wd"
+#define STORE_RESPONSE_OPENING_TIME_BEGIN_HOUR @"bh"
+#define STORE_RESPONSE_OPENING_TIME_BEGIN_MINUTE @"bm"
+#define STORE_RESPONSE_OPENING_TIME_END_HOUR @"eh"
+#define STORE_RESPONSE_OPENING_TIME_END_MINUTE @"em"
+
+#define STORE_RESPONSE_MENU_CATEGORIES @"c"
+
+#define STORE_RESPONSE_MENU_CATEGORY @"c"
+#define STORE_RESPONSE_MENU_ITEMS @"i"
+
+#define STORE_RESPONSE_MENU_ITEM_TITLE @"t"
+#define STORE_RESPONSE_MENU_ITEM_RANK @"r"
+#define STORE_RESPONSE_MENU_ITEM_PRICE @"p"
+
+// Coupon
 
 #define COUPON_BASE_URL @"https://api.coubr.de/coupon/"
 #define COUPON_REDEEM_URL @"redeem"
+
+// Stamp Card
+
+#define STAMP_CARD_BASE_URL @"https://api.coubr.de/stampcard/"
+#define STAMP_CARD_STAMP_URL @"stamp"
 
 // Search
 

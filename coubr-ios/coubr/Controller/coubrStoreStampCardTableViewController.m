@@ -11,8 +11,9 @@
 
 #import "coubrDatabaseManager.h"
 #import "coubrLocale.h"
+#import "coubrCategoryToText.h"
 
-#import "Store+CRUD.h"
+#import "StampCard+CRUD.h"
 
 #import "coubrStampCardTableViewCell.h"
 
@@ -39,12 +40,21 @@
     }];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (self.storeId) {
+        [self refreshStampCardFetchedResultsController];
+    }
+}
+
 #pragma mark - NSFetchedResults
 
 - (void)refreshStampCardFetchedResultsController
 {
     
-    self.stampCardFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[Store fetchRequestForStampCardsOfStoreWithId:self.storeId] managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:@"category" cacheName:nil];
+    self.stampCardFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[StampCard fetchRequestForStampCardsOfStoreWithId:self.storeId] managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:@"category" cacheName:nil];
     
     NSError *error;
     [self.stampCardFetchedResultsController performFetch:&error];
@@ -93,6 +103,12 @@
     }
     
     return nil;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[[self stampCardFetchedResultsController] sections] objectAtIndex:section];
+    return [coubrCategoryToText textFromStampCardCategory:[sectionInfo name]];
 }
 
 #pragma mark - Empty table view

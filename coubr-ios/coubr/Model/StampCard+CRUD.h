@@ -7,9 +7,14 @@
 //
 
 #import "StampCard.h"
+#import "Store.h"
 
 @interface StampCard (CRUD)
 
 + (NSFetchRequest *)fetchRequestForStampCardWithId:(NSString *)stampCardId;
+
++ (NSFetchRequest *)fetchRequestForStampCardsOfStoreWithId:(NSString *)storeId;
+
++ (void)insertStampCardsToStore:(Store *)store andStampCardsJSONs:(NSArray *)stampCardJSONs;
 
 @end

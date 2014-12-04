@@ -10,14 +10,17 @@
 #import "coubrStoreViewController.h"
 
 #import "coubrCategoryToText.h"
+#import "coubrLocationManager.h"
 
 #import "UIImage+ImageEffects.h"
+
+#import <MapKit/MapKit.h>
 
 @interface coubrFavoritesTableViewCell ()
 
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *categoryLabel;
-@property (weak, nonatomic) IBOutlet UILabel *locationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 
 @property (weak, nonatomic) IBOutlet UIImageView *offersImageView1;
 @property (weak, nonatomic) IBOutlet UIImageView *offersImageView2;
@@ -47,12 +50,14 @@
 {
     self.storeId = store.storeId;
     
-    // name
     [self.nameLabel setText:store.name];
     
-    [self.categoryLabel setText:[coubrCategoryToText textFromCategory:store.category andSubcategory:store.subcategory]];
+    [self.categoryLabel setText:[coubrCategoryToText textFromStoreCategory:store.category andStoreSubcategory:store.subcategory]];
     
-    [self.locationLabel setText:store.city];
+    MKDistanceFormatter *distanceFormatter = [[MKDistanceFormatter alloc] init];
+    [distanceFormatter setLocale:[NSLocale currentLocale]];
+    [distanceFormatter setUnitStyle:MKDistanceFormatterUnitStyleAbbreviated];
+    [self.distanceLabel setText:[distanceFormatter stringFromDistance:[store.distance doubleValue]]];
     
     [self.offersImageView1 setImage:nil];
     [self.offersImageView2 setImage:nil];
@@ -97,7 +102,10 @@
 {
     if (self.storeId) {
         coubrStoreViewController *svc = [[UIStoryboard storyboardWithName:@"Store" bundle:nil]  instantiateViewControllerWithIdentifier:@"coubrStoreViewController"];
-        [svc setStoreId:self.storeId];
+        
+        [svc setCurrentIndex:[self.parentController.storeIds indexOfObject:self.storeId]];
+        [svc setDelegate:self.parentController];
+        
         [self.parentController.navigationController pushViewController:svc animated:YES];
     }
 }

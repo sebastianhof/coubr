@@ -8,10 +8,13 @@
 
 #import "History.h"
 #import "Coupon.h"
+#import "StampCard.h"
 
 @interface History (CRUD)
 
 + (BOOL)insertHistoryIntoDatabaseFromCoupon:(Coupon *)coupon;
+
++ (BOOL)insertHistoryIntoDatabaseFromStampCard:(StampCard *)stampCard;
 
 + (NSFetchRequest *)fetchRequestForHistory;
 

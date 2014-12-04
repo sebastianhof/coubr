@@ -13,6 +13,7 @@
 #import "coubrStoreCouponTableViewController.h"
 #import "coubrStoreStampCardTableViewController.h"
 #import "coubrStoreSpecialOfferTableViewController.h"
+#import "coubrStoreMenuTableViewController.h"
 
 #import "coubrLocale.h"
 
@@ -28,6 +29,7 @@
 @property (strong, nonatomic) coubrStoreCouponTableViewController *storeCouponTableViewController;
 @property (strong, nonatomic) coubrStoreStampCardTableViewController *storeStampCardTableViewController;
 @property (strong, nonatomic) coubrStoreSpecialOfferTableViewController *storeSpecialOfferTableViewController;
+@property (strong, nonatomic) coubrStoreMenuTableViewController *storeMenuTableViewController;
 
 @property (weak, nonatomic) Store *store;
 @property (weak, nonatomic) NSString *storeId;
@@ -38,7 +40,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *couponButton;
 @property (weak, nonatomic) IBOutlet UIButton *menuButton;
 
-
 @end
 
 @implementation coubrStorePageViewController
@@ -47,10 +48,12 @@
 {
     [super awakeFromNib];
     
-    self.storeInformationTableViewController;
-    self.storeSpecialOfferTableViewController;
-    self.storeStampCardTableViewController;
-    self.storeCouponTableViewController;
+    self.storeInformationTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreInformationTableViewController"];
+    self.storeCouponTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreCouponTableViewController"];
+    self.storeStampCardTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreStampCardTableViewController"];
+    self.storeSpecialOfferTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreSpecialOfferTableViewController"];
+    self.storeMenuTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreMenuTableViewController"];
+    
 }
 
 - (void)viewDidLoad
@@ -91,40 +94,6 @@
     [self.menuButton setImage:[[UIImage imageNamed:@"Store_Menu"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateSelected];
 }
 
-#pragma mark - Init view controllers
-
-- (coubrStoreInformationTableViewController *)storeInformationTableViewController
-{
-    if (!_storeInformationTableViewController) {
-        _storeInformationTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreInformationTableViewController"];
-    }
-    return _storeInformationTableViewController;
-}
-
-- (coubrStoreCouponTableViewController *)storeCouponTableViewController
-{
-    if (!_storeCouponTableViewController) {
-        _storeCouponTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreCouponTableViewController"];
-    }
-    return _storeCouponTableViewController;
-}
-
-- (coubrStoreStampCardTableViewController *)storeStampCardTableViewController
-{
-    if (!_storeStampCardTableViewController) {
-        _storeStampCardTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreStampCardTableViewController"];
-    }
-    return _storeStampCardTableViewController;
-}
-
-- (coubrStoreSpecialOfferTableViewController *)storeSpecialOfferTableViewController
-{
-    if (!_storeSpecialOfferTableViewController) {
-        _storeSpecialOfferTableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"coubrStoreSpecialOfferTableViewController"];
-    }
-    return _storeSpecialOfferTableViewController;
-}
-
 #pragma mark - Navigation
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -154,13 +123,15 @@
 {
     
     if ([viewController isKindOfClass:[coubrStoreInformationTableViewController class]]) {
-        return self.storeCouponTableViewController;
+        return self.storeMenuTableViewController;
     } else if ([viewController isKindOfClass:[coubrStoreSpecialOfferTableViewController class]]) {
         return self.storeInformationTableViewController;
     } else if ([viewController isKindOfClass:[coubrStoreStampCardTableViewController class]]) {
             return self.storeSpecialOfferTableViewController;
     } else if ([viewController isKindOfClass:[coubrStoreCouponTableViewController class]]) {
         return self.storeStampCardTableViewController;
+    } else if ([viewController isKindOfClass:[coubrStoreMenuTableViewController class]]) {
+        return self.storeCouponTableViewController;
     }
     
     return nil;
@@ -176,6 +147,8 @@
     } else if ([viewController isKindOfClass:[coubrStoreStampCardTableViewController class]]) {
         return self.storeCouponTableViewController;
     } else if ([viewController isKindOfClass:[coubrStoreCouponTableViewController class]]) {
+        return self.storeMenuTableViewController;
+    } else if ([viewController isKindOfClass:[coubrStoreMenuTableViewController class]]) {
         return self.storeInformationTableViewController;
     }
     
@@ -195,11 +168,12 @@
             [self.stampCardButton setSelected:YES];
         } else if ([[self.pageViewController viewControllers] containsObject:self.storeCouponTableViewController]) {
             [self.couponButton setSelected:YES];
+        } else if ([[self.pageViewController viewControllers] containsObject:self.storeMenuTableViewController]) {
+            [self.menuButton setSelected:YES];
         }
     }
     
 }
-
 
 
 #pragma mark - IBAction
@@ -253,7 +227,15 @@
     
     if (![[self.pageViewController viewControllers] containsObject:self.storeCouponTableViewController]) {
 
-        [self.pageViewController setViewControllers:@[ self.storeCouponTableViewController ] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+        if ([[self.pageViewController viewControllers] containsObject:self.storeInformationTableViewController] ||
+            [[self.pageViewController viewControllers] containsObject:self.storeSpecialOfferTableViewController] ||
+            [[self.pageViewController viewControllers] containsObject:self.storeStampCardTableViewController]) {
+            [self.pageViewController setViewControllers:@[ self.storeCouponTableViewController ]
+                                              direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+        } else {
+            [self.pageViewController setViewControllers:@[ self.storeCouponTableViewController ]
+                                              direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+        }
     
     }
 }
@@ -261,6 +243,13 @@
 - (IBAction)showMenu:(id)sender {
     [self resetButtons];
     [self.menuButton setSelected:YES];
+    
+    if (![[self.pageViewController viewControllers] containsObject:self.storeMenuTableViewController]) {
+    
+        [self.pageViewController setViewControllers:@[ self.storeMenuTableViewController ] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+        
+    }
+    
 }
 
 - (void)resetButtons

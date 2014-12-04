@@ -10,6 +10,12 @@
 
 @interface coubrCategoryToText : NSObject
 
-+ (NSString *)textFromCategory:(NSString *)category andSubcategory:(NSString *)subcategory;
++ (NSString *)textFromStoreCategory:(NSString *)category andStoreSubcategory:(NSString *)subcategory;
+
++ (NSString *)textFromCouponCategory:(NSString *)category;
+
++ (NSString *)textFromStampCardCategory:(NSString *)category;
+
++ (NSString *)textFromSpecialOfferCategory:(NSString *)category;
 
 @end

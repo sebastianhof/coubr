@@ -7,9 +7,14 @@
 //
 
 #import "Coupon.h"
+#import "Store.h"
 
 @interface Coupon (CRUD)
 
 + (NSFetchRequest *)fetchRequestForCouponWithId:(NSString *)couponId;
+
++ (NSFetchRequest *)fetchRequestForCouponsOfStoreWithId:(NSString *)storeId;
+
++ (void)insertCouponsToStore:(Store *)store andCouponJSONs:(NSArray *)couponJSONs;
 
 @end

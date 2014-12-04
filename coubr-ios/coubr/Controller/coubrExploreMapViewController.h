@@ -19,4 +19,8 @@
 
 - (void)updateLocationLabelWithLocation:(CLLocation *)location;
 
+- (void)showMapViewInFullscreen:(BOOL)show;
+
+- (void)selectAnnotationAtIndex:(NSInteger)index;
+
 @end

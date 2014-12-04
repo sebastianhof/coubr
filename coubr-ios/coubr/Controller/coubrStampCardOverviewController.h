@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "StampCard.h"
+#import "coubrQRScanDelegate.h"
 
-@interface coubrStampCardOverviewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface coubrStampCardOverviewController : UITableViewController <UIAlertViewDelegate, coubrQRScanDelegate>
 
 @property (weak, nonatomic) StampCard *stampCard;
 

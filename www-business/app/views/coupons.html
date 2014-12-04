@@ -1,0 +1,23 @@
+<ng-include src="'/static/pages/navigation.html'"></ng-include>
+
+<div class="content col-lg-10">
+
+  <div class="container">
+
+    <ng-include src="'/static/pages/coupon/navigation.html'"></ng-include>
+
+    <div class="jumbotron">
+
+      <cbrerror class="label label-danger error">Ein Fehler ist aufgetreten!</cbrerror>
+
+      <cbrfetch getFrom="coupons/active">
+
+        <ng-include src="'/static/pages/coupon/list.html'"></ng-include>
+
+      </cbrfetch>
+
+    </div>
+
+  </div>
+
+</div>

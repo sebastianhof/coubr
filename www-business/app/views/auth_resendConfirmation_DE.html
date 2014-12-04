@@ -1,0 +1,24 @@
+<h3>Neuen Bestätigungscode senden</h3>
+<br/>
+
+<form cbrform name="form"
+      postTo="b/resendConfirmation"
+      thenGoto="#confirmRegistration?:email"
+      initFromQuery="true">
+
+  <div class="input-group input-group">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="/images/icons/email.svg"/></span>
+    <input type="email" class="form-control" name="email" placeholder="E-Mail Adresse eingeben"
+           ng-model="data.email" ng-required="true">
+  </div>
+  <cbrinputerror class="help-block" cbrname="email"></cbrinputerror>
+  <br/>
+
+  <div>
+    <cbrprocess class="label coubr-process-submit">Bearbeiten...</cbrprocess>
+    <cbrerror class="label coubr-error-submit">Ein Fehler ist aufgetreten</cbrerror>
+    <cbrsubmit class="btn coubr-button">Senden</cbrsubmit>
+  </div>
+
+</form>

@@ -15,7 +15,6 @@
 #import "coubrConstants.h"
 #import "coubrDatabaseManager.h"
 
-
 @implementation Explore (CRUD)
 
 + (BOOL)insertExploreIntoDatabaseFromExploreJSON:(NSDictionary *)exploreJSON
@@ -79,9 +78,9 @@
                 explore.distance = [NSNumber numberWithDouble:distance];
             }
             
-            explore.coupons = isValidJSONValue(store[EXPLORE_RESPONSE_STORE_COUPONS]) ? store[EXPLORE_RESPONSE_STORE_COUPONS] : nil;
-            explore.stampCards = isValidJSONValue(store[EXPLORE_RESPONSE_STORE_STAMPCARDS]) ? store[EXPLORE_RESPONSE_STORE_STAMPCARDS] : nil;
-            explore.specialOffers = isValidJSONValue(store[EXPLORE_RESPONSE_STORE_SPECIALOFFERS]) ? store[EXPLORE_RESPONSE_STORE_SPECIALOFFERS] : nil;
+            //explore.coupons = isValidJSONValue(store[EXPLORE_RESPONSE_STORE_COUPONS]) ? store[EXPLORE_RESPONSE_STORE_COUPONS] : nil;
+            //explore.stampCards = isValidJSONValue(store[EXPLORE_RESPONSE_STORE_STAMPCARDS]) ? store[EXPLORE_RESPONSE_STORE_STAMPCARDS] : nil;
+            //explore.specialOffers = isValidJSONValue(store[EXPLORE_RESPONSE_STORE_SPECIALOFFERS]) ? store[EXPLORE_RESPONSE_STORE_SPECIALOFFERS] : nil;
         }
         
     }];
@@ -183,5 +182,6 @@
     }
     
 }
+
 
 @end

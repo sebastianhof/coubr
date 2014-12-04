@@ -25,7 +25,7 @@
     _category = category;
     
     [self.categoryButton setImage:[coubrCategoryToImage imageForCategory:category] forState:UIControlStateNormal];
-    [self.categoryLabelButton setTitle:[coubrCategoryToText textFromCategory:category andSubcategory:nil] forState:UIControlStateNormal];
+    [self.categoryLabelButton setTitle:[coubrCategoryToText textFromStoreCategory:category andStoreSubcategory:nil] forState:UIControlStateNormal];
 
 }
 

@@ -8,6 +8,9 @@
 
 #import "coubrStoreMapViewController.h"
 #import "coubrLocationManager.h"
+#import "coubrStoreMapViewAnnotation.h"
+
+#import "UIImage+Overlay.h"
 
 @interface coubrStoreMapViewController ()
 
@@ -29,7 +32,7 @@
         [self initStoreMap];
         
     }];
-
+    
 }
 
 - (void)viewDidLoad
@@ -37,24 +40,7 @@
     [super viewDidLoad];
     
     [self initUserLocationButton];
-    
-    if (self.store) {
-        [self initStoreMap];
-    }
 }
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    self.storeMapView.showsUserLocation = YES;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    self.storeMapView.showsUserLocation = NO;
-}
-
 
 #define DEFAULT_DISTANCE 200.0
 #define STORE_DISTANCE_ADDITION 100.0
@@ -71,8 +57,14 @@
 
 - (void)initStoreMap
 {
-
-    NSString *name = [NSString stringWithString:self.store.name];
+    if (self.storeMapView.overlays.count > 0) {
+        [self.storeMapView removeOverlays:self.storeMapView.overlays];
+    }
+    
+    if (self.storeMapView.annotations.count > 0) {
+        [self.storeMapView removeAnnotations:self.storeMapView.annotations];
+    }
+    
     double latitude = latitude = [self.store.latitude doubleValue];
     double longitude = [self.store.longitude doubleValue];
     
@@ -81,18 +73,13 @@
     CLLocationDistance distance = [storeLocation distanceFromLocation:currentLocation];
     
     // set annotation
-    MKPointAnnotation *storeAnnotation = [[MKPointAnnotation alloc] init];
+    coubrStoreMapViewAnnotation *storeAnnotation = [[coubrStoreMapViewAnnotation alloc] initWithCoordinate:storeLocation.coordinate];
     [self.storeMapView addAnnotation:storeAnnotation];
-    [storeAnnotation setCoordinate:storeLocation.coordinate];
-    [storeAnnotation setTitle:name];
     
     // set region
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(currentLocation.coordinate,distance, distance);
-    region = [self.storeMapView regionThatFits:region];
-    [self.storeMapView setRegion:region];
+    [self.storeMapView setRegion:MKCoordinateRegionMakeWithDistance(currentLocation.coordinate, distance * 2.2, distance * 2.2)];
     
     // setup navigation
-
     MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:storeLocation.coordinate addressDictionary:nil];
     MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
 
@@ -121,20 +108,62 @@
       
 }
 
-- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
+#pragma mark - Location
+
+- (IBAction)centerMapToUserLocation:(id)sender {
+    [self.storeMapView setCenterCoordinate:[self.storeMapView userLocation].coordinate];
+}
+
+
+- (void)showMapViewInFullscreen:(BOOL)show
 {
-    if ([overlay isKindOfClass:[MKPolyline class]]) {
-        MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithPolyline:overlay];
-        renderer.strokeColor = [[UIColor orangeColor] colorWithAlphaComponent:0.7];
-        renderer.lineWidth = 3.0;
-        return  renderer;
+    if (show) {
+        self.storeMapView.showsUserLocation = YES;
+        [self initStoreMap];
+        [self.locationButton setAlpha:1];
+    } else {
+        self.storeMapView.showsUserLocation = NO;
+        [self.locationButton setAlpha:0];
+    }
+}
+
+#pragma mark - Annotation
+
+#define MAP_VIEW_ANNOTATION_IDENTIFIER @"MapViewAnnotationIdentifier"
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
+{
+    if ([self.storeMapView.annotations containsObject:annotation]) {
+        if ([annotation isKindOfClass:[coubrStoreMapViewAnnotation class]]) {
+            MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:MAP_VIEW_ANNOTATION_IDENTIFIER];
+            
+            if (!annotationView) {
+                annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:MAP_VIEW_ANNOTATION_IDENTIFIER];
+            }
+            
+            UIImage *image = [[UIImage imageNamed:@"Explore_Map_View_Location"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            [annotationView setImage:[image imageWithColor:[UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1]]];
+            return annotationView;
+        }
     }
     return nil;
 }
 
-- (IBAction)centerMapToUserLocation:(id)sender {
-    
-    [self.storeMapView setCenterCoordinate:[coubrLocationManager defaultManager].userLocation.coordinate];
+#pragma mark - Polyline
+
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
+{
+    if ([self.storeMapView.overlays containsObject:overlay]) {
+        if ([overlay isKindOfClass:[MKPolyline class]]) {
+            MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithPolyline:overlay];
+            renderer.strokeColor = [[UIColor orangeColor] colorWithAlphaComponent:0.7];
+            renderer.lineWidth = 3.0;
+            return  renderer;
+        }
+    }
+    return nil;
 }
+
+
 
 @end

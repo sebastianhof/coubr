@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "coubrProfileViewController.h"
+#import "coubrStoreViewDelegate.h"
 
-@interface coubrFavoritesTableViewController : UITableViewController
+@interface coubrFavoritesTableViewController : UITableViewController <coubrStoreViewDelegate>
 
 @property (weak, nonatomic) coubrProfileViewController *parentController;
 

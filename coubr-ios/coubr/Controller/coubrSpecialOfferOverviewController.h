@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SpecialOffer.h"
 
-@interface coubrSpecialOfferOverviewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface coubrSpecialOfferOverviewController : UITableViewController
 
 @property (weak, nonatomic) SpecialOffer *specialOffer;
 

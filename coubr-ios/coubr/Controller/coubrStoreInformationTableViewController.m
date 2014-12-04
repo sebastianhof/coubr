@@ -9,11 +9,8 @@
 #import "coubrStoreInformationTableViewController.h"
 #import "coubrStoreViewController.h"
 
-#import "coubrStoreAddressTableViewCell.h"
-#import "coubrStoreDescriptionTableViewCell.h"
-#import "coubrStoreContactTableViewCell.h"
-
 #import "Store+CRUD.h"
+#import "StoreOpeningTime.h"
 
 #import "coubrLocale.h"
 
@@ -23,22 +20,30 @@
 
 @property (weak, nonatomic) Store *store;
 
-@property (nonatomic) BOOL notInit;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *streetLabel;
+@property (weak, nonatomic) IBOutlet UILabel *cityLabel;
+
+@property (weak, nonatomic) IBOutlet UIButton *phoneButton;
+@property (weak, nonatomic) IBOutlet UIButton *emailButton;
+@property (weak, nonatomic) IBOutlet UIButton *websiteButton;
+
+@property (weak, nonatomic) IBOutlet UILabel *todayOpeningTimesLabel;
+@property (weak, nonatomic) IBOutlet UILabel *openingTimesLabel;
+
+@property (nonatomic) BOOL isShowingOpeningTimesDetails;
 
 @end
 
 @implementation coubrStoreInformationTableViewController
-
-#pragma mark - init
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:StoreDidBecomeAvailableNotification object:self.parentViewController.parentViewController queue:nil usingBlock:^ (NSNotification *note) {
-        
         self.store = note.userInfo[STORE];
-        [self.tableView reloadData];
+        [self initTable];
     }];
 }
 
@@ -46,279 +51,186 @@
 {
     [super viewWillAppear:animated];
     
-    if (!_notInit) {
-       [self blurTableViewBackground];
-    }
-    
     if (self.store) {
         [self.tableView reloadData];
     }
     
 }
 
+
 #pragma mark - Table View Delegate
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSString *)weekDayFromInt:(NSInteger)integer
 {
-
-    if (self.store.storeDescription && (self.store.phone || self.store.email || self.store.website)) {
-        return 3;
-    } else if (self.store.storeDescription || (self.store.phone || self.store.email || self.store.website)) {
-        return 2;
-    } else {
-        return 1;
+    if (integer == 1) {
+        return LOCALE_SUNDAY;
+    } else if (integer == 2) {
+        return LOCALE_MONDAY;
+    } else if (integer == 3) {
+        return LOCALE_TUESDAY;
+    } else if (integer == 4) {
+        return LOCALE_WEDNESDAY;
+    } else if (integer == 5) {
+       return LOCALE_THURSDAY;
+    } else if (integer == 6) {
+        return LOCALE_FRIDAY;
+    } else if (integer == 7) {
+        return LOCALE_SATURDAY;
     }
-    
+     
+    return nil;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (void)initTable
 {
-
-    if (section == 0) {
-        
-        if (self.store.storeDescription) {
-            return 1;
-        } else {
-            return 1;
-        }
-
-    } else if (section == 1) {
-        
-        if (self.store.storeDescription) {
-            return 1;
-        } else {
-            return [self numbersOfRowsInContactSection];
-        }
-        
-    } else if (section == 2) {
-        
-        return [self numbersOfRowsInContactSection];
+    [self.descriptionLabel setText:self.store.storeDescription];
+    [self.streetLabel setText:self.store.street];
+    [self.cityLabel setText:[NSString stringWithFormat:@"%@ %@", self.store.postalCode, self.store.city]];
+    [self.phoneButton setTitle:self.store.phone forState:UIControlStateNormal];
+    [self.phoneButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [self.phoneButton addTarget:self action:@selector(call:) forControlEvents:UIControlEventTouchUpInside];
+    [self.emailButton setTitle:self.store.email forState:UIControlStateNormal];
+    [self.emailButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [self.emailButton addTarget:self action:@selector(sendEmail:) forControlEvents:UIControlEventTouchUpInside];
+    [self.websiteButton setTitle:self.store.website forState:UIControlStateNormal];
+    [self.websiteButton removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents];
+    [self.websiteButton addTarget:self action:@selector(openWebsite:) forControlEvents:UIControlEventTouchUpInside];
     
-    }
-    return 0;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components =  [calendar components:NSCalendarUnitWeekday fromDate:[NSDate date]];
+                                     
+    NSString *openingTimesString = @"";
+    NSString *todayOpeningTimeString;
+    NSArray *openingTimes = [self.store.openingTimes sortedArrayUsingDescriptors:@[ [NSSortDescriptor sortDescriptorWithKey:@"weekDay"
+                                                                                  ascending:YES] ]];
+    
+    for (StoreOpeningTime *openingTime in openingTimes) {
+      
+        NSString *time = [NSString stringWithFormat:@"%02d:%02d - %02d:%02d", [openingTime.beginHour intValue], [openingTime.beginMinute intValue], [openingTime.endHour intValue], [openingTime.endMinute intValue]];
+        
+        if (components.weekday == [openingTime.weekDay integerValue]) {
 
+            if (todayOpeningTimeString) {
+                todayOpeningTimeString = [todayOpeningTimeString stringByAppendingString:[NSString stringWithFormat:@" %@", time]];
+            } else {
+                todayOpeningTimeString = time;
+            }
+        
+        }
+        
+        NSString *weekday = [[self weekDayFromInt:[openingTime.weekDay integerValue]] stringByPaddingToLength:20 withString:@" " startingAtIndex:0];
+        openingTimesString = [openingTimesString stringByAppendingString:[NSString stringWithFormat:@"%@\t%@\n", weekday, time]];
+      
+    }
+    
+    [self.todayOpeningTimesLabel setText:todayOpeningTimeString ? todayOpeningTimeString : LOCALE_STORE_OPENING_TIME_CLOSED];
+    [self.openingTimesLabel setText:openingTimesString];
+    [self.openingTimesLabel setHidden:YES];
+    
+    [self.tableView reloadData];
+}
+
+#define EMPTY_ROW_HEIGHT 0
+#define DEFAULT_ROW_HEIGHT 44.0
+#define DEFAULT_ADDRESS_ROW_HEIGHT 66.0
+#define DEFAULT_CONTACT_ROW_HEIGHT 44.0
+#define DEFAULT_OPENING_TIMES_ROW_HEIGHT 66.0
+#define DESCRIPTION_ROW_HEIGHT_MARGIN 16.0
+#define DESCRIPTION_ROW_WIDTH_MARGIN 32.0
+#define OPENING_TIMES_LINE_HEIGHT
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        
+        if (self.store.storeDescription.length > 0) {
+            UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+            CGRect rect = [self.store.storeDescription boundingRectWithSize:CGSizeMake(cell.frame.size.width - DESCRIPTION_ROW_WIDTH_MARGIN, CGFLOAT_MAX)
+                                                                    options:NSStringDrawingUsesLineFragmentOrigin
+                                                                 attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleBody]}
+                                                                    context:nil];
+            return rect.size.height + DESCRIPTION_ROW_HEIGHT_MARGIN;
+        }
+        
+    } else if (indexPath.section == 1) {
+        
+        CGFloat height = (self.store.street.length > 0 && self.store.postalCode.length > 0 && self.store.city.length > 0) ? DEFAULT_ADDRESS_ROW_HEIGHT : EMPTY_ROW_HEIGHT;
+        return height;
+
+    } else if (indexPath.section == 2) {
+        
+        if (indexPath.row == 0) {
+            CGFloat height = self.store.phone.length > 0 ? DEFAULT_CONTACT_ROW_HEIGHT : EMPTY_ROW_HEIGHT;
+            return height;
+        } else if (indexPath.row == 1) {
+            CGFloat height = self.store.email.length > 0 ? DEFAULT_CONTACT_ROW_HEIGHT : EMPTY_ROW_HEIGHT;
+            return height;
+        } else if (indexPath.row == 2) {
+            CGFloat height = self.store.website.length > 0 ? DEFAULT_CONTACT_ROW_HEIGHT : EMPTY_ROW_HEIGHT;
+            return height;
+        }
+        
+    } else if (indexPath.section == 3) {
+        
+        if (self.store.openingTimes.count > 0) {
+            
+            if (self.isShowingOpeningTimesDetails) {
+                UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+                CGRect rect = [self.openingTimesLabel.text boundingRectWithSize:CGSizeMake(cell.frame.size.width - DESCRIPTION_ROW_WIDTH_MARGIN, CGFLOAT_MAX)
+                                                                        options:NSStringDrawingUsesLineFragmentOrigin
+                                                                     attributes:@{NSFontAttributeName: [UIFont preferredFontForTextStyle:UIFontTextStyleBody]}
+                                                                        context:nil];
+                return rect.size.height + DESCRIPTION_ROW_HEIGHT_MARGIN + DEFAULT_OPENING_TIMES_ROW_HEIGHT;
+            } else {
+                return DEFAULT_OPENING_TIMES_ROW_HEIGHT;
+            }
+            
+            
+        }
+        
+    }
+
+    return EMPTY_ROW_HEIGHT;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        self.store.description.length > 0 ? [cell setHidden:NO] : [cell setHidden:YES];
+    } else if (indexPath.section == 1) {
+        (self.store.street.length > 0 && self.store.postalCode.length > 0 && self.store.city.length > 0) ? [cell setHidden:NO] : [cell setHidden:YES];
+    } else if (indexPath.section == 2) {
+        if (indexPath.row == 0) {
+            self.store.phone.length > 0 ? [cell setHidden:NO] : [cell setHidden:YES];
+        } else if (indexPath.row == 1) {
+            self.store.email.length > 0 ? [cell setHidden:NO] : [cell setHidden:YES];
+        } else if (indexPath.row == 2) {
+            self.store.website.length > 0 ? [cell setHidden:NO] : [cell setHidden:YES];
+        }
+    } else if (indexPath.section == 3) {
+        self.store.openingTimes.count > 0 ? [cell setHidden:NO] : [cell setHidden:YES];
+    }
+    
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+    NSString *titleForHeaderInSection;
+    
     if (section == 0) {
-        
-        if (self.store.storeDescription) {
-            return LOCALE_STORE_DESCRIPTION;
-        } else {
-            return LOCALE_STORE_ADDRESS;
-        }
-        
+        titleForHeaderInSection = self.store.storeDescription.length > 0 ? LOCALE_STORE_DESCRIPTION : nil;
     } else if (section == 1) {
-        
-        if (self.store.storeDescription) {
-            return LOCALE_STORE_ADDRESS;
-        } else if (self.store.phone || self.store.email || self.store.website) {
-            return LOCALE_STORE_CONTACT;
-        }
-        
+        titleForHeaderInSection = (self.store.street.length > 0 && self.store.postalCode.length > 0 && self.store.city.length > 0) ? LOCALE_STORE_ADDRESS : nil;
     } else if (section == 2) {
-        
-        if (self.store.phone || self.store.email || self.store.website) {
-            return LOCALE_STORE_CONTACT;
-        }
-        
-    }
-    return nil;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 0) {
-        
-        if (self.store.storeDescription) {
-            return [self initializeDescriptionTableViewCell];
-        } else {
-            return [self initializeAddressTableViewCell];
-        }
-        
-    } else if (indexPath.section == 1) {
-        
-        if (self.store.storeDescription) {
-            return [self initializeAddressTableViewCell];
-        } else {
-            return [self initializeCellsForContactSectionAtIndexPath:indexPath];
-        }
-        
-    } else if (indexPath.section == 2) {
-    
-        return [self initializeCellsForContactSectionAtIndexPath:indexPath];
-        
+         titleForHeaderInSection = (self.store.phone.length > 0 || self.store.email.length > 0 || self.store.website.length > 0) ? LOCALE_STORE_CONTACT : nil;
+    } else if (section == 3) {
+        titleForHeaderInSection =self.store.openingTimes.count > 0 ? LOCALE_STORE_OPENING_TIMES: nil;
     }
     
-    return nil;
+    return titleForHeaderInSection;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    if (indexPath.section == 0) {
-        
-        if (self.store.storeDescription) {
-            return 44.0;
-        } else {
-            return 66.0;
-        }
-        
-    } else if (indexPath.section == 1) {
-        
-        if (self.store.storeDescription) {
-            return 66.0;
-        } else {
-            return 44.0;
-        }
-        
-    } else if (indexPath.section == 2) {
-        
-        return 44.0;
-        
-    }
-
-    return 44.0;
-    
-}
-
-- (NSInteger)numbersOfRowsInContactSection
-{
-    
-    if (self.store.phone && self.store.email && self.store.website) {
-        return 3;
-    } else if (self.store.phone && self.store.email) {
-        return 2;
-    } else if (self.store.email && self.store.website) {
-        return 2;
-    } else if (self.store.phone && self.store.website) {
-        return 2;
-    } else  if (self.store.phone) {
-        return 1;
-    } else if (self.store.email) {
-        return 1;
-    } else if (self.store.website) {
-        return 1;
-    } else {
-        return 0;
-    }
-    
-}
-
-- (UITableViewCell *)initializeCellsForContactSectionAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    if (self.store.phone && self.store.email && self.store.website) {
-        
-        if (indexPath.row == 0) {
-            return [self initializePhoneTableViewCell];
-        } else if (indexPath.row == 1) {
-            return [self initializeEmailTableViewCell];
-        } else if (indexPath.row == 2) {
-            return [self initializeWebsiteTableViewCell];
-        }
-        
-    } else if (self.store.phone && self.store.email) {
-        
-        if (indexPath.row == 0) {
-            return [self initializePhoneTableViewCell];
-        } else if (indexPath.row == 1) {
-            return [self initializeEmailTableViewCell];
-        }
-        
-    } else if (self.store.email && self.store.website) {
-        
-        
-        if (indexPath.row == 0) {
-            return [self initializeEmailTableViewCell];
-        } else if (indexPath.row == 1) {
-            return [self initializeWebsiteTableViewCell];
-        }
-        
-    } else if (self.store.phone && self.store.website) {
-        
-        
-        if (indexPath.row == 0) {
-            return [self initializePhoneTableViewCell];
-        } else if (indexPath.row == 1) {
-            return [self initializeWebsiteTableViewCell];
-        }
-        
-    } else  if (self.store.phone) {
-        
-        return [self initializePhoneTableViewCell];
-        
-    } else if (self.store.email) {
-        
-        return [self initializeEmailTableViewCell];
-        
-    } else if (self.store.website) {
-        
-        return [self initializeWebsiteTableViewCell];
-        
-    }
-
-    return nil;
-}
-
-- (UITableViewCell *)initializeAddressTableViewCell
-{
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"coubrStoreAddressTableViewCell"];
-    if ([cell isKindOfClass:[coubrStoreAddressTableViewCell class]]) {
-        coubrStoreAddressTableViewCell *addressCell = (coubrStoreAddressTableViewCell *)cell;
-        [addressCell.streetLabel setText:self.store.street];
-        [addressCell.cityLabel setText:[NSString stringWithFormat:@"%@ %@", self.store.postalCode, self.store.city]];
-    }
-    return cell;
-}
-
-- (UITableViewCell *)initializeEmailTableViewCell
-{
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"coubrStoreContactTableViewCell"];
-    if ([cell isKindOfClass:[coubrStoreContactTableViewCell class]]) {
-        coubrStoreContactTableViewCell *contactCell = (coubrStoreContactTableViewCell *)cell;
-        [contactCell.button setTitle:self.store.email forState:UIControlStateNormal];
-        [contactCell.button addTarget:self action:@selector(sendEmail:) forControlEvents:UIControlEventTouchUpInside];
-        [contactCell.iconImageView setImage:[UIImage imageNamed:@"Store_Email"]];
-    }
-    return cell;
-}
-
-- (UITableViewCell *)initializePhoneTableViewCell
-{
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"coubrStoreContactTableViewCell"];
-    if ([cell isKindOfClass:[coubrStoreContactTableViewCell class]]) {
-        coubrStoreContactTableViewCell *contactCell = (coubrStoreContactTableViewCell *)cell;
-        [contactCell.button setTitle:self.store.phone forState:UIControlStateNormal];
-        [contactCell.button addTarget:self action:@selector(call:) forControlEvents:UIControlEventTouchUpInside];
-        [contactCell.iconImageView setImage:[UIImage imageNamed:@"Store_Phone"]];
-    }
-    return cell;
-}
-
-- (UITableViewCell *)initializeWebsiteTableViewCell
-{
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"coubrStoreContactTableViewCell"];
-    if ([cell isKindOfClass:[coubrStoreContactTableViewCell class]]) {
-        coubrStoreContactTableViewCell *contactCell = (coubrStoreContactTableViewCell *)cell;
-        [contactCell.button setTitle:self.store.website forState:UIControlStateNormal];
-        [contactCell.button addTarget:self action:@selector(openWebsite:) forControlEvents:UIControlEventTouchUpInside];
-        [contactCell.iconImageView setImage:[UIImage imageNamed:@"Store_Website"]];
-    }
-    return cell;
-}
-
-- (UITableViewCell *)initializeDescriptionTableViewCell
-{
-    
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"coubrStoreDescriptionTableViewCell"];
-    if ([cell isKindOfClass:[coubrStoreDescriptionTableViewCell class]]) {
-
-        [((coubrStoreDescriptionTableViewCell *)cell).descriptionTextView setText:self.store.storeDescription];
-    }
-    return cell;
-}
+#pragma mark - IBAction
 
 - (void)call:(id)sender {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"telprompt://%@", self.store.phone]]];
@@ -346,24 +258,26 @@
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.store.website]];
 }
 
-#pragma mark - Blur
 
-- (void)blurTableViewBackground
-{
-    UIGraphicsBeginImageContext(self.tableView.bounds.size);
-    
-    CGContextRef c = UIGraphicsGetCurrentContext();
-    CGContextTranslateCTM(c, 0, 0);
-    [self.tableView.layer renderInContext:c];
-    
-    UIImage* viewImage = UIGraphicsGetImageFromCurrentImageContext();
-    viewImage = [viewImage applyLightEffect];
-    
-    UIGraphicsEndImageContext();
-    
-    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:viewImage];
-    self.notInit = YES;
+
+ - (IBAction)toggleDetails:(UIButton *)sender {
+     
+     [sender setSelected:!sender.isSelected];
+     self.isShowingOpeningTimesDetails = sender.isSelected;
+     
+     if ([sender isSelected]) {
+         [self.openingTimesLabel setHidden:NO];
+         
+         [self.tableView reloadData];
+         [self.view updateConstraints];
+         
+         [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentOffset.y + self.openingTimesLabel.frame.size.height) animated:YES];
+     } else {
+         [self.openingTimesLabel setHidden:YES];
+         
+         [self.tableView reloadData];
+     }
+     
 }
-
 
 @end

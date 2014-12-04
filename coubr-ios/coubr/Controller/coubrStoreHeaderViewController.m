@@ -43,32 +43,19 @@
         [self initStoreHeader];
         
     }];
-
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
 }
 
 - (void)initStoreHeader
 {
     [self.nameLabel setText:self.store.name];
-    
-    CLLocationDegrees latitude = [self.store.latitude doubleValue] ;
-    CLLocationDegrees longitude = [self.store.longitude doubleValue];
-    
-    CLLocation *storeLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
 
-    CLLocationDistance distance = [storeLocation distanceFromLocation:[[coubrLocationManager defaultManager] userLocation]];
-    
     // distance
     MKDistanceFormatter *distanceFormatter = [[MKDistanceFormatter alloc] init];
     [distanceFormatter setLocale:[NSLocale currentLocale]];
     [distanceFormatter setUnitStyle:MKDistanceFormatterUnitStyleAbbreviated];
-    [self.distanceLabel setText:[distanceFormatter stringFromDistance:distance]];
+    [self.distanceLabel setText:[distanceFormatter stringFromDistance:[self.store.distance doubleValue]]];
     
-    [self.categoryLabel setText:[coubrCategoryToText textFromCategory:self.store.category andSubcategory:self.store.subcategory]];
+    [self.categoryLabel setText:[coubrCategoryToText textFromStoreCategory:self.store.category andStoreSubcategory:self.store.subcategory]];
     [self blurBackgroundImage];
 }
 
@@ -106,6 +93,8 @@
     [self.foregroundImageView.layer setShadowRadius:3.0];
     [self.foregroundImageView.layer setShadowOpacity:0.05];
 }
+
+
 
 
 

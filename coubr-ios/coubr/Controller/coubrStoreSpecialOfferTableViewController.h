@@ -10,5 +10,4 @@
 
 @interface coubrStoreSpecialOfferTableViewController : UITableViewController
 
-
 @end

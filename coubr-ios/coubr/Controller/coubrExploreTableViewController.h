@@ -9,8 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "coubrExploreViewController.h"
 
-@interface coubrExploreTableViewController : UITableViewController
+@interface coubrExploreTableViewController : UITableViewController <coubrStoreViewDelegate>
 
 @property (weak, nonatomic) coubrExploreViewController *parentController;
+
+- (void)scrollToTop;
+- (void)scrollToOffset;
 
 @end

@@ -18,16 +18,17 @@
 #import "coubrRemoteManager+Explore.h"
 
 #import "Explore+CRUD.h"
+#import "Explore+Distance.h"
 
 #import "coubrExploreMapViewController.h"
 #import "coubrExploreTableViewController.h"
+#import "coubrExploreTableViewCell.h"
 
 #import "coubrExploreFilterViewController.h"
 
 #import "UIImage+ImageEffects.h"
 
 #import "coubrLocationManager.h"
-
 
 @interface coubrExploreViewController ()
 
@@ -41,21 +42,15 @@
 @property (weak, nonatomic) UIView *exploreFilterView;
 
 @property (strong, nonatomic) UISearchBar *searchBar;
-@property (strong, nonatomic) UISearchDisplayController *searchController;
 @property (strong, nonatomic) NSMutableArray *searchLocationResults; // of MKPlacemark
 
 @property (strong, nonatomic) UIBarButtonItem *searchBarButtonItem;
 @property (strong, nonatomic) UIBarButtonItem *filterBarButtonItem;
 
-
-@property (strong, nonatomic) UIPanGestureRecognizer *overlayPanGestureRecognizer;
 @property (strong, nonatomic) UIDynamicAnimator *animator;
 
 @property (nonatomic) BOOL notInit;
-
-
-
-
+@property (nonatomic) NSInteger currentIndex;
 
 @property (strong, nonatomic) CLLocation *currentLocation;
 
@@ -65,18 +60,28 @@
 
 #pragma mark - view lifecycle
 
+#pragma mark - Init controllers
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    self.exploreMapViewController;
-    self.exploreTableViewController;
-    self.exploreFilterViewController;
+    self.exploreMapViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"coubrExploreMapViewController"];
+    [self addChildViewController:_exploreMapViewController];
+    [self.exploreMapViewController setParentController:self];
+    
+    self.exploreTableViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"coubrExploreTableViewController"];
+    [self addChildViewController:_exploreTableViewController];
+    [self.exploreTableViewController setParentController:self];
+    
+    self.exploreFilterViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"coubrExploreFilterViewController"];
+    [self addChildViewController:_exploreFilterViewController];
+    [self.exploreFilterViewController setParentController:self];
     
     // setup notification listener
     
     [[NSNotificationCenter defaultCenter] addObserverForName:ManagedDatabaseDidBecomeAvailableNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[Explore fetchRequestForExplore] managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
+        self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[Explore fetchRequestForExplore] managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:@"distanceSection" cacheName:nil];
         
         // refresh
         [self updateFetchedResultsController];
@@ -88,7 +93,9 @@
         [self updateFetchedResultsController];
     }];
     
-    
+    [[NSNotificationCenter defaultCenter] addObserverForName:FetchedResultsControllerDidUpdatedNotification object:self queue:nil usingBlock:^(NSNotification *note) {
+        self.currentIndex = 0;
+    }];
     
 }
 
@@ -130,38 +137,6 @@
 - (void)initNavigationBar
 {
     [self.parentViewController.navigationItem setRightBarButtonItems:@[ self.searchBarButtonItem, self.filterBarButtonItem ] animated:NO];
-}
-
-#pragma mark - Init controllers
-
-- (coubrExploreMapViewController *)exploreMapViewController
-{
-    if (!_exploreMapViewController) {
-        _exploreMapViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"coubrExploreMapViewController"];
-        [self addChildViewController:_exploreMapViewController];
-        [_exploreMapViewController setParentController:self];
-    }
-    return _exploreMapViewController;
-}
-
-- (coubrExploreTableViewController *)exploreTableViewController
-{
-    if (!_exploreTableViewController) {
-        _exploreTableViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"coubrExploreTableViewController"];
-        [self addChildViewController:_exploreTableViewController];
-        [_exploreTableViewController setParentController:self];
-    }
-    return _exploreTableViewController;
-}
-
-- (coubrExploreFilterViewController *)exploreFilterViewController
-{
-    if (!_exploreFilterViewController) {
-        _exploreFilterViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"coubrExploreFilterViewController"];
-        [self addChildViewController:_exploreFilterViewController];
-        [_exploreFilterViewController setParentController:self];
-    }
-    return _exploreFilterViewController;
 }
 
 #pragma mark - Init views
@@ -210,7 +185,7 @@
         CGRect frame = CGRectMake(0, TOPBAR_HEIGHT, superviewFrame.size.width, HEADER_HEIGHT);
         
         _overlayView = [[UIView alloc] initWithFrame:frame];
-        [_overlayView addGestureRecognizer:self.overlayPanGestureRecognizer];
+        [_overlayView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panOverlay:)]];
     }
     return _overlayView;
 }
@@ -245,7 +220,6 @@
 
 - (void)updateFetchedResultsControllerRequest
 {
-    
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:
                                      
                                      [Explore fetchRequestForExploreWithShowSpecialOffers:self.exploreFilterViewController.showSpecialOffers
@@ -254,7 +228,7 @@
                                                                        selectedCategories:self.exploreFilterViewController.selectedCategories]
                                      
                                                                         managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext]
-                                                                          sectionNameKeyPath:nil
+                                                                          sectionNameKeyPath:@"distanceSection"
                                                                                    cacheName:nil];
     
     NSError *error;
@@ -267,10 +241,8 @@
 
 - (void)updateFetchedResultsController
 {
-    
     // Load data from remote
-    if (self.currentLocation && [[coubrDatabaseManager defaultManager] managedObjectContext]) {
-        
+    if (self.currentLocation && [[coubrDatabaseManager defaultManager] managedObjectContext]) {        
         // wipe database before loading
         [Explore deleteExploreItemsInDatabase];
         
@@ -316,14 +288,6 @@
 
 #pragma mark - Overlay
 
-- (UIPanGestureRecognizer *)overlayPanGestureRecognizer
-{
-    if (!_overlayPanGestureRecognizer) {
-        _overlayPanGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panOverlay:)];
-    }
-    return _overlayPanGestureRecognizer;
-}
-
 - (void)panOverlay:(UIPanGestureRecognizer *)gesture
 {
     static CGPoint originalPoint;
@@ -358,7 +322,7 @@
 - (void)userIsPanningFromLocation:(CGPoint)origin toLocation:(CGPoint)destination withTranslation:(CGPoint)translation
 {
     CGRect superviewFrame = self.view.frame;
-    
+
     if (translation.y > 0) {
         // move down
         
@@ -372,7 +336,7 @@
     } else {
         // move up
         
-        if (origin.y >= (superviewFrame.size.height * 0.5 + TOPBAR_HEIGHT) && destination.y > (HEADER_HEIGHT + TOPBAR_HEIGHT)) {
+        if (origin.y >= (superviewFrame.size.height * 0.5 + TOPBAR_HEIGHT) && destination.y > (HEADER_HEIGHT + TOPBAR_HEIGHT) && destination.y < (superviewFrame.size.height - HEADER_HEIGHT)) {
             // shows table view
             [self.exploreMapView setFrame:CGRectMake(0, TOPBAR_HEIGHT, self.exploreMapView.bounds.size.width, superviewFrame.size.height - HEADER_HEIGHT - TOPBAR_HEIGHT + translation.y)];
             [self.overlayView setFrame:CGRectMake(0, superviewFrame.size.height - HEADER_HEIGHT + translation.y, self.overlayView.bounds.size.width, HEADER_HEIGHT - translation.y )];
@@ -394,9 +358,28 @@
     
 }
 
+
+
 - (void)userDidFinishPanningFromLocation:(CGPoint)origin toLocation:(CGPoint)destination
 {
     CGRect superviewFrame = self.view.frame;
+    
+    if (destination.x < origin.x && destination.y > (superviewFrame.size.height - HEADER_HEIGHT)) {
+        // swipe left
+        if (destination.x < (superviewFrame.size.width * 0.4) && (origin.x - destination.x) > (superviewFrame.size.width * 0.5)) {
+            [self loadNextStore];
+        }
+
+    }
+    
+    if (destination.x > origin.x && destination.y > (superviewFrame.size.height - HEADER_HEIGHT)) {
+        // swipe right
+        if (destination.x > (superviewFrame.size.width * 0.6) && (destination.x - origin.x) > (superviewFrame.size.width * 0.5)) {
+            [self loadPreviousStore];
+        }
+        
+    }
+    
     if (destination.y < (superviewFrame.size.height * 0.5 + TOPBAR_HEIGHT)) {
         // shows table view
         
@@ -411,7 +394,11 @@
         
         // refresh location
         if (origin.y > superviewFrame.size.height * 0.5) {
-            // moved from button to top therefore closes
+            [self.exploreTableViewController scrollToTop];
+            
+            _showsMapInFullscreen = NO;
+            [self.exploreMapViewController showMapViewInFullscreen:NO];
+            
             [self updateFetchedResultsController];
         }
         
@@ -427,6 +414,17 @@
         
         [self.exploreMapViewController.userLocationButton setAlpha:1];
         [self.exploreMapViewController.locationLabel setAlpha:0];
+        
+        if (origin.y < superviewFrame.size.height * 0.5) {
+            // scroll table view to top offset
+            [self.exploreTableViewController scrollToOffset];
+            
+            _showsMapInFullscreen = YES;
+            [self.exploreMapViewController showMapViewInFullscreen:YES];
+            
+            self.currentIndex = 0;
+            [self setSelectedStoreToCurrentIndex];
+        }
         
          
     }
@@ -454,7 +452,7 @@
         _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, TOPBAR_HEIGHT, superviewFrame.size.width, SEARCH_BAR_HEIGHT)];
         [_searchBar setTranslucent:NO];
         [_searchBar setBarTintColor:[UIColor colorWithRed:242.0/255.0 green:120.0/255.0 blue:75.0/255.0 alpha:1]];
-        [_searchBar setTintColor:[UIColor colorWithRed:242.0/255.0 green:241.0/255.0 blue:239.0/255.0 alpha:1]];
+        [_searchBar setTintColor:[UIColor colorWithRed:242.0/255.0 green:120.0/255.0 blue:75.0/255.0 alpha:1]];
         [_searchBar setDelegate:self];
         
     }
@@ -650,6 +648,117 @@
         [self.exploreFilterView removeFromSuperview];
     }
     
+}
+
+#pragma mark - Store navigation
+
+- (void)loadPreviousStore
+{
+    if (self.fetchedResultsController.fetchedObjects.count > 0) {
+        if (self.currentIndex == 0) {
+            [self.exploreMapView setFrame:CGRectMake(32, self.exploreMapView.bounds.origin.y, self.exploreMapView.bounds.size.width, self.exploreMapView.bounds.size.height)];
+            [self.exploreTableView setFrame:CGRectMake(32, self.exploreTableView.bounds.origin.y, self.exploreTableView.bounds.size.width, self.exploreTableView.bounds.size.height)];
+            [self.overlayView setFrame:CGRectMake(32, self.overlayView.bounds.origin.y, self.overlayView.bounds.size.width, self.overlayView.bounds.size.height)];
+            
+            [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+                [self.exploreMapView setFrame:CGRectMake(0, self.exploreMapView.bounds.origin.y, self.exploreMapView.bounds.size.width, self.exploreMapView.bounds.size.height)];
+                [self.exploreTableView setFrame:CGRectMake(0, self.exploreTableView.bounds.origin.y, self.exploreTableView.bounds.size.width, self.exploreTableView.bounds.size.height)];
+                [self.overlayView setFrame:CGRectMake(0, self.overlayView.bounds.origin.y, self.overlayView.bounds.size.width, self.overlayView.bounds.size.height)];
+            } completion:nil];
+            
+        }
+        
+        if ((self.currentIndex - 1) >= 0) {
+            self.currentIndex = self.currentIndex - 1;
+            [self setSelectedStoreToCurrentIndex];
+        }
+    }
+    
+}
+
+- (void)loadNextStore
+{
+    if (self.fetchedResultsController.fetchedObjects.count > 0) {
+        if (self.currentIndex == (self.fetchedResultsController.fetchedObjects.count - 1)) {
+            [self.exploreMapView setFrame:CGRectMake(-32, self.exploreMapView.bounds.origin.y, self.exploreMapView.bounds.size.width, self.exploreMapView.bounds.size.height)];
+            [self.exploreTableView setFrame:CGRectMake(-32, self.exploreTableView.bounds.origin.y, self.exploreTableView.bounds.size.width, self.exploreTableView.bounds.size.height)];
+            [self.overlayView setFrame:CGRectMake(-32, self.overlayView.bounds.origin.y, self.overlayView.bounds.size.width, self.overlayView.bounds.size.height)];
+            
+            [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+                [self.exploreMapView setFrame:CGRectMake(0, self.exploreMapView.bounds.origin.y, self.exploreMapView.bounds.size.width, self.exploreMapView.bounds.size.height)];
+                [self.exploreTableView setFrame:CGRectMake(0, self.exploreTableView.bounds.origin.y, self.exploreTableView.bounds.size.width, self.exploreTableView.bounds.size.height)];
+                [self.overlayView setFrame:CGRectMake(0, self.overlayView.bounds.origin.y, self.overlayView.bounds.size.width, self.overlayView.bounds.size.height)];
+            } completion:nil];
+            
+        }
+        
+        if ((self.currentIndex + 1) < self.fetchedResultsController.fetchedObjects.count) {
+            self.currentIndex = self.currentIndex + 1;
+            [self setSelectedStoreToCurrentIndex];
+        }
+    }
+}
+
+- (void)setSelectedStoreToCurrentIndex
+{
+    // set first row of table view
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    
+    UITableViewCell *cell = [self.exploreTableViewController.tableView cellForRowAtIndexPath:indexPath];
+    if ([cell isKindOfClass:[coubrExploreTableViewCell class]]) {
+        coubrExploreTableViewCell *exploreCell = (coubrExploreTableViewCell *)cell;
+        
+        NSManagedObject *managedObject = [self.fetchedResultsController.fetchedObjects objectAtIndex:self.currentIndex];
+        if ([managedObject isKindOfClass:[Explore class]]) {
+            [exploreCell initCellWithExplore:(Explore *)managedObject];
+        }
+    }
+    
+    [self.exploreMapViewController selectAnnotationAtIndex:self.currentIndex];
+}
+
+- (void)setSelectedStoreToIndex:(NSInteger)index
+{
+    self.currentIndex = index;
+    
+    // set first row of table view
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    
+    UITableViewCell *cell = [self.exploreTableViewController.tableView cellForRowAtIndexPath:indexPath];
+    if ([cell isKindOfClass:[coubrExploreTableViewCell class]]) {
+        coubrExploreTableViewCell *exploreCell = (coubrExploreTableViewCell *)cell;
+        
+        NSManagedObject *managedObject = [self.fetchedResultsController.fetchedObjects objectAtIndex:self.currentIndex];
+        if ([managedObject isKindOfClass:[Explore class]]) {
+            [exploreCell initCellWithExplore:(Explore *)managedObject];
+        }
+    }
+}
+
+#pragma mark - Shake Gesture
+
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    if (motion == UIEventSubtypeMotionShake) {
+    
+        CGRect superviewFrame = self.view.frame;
+        if (self.fetchedResultsController.fetchedObjects.count > 1 && self.overlayView.frame.origin.y > superviewFrame.size.height * 0.5) {
+            
+            NSInteger newIndex = self.currentIndex;
+            
+            while (newIndex == self.currentIndex){
+                newIndex = arc4random() % self.fetchedResultsController.fetchedObjects.count;
+            }
+            self.currentIndex = newIndex;
+            [self setSelectedStoreToCurrentIndex];
+        }
+        
+    }
 }
 
 @end

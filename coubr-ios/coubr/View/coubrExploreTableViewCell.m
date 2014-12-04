@@ -92,7 +92,7 @@
         [self.offersImageView1 setImage:[UIImage imageNamed:@"Explore_SpecialOffer"]];
     }
     
-    [self.categoryLabel setText:[coubrCategoryToText textFromCategory:explore.category andSubcategory:explore.subcategory]];
+    [self.categoryLabel setText:[coubrCategoryToText textFromStoreCategory:explore.category andStoreSubcategory:explore.subcategory]];
     
     if (!self.notInit) {
         [self blurBackgroundImage];
@@ -105,7 +105,10 @@
 {
     if (self.explore.storeId) {
         coubrStoreViewController *spvc = [[UIStoryboard storyboardWithName:@"Store" bundle:nil]  instantiateViewControllerWithIdentifier:@"coubrStoreViewController"];
-        [spvc setStoreId:self.explore.storeId];
+        
+        [spvc setCurrentIndex:[self.parentController.storeIds indexOfObject:self.explore.storeId]];
+        [spvc setDelegate:self.parentController];
+      
         [self.parentController.navigationController pushViewController:spvc animated:YES];
     }
 }

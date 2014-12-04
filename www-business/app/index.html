@@ -1,0 +1,111 @@
+<!doctype html>
+<html class="no-js" ng-app>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="author" content="Sebastian Hof">
+  <meta name="copyright" content="Copyright 2014. Sebastian Hof">
+  <title>coubr Business</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/index.css -->
+  <link rel="stylesheet" href="styles/index.css">
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/coubr.css -->
+  <link rel="stylesheet" href="styles/coubr.css">
+  <!-- endbuild -->
+</head>
+<body ng-app="coubr">
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+  your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div class="coubr-header">
+
+  <div class="container">
+
+    <div class="navbar" role="navigation">
+
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#/"><span class="coubr">coubr</span> Business</a>
+      </div>
+
+      <div class="pull-right">
+
+        <ul class="nav nav-pills">
+          <li><a ng-href="/app.html#/anmelden">Anmelden</a></li>
+          <li><a ng-href="#/ueber">Über</a></li>
+          <li><a ng-href="#/blog">Blog</a></li>
+          <li><a href="http://www.coubr.de"><span class="coubr">coubr</span> App</a></li>
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="coubr-body" ng-view=""></div>
+
+<div class="coubr-footer">
+
+  <div>
+
+    <div>
+
+      <p>
+        <a ng-href="#/team">Team</a> &middot;
+        <a ng-href="#/kontakt">Kontakt</a> &middot;
+        <a ng-href="#/jobs">Jobs</a>
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <span class="coubr">coubr</span> &copy; 2014 &middot; Alle Rechte vorbehalten
+        &nbsp;&nbsp;&middot;&nbsp;&nbsp;
+        <a ng-href="#/impressum">Impressum</a> &middot;
+        <a ng-href="#/datenschutz">Datenschutz</a> &middot;
+        <a ng-href="#/agb">AGB</a>
+      </p>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+<script>
+  (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+  ga('create', 'UA-57202107-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<!-- build:js(.) scripts/oldieshim.js -->
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.js"></script>
+<![endif]-->
+<!-- endbuild -->
+
+<script src="/bower_components/requirejs/require.js" data-main="/scripts/index.js"></script>
+</body>
+</html>

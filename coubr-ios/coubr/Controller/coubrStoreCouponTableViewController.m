@@ -11,8 +11,9 @@
 
 #import "coubrDatabaseManager.h"
 #import "coubrLocale.h"
+#import "coubrCategoryToText.h"
 
-#import "Store+CRUD.h"
+#import "Coupon+CRUD.h"
 
 #import "coubrCouponTableViewCell.h"
 
@@ -39,12 +40,21 @@
     }];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (self.storeId) {
+        [self refreshCouponFetchedResultsController];
+    }
+}
+
 #pragma mark - NSFetchedResults
 
 - (void)refreshCouponFetchedResultsController
 {
     
-    self.couponFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[Store fetchRequestForCouponsOfStoreWithId:self.storeId] managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:@"category" cacheName:nil];
+    self.couponFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[Coupon fetchRequestForCouponsOfStoreWithId:self.storeId] managedObjectContext:[[coubrDatabaseManager defaultManager] managedObjectContext] sectionNameKeyPath:@"category" cacheName:nil];
     
     NSError *error;
     [self.couponFetchedResultsController performFetch:&error];
@@ -93,6 +103,12 @@
     }
     
     return nil;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[[self couponFetchedResultsController] sections] objectAtIndex:section];
+    return [coubrCategoryToText textFromCouponCategory:[sectionInfo name]];
 }
 
 #pragma mark - Empty table view

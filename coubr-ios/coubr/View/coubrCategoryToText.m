@@ -11,8 +11,10 @@
 
 @implementation coubrCategoryToText
 
-+ (NSString *)textFromCategory:(NSString *)category andSubcategory:(NSString *)subcategory {
++ (NSString *)textFromStoreCategory:(NSString *)category andStoreSubcategory:(NSString *)subcategory {
 
+    // Store
+    
     if ([category isEqualToString:@"bakery"]) {
         return LOCALE_STORE_CATEGORY_BAKERY;
     } else if ([category isEqualToString:@"bar"]) {
@@ -44,6 +46,31 @@
     } else {
         return LOCALE_STORE_CATEGORY_NONE;    }
     
+}
+
++ (NSString *)textFromCouponCategory:(NSString *)category
+{
+    return LOCALE_COUPON_CATEGORY_NONE;
+}
+
++ (NSString *)textFromSpecialOfferCategory:(NSString *)category
+{
+    if ([category isEqualToString:@"daily"]) {
+        return LOCALE_SPECIAL_OFFER_CATEGORY_DAILY;
+    } else if ([category isEqualToString:@"weekly"]) {
+        return LOCALE_SPECIAL_OFFER_CATEGORY_WEEKLY;
+    } else if ([category isEqualToString:@"monthly"]) {
+        return LOCALE_SPECIAL_OFFER_CATEGORY_MONTHLY;
+    } else if ([category isEqualToString:@"happyhour"]) {
+        return LOCALE_SPECIAL_OFFER_CATEGORY_HAPPYHOUR;
+    } else {
+        return LOCALE_SPECIAL_OFFER_CATEGORY_NONE;
+    }
+}
+
++ (NSString *)textFromStampCardCategory:(NSString *)category
+{
+    return LOCALE_STAMP_CARD_CATEGORY_NONE;
 }
 
 @end

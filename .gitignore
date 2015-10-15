@@ -1,10 +1,5 @@
-# IntelliJ IDEA
-/*.iml
-.idea/
-
-# Gradle Files
-.gradle/
-build/
-
-# Node.js
-node_modules/
+node_modules
+dist
+.tmp
+.sass-cache
+bower_components

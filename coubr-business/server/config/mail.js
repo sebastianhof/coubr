@@ -8,10 +8,11 @@
 *
 ************************************/
 
-'use strict';
+'use strict'
 
-// import
-var path = require("path");
-var coubr = require(path.join(__dirname,'./server/coubr'));
+module.exports =  {
 
-coubr.run();
+    user: process.env.SENDMAIL_USER || '',
+    key: process.env.SENDMAIL_KEY || ''
+
+}

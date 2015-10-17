@@ -1,0 +1,60 @@
+<div class="container">
+
+  <cbrerror class="label label-danger coubr-error">Ein Fehler ist aufgetreten!</cbrerror>
+
+  <div class="row">
+
+    <div class="col-lg-6">
+
+      <h3>E-Mail Adresse ändern</h3>
+      <br/>
+
+      <form cbrform name="form"
+            postTo="account/email"
+            thenGoto="#account">
+
+        <!-- New email -->
+
+        <div class="input-group input-group">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="/static/images/icons/email-40.png"/></span>
+          <input type="email" class="form-control" name="newEmail"
+                 placeholder="Neue E-Mail Adresse eingeben"
+                 ng-model="data.newEmail" ng-required="true">
+        </div>
+        <cbrinputerror class="help-block" cbrname="newEmail"></cbrinputerror>
+
+        <br/>
+
+        <!-- New email repeat -->
+
+        <div class="input-group input-group">
+                        <span class="input-group-addon"><img class="input-group-img"
+                                                             ng-src="/static/images/icons/email-40.png"/></span>
+          <input type="email" class="form-control" name="newEmailRepeat"
+                 placeholder="Neue E-Mail Adresse nochmals eingeben" ng-model="data.newEmailRepeat"
+                 match="data.newEmail" ng-required="true">
+        </div>
+        <cbrinputerror class="help-block" cbrname="newEmailRepeat" cbrmatch="E-Mail Adressen sind nicht identisch.">
+        </cbrinputerror>
+
+        <br/>
+
+        <!-- Submit -->
+
+        <div>
+          <cbrprocess class="label coubr-process-submit">Bearbeiten...</cbrprocess>
+          <cbrerror class="label coubr-error-submit">Ein Fehler ist aufgetreten</cbrerror>
+          <cbrsubmit class="btn coubr-button">Ändern</cbrsubmit>
+          <span>oder <a ng-href="#konto">zurückgehen</a></span>
+        </div>
+
+      </form>
+
+      <br/>
+
+    </div>
+
+  </div>
+
+</div>

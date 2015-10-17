@@ -1,0 +1,44 @@
+<div class="container">
+
+    <cbrerror class="label label-danger error">Error!</cbrerror>
+
+    <div class="jumbotron">
+
+
+        <div class="row">
+
+            <div class="col-lg-6">
+
+                <h2>Adjust Location</h2>
+                <br/>
+
+                <form cbrform name="form"
+                      postTo="store/:storeId/location"
+                      thenGoTo="#store/:storeId/location"
+                      initFrom="store/:storeId/location">
+
+                    <div cbrstoremap class="map">
+
+
+
+                    </div>
+
+                    <br/>
+
+                    <div>
+                        <cbrprocess class="label process-submit">Processing...</cbrprocess>
+                        <cbrerror class="label error-submit">Error!</cbrerror>
+                        <cbrsubmit class="btn btn-coubr btn-lg">Adjust</cbrsubmit>
+                        <span>or <a ng-href="#store/{{ route.storeId }}/location">Go back</a></span>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>

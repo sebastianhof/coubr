@@ -8,10 +8,9 @@
 *
 ************************************/
 
-'use strict';
+'use strict'
 
 // import
-var path = require("path");
-var coubr = require(path.join(__dirname,'./server/coubr'));
+var coubr = require('./coubr');
 
 coubr.run();

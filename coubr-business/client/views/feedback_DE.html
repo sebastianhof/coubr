@@ -1,0 +1,29 @@
+<h3>Feedback</h3>
+<br/>
+
+<form cbrform name="form" postTo="/b/feedback" then="cancel()">
+
+  <div class="input-group">
+
+            <span class="input-group-addon">
+                <img class="input-group-img" style="height: 32px; width: 32px; padding: 5px"
+                     ng-src="/images/icons/feedback.svg"/>
+            </span>
+    <textarea class="form-control textarea" name="feedback"
+              placeholder="Feedback eingeben"
+              ng-model="data.feedback" rows="5" required="required">
+
+    </textarea>
+
+  </div>
+
+  <br/>
+
+  <div>
+    <cbrprocess class="label coubr-process-submit">Bearbeiten...</cbrprocess>
+    <cbrerror class="label coubr-error-submit">Ein Fehler ist aufgetreten</cbrerror>
+    <cbrsubmit class="btn coubr-button">Senden</cbrsubmit>
+    <span>oder <a ng-click="cancel()">Schließen</a></span>
+  </div>
+
+</form>
